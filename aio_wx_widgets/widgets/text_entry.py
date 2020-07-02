@@ -22,7 +22,9 @@ class IntValidator(wx.Validator):
 
     def _on_char(self, event):
         value = event.GetKeyCode()
-
+        if value < wx.WXK_SPACE or value == wx.WXK_DELETE or value > 255:
+            event.Skip()
+            return
         if chr(value) in string.digits:
             event.Skip()
             return
@@ -39,43 +41,55 @@ class IntValidator(wx.Validator):
         return True
 
 
-class IntEntry(Bindable):
-    """A textctrl for putting in integers.
-
-    The value property exposes this integer value.
-    """
+class Entry(Bindable):
+    """A general textctrl for any input."""
 
     def __init__(
         self,
         label: Union[None, int, str] = None,
         parent=None,
-        multiline=False,
         binding=None,
+        wx_ctrl=None,
+        validator: wx.Validator = None,
     ):
         super().__init__(binding[0], binding[1])
         self.value: Optional[int] = None
-        self._txt = text_ctrl(
-            label=label, parent=parent, multiline=multiline, validator=IntValidator()
-        )
+
+        self._label = label
         self._parent = parent
 
-    def _set_value(self, value):
+        if wx_ctrl is None:
+            self._txt = wx.TextCtrl()
+        else:
+            self._txt = wx_ctrl
+
+        self._validator = validator
+
+    def _set_ui_value(self, value):
         self._txt.SetValue(str(value))
 
+    def _get_ui_value(self):
+        return self._txt.GetValue()
+
     def __call__(self, parent):
-        self._txt = self._txt(parent)
-        self._txt.Bind(wx.EVT_TEXT, self._on_text)
+        args = dict({"parent": parent})
+        if self._validator:
+            args["validator"] = self._validator
+        if self._label:
+            args["value"] = str(self._label)
+
+        self._txt.Create(**args)
+        self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
         self._make_binding()
 
         return self._txt
 
-    def _on_text(self, evt):
-        _LOGGER.debug("Data entered")
-        if self._fire_update_event:
-            _LOGGER.debug("Firing update")
-            self.value = int(evt.GetString())
-            setattr(self._obj, self._property, self.value)
-        self._fire_update_event = True
+
+class IntEntry(Entry):
+    """Textentry which only allows numerical values."""
+
+    def __init__(self, label: Union[None, int, str] = None, binding=None):
+        super().__init__(label, binding=binding, validator=IntValidator())
 
 
 def text_ctrl(

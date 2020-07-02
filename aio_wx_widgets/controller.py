@@ -1,7 +1,9 @@
 import logging
-import wx
-import asyncio
 from typing import Any, TYPE_CHECKING
+
+import wx
+
+from aio_wx_widgets.binding import WATCHERS
 
 if TYPE_CHECKING:
     from aiosubpub import Channel
@@ -19,16 +21,26 @@ class BaseController:
             view: The view part.
             model: The model.
         """
+
         self.view = view
-        self.view._controller = self
-        self.view.populate()
         self.model = model
 
         self.view.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
         self.view.Bind(wx.EVT_CLOSE, self._on_close)
 
         self._channels = []
-        # self._loop = asyncio.get_running_loop()
+
+    def __setattr__(self, item, value):
+        print(f"Setting item {item} to value {value}")
+        self.__dict__[item] = value
+        if WATCHERS not in self.__dict__:
+            return
+        if item not in self.__dict__[WATCHERS]:
+            return
+
+        watchers = self.__dict__[WATCHERS][item]
+        for watcher in watchers:
+            watcher(value)
 
     def subscribe(self, channel: "Channel", callback):
         """Subscribe to a listener.
