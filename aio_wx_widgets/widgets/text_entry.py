@@ -59,23 +59,18 @@ class IntEntry(Bindable):
         )
         self._parent = parent
 
-    def _set_value(self, value):
+    def _set_ui_value(self, value):
         self._txt.SetValue(str(value))
+
+    def _get_ui_value(self):
+        return self._txt.GetValue()
 
     def __call__(self, parent):
         self._txt = self._txt(parent)
-        self._txt.Bind(wx.EVT_TEXT, self._on_text)
+        self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
         self._make_binding()
 
         return self._txt
-
-    def _on_text(self, evt):
-        _LOGGER.debug("Data entered")
-        if self._fire_update_event:
-            _LOGGER.debug("Firing update")
-            self.value = int(evt.GetString())
-            setattr(self._obj, self._property, self.value)
-        self._fire_update_event = True
 
 
 def text_ctrl(

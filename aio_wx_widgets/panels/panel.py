@@ -25,7 +25,6 @@ class SimplePanel(wx.Panel):
 
         super().__init__(parent)
         self._sizer = wx.BoxSizer(wx.VERTICAL)
-        # self._sizer_margin=10
         self.SetSizer(self._sizer)
 
     def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
