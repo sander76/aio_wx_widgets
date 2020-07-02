@@ -1,0 +1,41 @@
+import logging
+import wx
+
+_LOGGER = logging.getLogger(__name__)
+
+
+def _add(item, parent, sizer, weight, layout, margin, default_margin, create) -> object:
+    if margin is None:
+        margin = default_margin
+    if create:
+        item = item(parent)
+
+    sizer.Add(item, weight, layout, margin)
+
+    return item
+
+
+class SimplePanel(wx.Panel):
+    """A simple panel."""
+
+    default_sizer_margin = 10
+
+    def __init__(self, parent):
+        """Init."""
+
+        super().__init__(parent)
+        self._sizer = wx.BoxSizer(wx.VERTICAL)
+        # self._sizer_margin=10
+        self.SetSizer(self._sizer)
+
+    def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
+        return _add(
+            item,
+            self,
+            self._sizer,
+            weight,
+            layout,
+            margin,
+            SimplePanel.default_sizer_margin,
+            create,
+        )
