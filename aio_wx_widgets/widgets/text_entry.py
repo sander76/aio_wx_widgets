@@ -1,9 +1,14 @@
+"""Text input widgets."""
+
+# pylint: disable=no-self-use,invalid-name
+
 import logging
-from typing import Union, Optional
 import string
+from typing import Union, Optional
+
 import wx
 
-from aio_wx_widgets.binding import Bindable
+from aio_wx_widgets.binding import Bindable, Binding
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,21 +47,23 @@ class IntValidator(wx.Validator):
 
 
 class Entry(Bindable):
-    """A general textctrl for any input."""
+    """A general textctrl for any input.
+
+    Inherits from Bindable as it
+    """
 
     def __init__(
         self,
+        binding: Binding,
         label: Union[None, int, str] = None,
-        parent=None,
-        binding=None,
         wx_ctrl=None,
         validator: wx.Validator = None,
     ):
-        super().__init__(binding[0], binding[1])
+
+        super().__init__(binding)
         self.value: Optional[int] = None
 
         self._label = label
-        self._parent = parent
 
         if wx_ctrl is None:
             self._txt = wx.TextCtrl()
@@ -88,8 +95,8 @@ class Entry(Bindable):
 class IntEntry(Entry):
     """Textentry which only allows numerical values."""
 
-    def __init__(self, label: Union[None, int, str] = None, binding=None):
-        super().__init__(label, binding=binding, validator=IntValidator())
+    def __init__(self, binding: "Binding", label: Union[None, int, str] = None):
+        super().__init__(binding=binding, label=label, validator=IntValidator())
 
 
 def text_ctrl(

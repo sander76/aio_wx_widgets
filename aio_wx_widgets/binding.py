@@ -1,66 +1,60 @@
+"""Property binding."""
+
 import logging
+from typing import NamedTuple, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from aio_wx_widgets.controller import BaseController
 
 _LOGGER = logging.getLogger(__name__)
 
-# PROPERTY_DICT = "_property_dict_"
-WATCHERS = "_watchers"
-#
-# def prop_setter(key):
-#     def _setter(self, value):
-#
-#         if PROPERTY_DICT not in self.__dict__:
-#             self.__dict__[PROPERTY_DICT] = {}
-#         _LOGGER.debug("Settin property %s to value %s", key, value)
-#         self.__dict__[PROPERTY_DICT][key] = value
-#
-#         if property_watch_list_key not in self.__dict__[PROPERTY_DICT]:
-#             self.__dict__[PROPERTY_DICT][property_watch_list_key] = []
-#
-#         watch_list = self.__dict__[PROPERTY_DICT][property_watch_list_key]
-#
-#         _LOGGER.debug(
-#             "Setting %s to %s # of subscribers %s", key, value, len(watch_list)
-#         )
-#
-#         for prop in watch_list:
-#             prop(value)
-#
-#     return _setter
+WATCHERS = "_watchers_"
 
-#
-# def prop_getter(key):
-#     def _getter(self):
-#         _LOGGER.debug("Getting value for %s", key)
-#         return self.__dict__[PROPERTY_DICT][key]
-#
-#     return _getter
+
+class Binding(NamedTuple):
+    """Binding data."""
+
+    bound_object: "BaseController"
+    bound_property: "str"
 
 
 class Bindable:
-    def __init__(self, bind_object, bind_property):
-        self._obj = bind_object
-        self._property = bind_property
+    """Base class for binding a property to a widget.
+
+    Make a widget inherit from this. The binding property modifies the controller bound
+    property adding a watcher and emitting change events.
+    """
+
+    def __init__(self, binding: "Binding"):
+        self._binding = binding
+
+        # Flag to stop firing updates when a property value has changed.
+        # Prevents infinite loop of updating the value and firing update events.
         self._fire_update_event = True
 
-    def _set_ui_value(self, value):
-        raise NotImplementedError()
-
     def _make_binding(self):
-        if WATCHERS not in self._obj.__dict__:
-            self._obj.__dict__[WATCHERS] = {}
-        if self._property not in self._obj.__dict__[WATCHERS]:
-            _LOGGER.debug("No watchers yet for %s", self._property)
-            self._obj.__dict__[WATCHERS][self._property] = []
-        self._obj.__dict__[WATCHERS][self._property].append(self.update)
+        if WATCHERS not in self._binding.bound_object.__dict__:
+            self._binding.bound_object.__dict__[WATCHERS] = {}
+        if (
+            self._binding.bound_property
+            not in self._binding.bound_object.__dict__[WATCHERS]
+        ):
+            _LOGGER.debug("No watchers yet for %s", self._binding.bound_property)
+            self._binding.bound_object.__dict__[WATCHERS][
+                self._binding.bound_property
+            ] = []
+        self._binding.bound_object.__dict__[WATCHERS][
+            self._binding.bound_property
+        ].append(self._update)
 
-        value = getattr(self._obj, self._property)
+        value = getattr(self._binding.bound_object, self._binding.bound_property)
 
         self._set_ui_value(value)
 
     def _set_property_value(self, value):
-        setattr(self._obj, self._property, value)
+        setattr(self._binding.bound_object, self._binding.bound_property, value)
 
-    def update(self, value):
+    def _update(self, value):
         """Called when a property changes from outside this control.
 
         Update the control with the new value
@@ -70,6 +64,7 @@ class Bindable:
         self._set_ui_value(value)
 
     def _on_ui_change(self, *args, **kwargs):
+        """Callback when UI widget value changes by user input."""
         _LOGGER.debug("UI value changed")
         if self._fire_update_event:
             _LOGGER.debug("Firing update")
@@ -79,4 +74,7 @@ class Bindable:
 
     def _get_ui_value(self):
         """Get the value from the ui widget."""
+        raise NotImplementedError()
+
+    def _set_ui_value(self, value):
         raise NotImplementedError()

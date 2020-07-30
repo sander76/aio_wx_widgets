@@ -1,7 +1,12 @@
+"""Text widgets."""
+
 import logging
 from typing import Optional
 
 import wx
+
+from aio_wx_widgets.colors import GREEN
+from aio_wx_widgets.const import is_debugging
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +38,8 @@ class Text(wx.StaticText):
         if self._font_size:
             self.SetFont(self._font_size)
         self.set_text(self._text, self._color)
+        if is_debugging():
+            self.SetBackgroundColour(GREEN)
         return self
 
     def set_text(self, text, color=None):

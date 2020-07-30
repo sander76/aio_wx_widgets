@@ -1,8 +1,10 @@
+"""WX ui frames. A windows that holds a panel."""
+
+import logging
 from pathlib import Path
 from typing import Optional
 
 import wx
-import logging
 
 _LOGGER = logging.getLogger(__name__)
 

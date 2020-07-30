@@ -4,3 +4,9 @@
 
 Wx python app structure using MVC model.
 Some widgets allow for easy adding of components. Also data binding is provided.
+
+For more info see the `demo` folder.
+
+## Installation
+
+`pip install aio-wx-widgets`

@@ -1,4 +1,8 @@
+"""Group layout item. Draws a line around children and sets a title."""
+
+
 import logging
+
 import wx
 
 from aio_wx_widgets.panels.panel import _add
@@ -63,6 +67,7 @@ class Group(wx.StaticBox):
         margin=None,
         create=True,
     ):
+        # pylint: disable=duplicate-code
         """Add a UI component to this UI container."""
         return _add(
             item,

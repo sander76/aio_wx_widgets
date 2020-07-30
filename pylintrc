@@ -1,5 +1,5 @@
 [TYPECHECK]
-# ignored-modules=wx
+ignored-modules=wx
 
 [MESSAGES CONTROL]
 # Reasons disabled:

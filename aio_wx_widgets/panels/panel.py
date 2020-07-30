@@ -1,4 +1,7 @@
+"""Panel. Sits in a frame. Holds widgets."""
+
 import logging
+
 import wx
 
 _LOGGER = logging.getLogger(__name__)
@@ -18,7 +21,7 @@ def _add(item, parent, sizer, weight, layout, margin, default_margin, create) ->
 class SimplePanel(wx.Panel):
     """A simple panel."""
 
-    default_sizer_margin = 10
+    default_sizer_margin = 5
 
     def __init__(self, parent):
         """Init."""
@@ -28,6 +31,7 @@ class SimplePanel(wx.Panel):
         self.SetSizer(self._sizer)
 
     def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
+        """Add an item to this panel"""
         return _add(
             item,
             self,
@@ -40,4 +44,4 @@ class SimplePanel(wx.Panel):
         )
 
     def populate(self):
-        pass
+        """Add and configure widgets here."""

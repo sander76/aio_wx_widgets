@@ -1,3 +1,5 @@
+"""WX colors"""
+
 import wx
 
 MAGENTA = wx.Colour(255, 102, 0)

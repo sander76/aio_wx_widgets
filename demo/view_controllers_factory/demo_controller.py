@@ -8,10 +8,10 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class DemoController(BaseController):
-    def __init__(self, view, model):
+    def __init__(self, model):
         self.value_1: int = 0
         self.a_string_value = "A certain string"
-        super().__init__(view, model)
+        super().__init__(model)
 
     async def open_other_window(self):
         """Open a second window."""

@@ -17,4 +17,5 @@ def tests(session):
 @nox.session(python=["3.7"])
 def pylint(session):
     install_flit_dev_deps(session)
-    session.run("pylint", aio_wx_widgets)
+    session.run("pylint", "aio_wx_widgets")
+    session.run("mypy", "aio_wx_widgets")

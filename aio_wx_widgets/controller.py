@@ -1,12 +1,14 @@
+"""MVC controller."""
+
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Optional
 
 import wx
 
 from aio_wx_widgets.binding import WATCHERS
 
 if TYPE_CHECKING:
-    from aiosubpub import Channel
+    from aiosubpub import Channel, Subscription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 class BaseController:
     """Base implementation of a controller."""
 
-    def __init__(self, view, model: Any):
+    def __init__(self, model: object):
         """Init.
 
         Args:
@@ -22,13 +24,16 @@ class BaseController:
             model: The model.
         """
 
-        self.view = view
         self.model = model
+        self.view: Optional["wx.Panel"] = None
 
+        self._subscriptions: List["Subscription"] = []
+
+    def set_view(self, view: "wx.Panel"):
+        """Finalize view creation."""
+        self.view = view
         self.view.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
         self.view.Bind(wx.EVT_CLOSE, self._on_close)
-
-        self._channels = []
 
     def __setattr__(self, item, value):
         print(f"Setting item {item} to value {value}")
@@ -49,14 +54,14 @@ class BaseController:
         """
 
         subscription = channel.subscribe(callback)
-        self._channels.append(subscription)
+        self._subscriptions.append(subscription)
         return subscription
 
     def _on_close(self, event):
         _LOGGER.debug("cancelling tasks in _channels.")
-        for task in self._channels:
+        for task in self._subscriptions:
 
             task.cancel()
-        self._channels = []
+        self._subscriptions = []
 
         event.Skip()

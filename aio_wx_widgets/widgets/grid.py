@@ -1,4 +1,10 @@
+"""Grid layout item."""
+
+# pylint: disable=duplicate-code
+
+
 import logging
+
 import wx
 
 from aio_wx_widgets.panels.panel import _add
@@ -10,7 +16,10 @@ HORIZONTAL = wx.HORIZONTAL
 
 
 class Grid(wx.BoxSizer):
-    """A grid component."""
+    """A grid component.
+
+    Basically a boxsizer with some defaults.
+    """
 
     default_sizer_margin = 0
 
@@ -25,6 +34,7 @@ class Grid(wx.BoxSizer):
         # self._box_sizer = wx.BoxSizer()
         return self
 
+    # pylint: disable=duplicate-code
     def add(
         self,
         item,
