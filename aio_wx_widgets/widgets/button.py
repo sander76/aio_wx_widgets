@@ -30,4 +30,5 @@ def async_button(label: str, callback: Callable[[Any], Any], parent=None):
 
     if parent is None:
         return _create
+
     return _create(parent)

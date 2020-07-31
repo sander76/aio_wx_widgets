@@ -1,7 +1,3 @@
-"""Text input widgets."""
-
-# pylint: disable=no-self-use,invalid-name
-
 import logging
 import string
 from typing import Union, Optional
@@ -74,9 +70,6 @@ class Entry(Bindable):
 
     def _set_ui_value(self, value):
         self._txt.SetValue(str(value))
-
-    def _get_ui_value(self):
-        return self._txt.GetValue()
 
     def __call__(self, parent):
         args = dict({"parent": parent})
