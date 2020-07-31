@@ -1,5 +1,7 @@
 """Text entry widgets."""
 
+# pylint: disable=invalid-name,no-self-use
+
 import logging
 import string
 from typing import Union, Optional
