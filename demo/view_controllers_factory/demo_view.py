@@ -22,8 +22,9 @@ class DemoView(SimplePanel):
         self.add(IntEntry(binding=Binding(self._controller, "value_1")))
         self.add(Entry(binding=Binding(self._controller, "a_string_value")))
         self.add(Entry(binding=Binding(self._controller, "a_string_value")))
-
+        self.add(Text("This is a text."))
         with self.add(Grid()) as grd:
+
             grd.add(async_button("button one", self._set_value), weight=6)
             grd.add(async_button("button two,self", self._set_value), weight=6)
 

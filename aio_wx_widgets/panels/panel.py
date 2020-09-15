@@ -13,7 +13,18 @@ def _add(item, parent, sizer, weight, layout, margin, default_margin, create) ->
     if create:
         item = item(parent)
 
-    sizer.Add(item, weight, layout, margin)
+    sizer_flag = (
+        wx.SizerFlags()
+        .Proportion(weight)
+        .Expand()
+        .DoubleBorder(wx.TOP)
+        .TripleBorder(wx.LEFT)
+    )
+    # sizer_flag.Border(wx.TOP,20)
+
+    sizer.Add(
+        item, sizer_flag,
+    )
 
     return item
 
