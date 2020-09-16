@@ -44,7 +44,7 @@ class Group(wx.StaticBox):
         top, other = self.GetBordersForSizer()
         self.bottom_border = other + self._extra_bottom_border
         # self.top_border=top
-        self._sizer.AddSpacer(top)
+        self._sizer.AddSpacer(top + 5)
         self.SetSizer(self._sizer)
         return self
 

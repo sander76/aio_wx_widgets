@@ -28,27 +28,32 @@ class DemoView(SimplePanel):
 
     def populate(self):
         """Populate this view."""
-        self.add(IntEntry(binding=self.bind("value_1")))
-        self.add(IntEntry(binding=Binding(self._controller, "value_1")))
-        self.add(IntEntry(binding=Binding(self._controller, "value_1")))
-        self.add(Entry(binding=Binding(self._controller, "a_string_value")))
-        self.add(Entry(binding=Binding(self._controller, "a_string_value")))
+        with self.add(Group("Number text entries.")) as group:
+            with group.add(Grid()) as grd:
+                grd.add(IntEntry(binding=self.bind("value_1")), weight=6, margin=3)
+                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
+
+        with self.add(Group("Any text entry.")) as group:
+            group.add(Entry(binding=Binding(self._controller, "a_string_value")))
+            group.add(Entry(binding=Binding(self._controller, "a_string_value")))
         self.add(Text("This is a text."))
         with self.add(Grid()) as grd:
 
             grd.add(async_button("button one", self._set_value), weight=6)
             grd.add(async_button("button two,self", self._set_value), weight=6)
 
-        with self.add(Grid()) as grd:
-            grd.add(Text(text="A text"), weight=6, margin=2)
-            with grd.add(Grid(VERTICAL), weight=6) as vert_grid:
-                vert_grid.add(async_button("button two,self", self._set_value))
-                vert_grid.add(async_button("button two,self", self._set_value))
+        with self.add(Group("Nesting of grids")) as grp:
+            with grp.add(Grid()) as grd:
+                grd.add(Text(text="A text"), weight=6, margin=2)
+                with grd.add(Grid(VERTICAL), weight=6) as vert_grid:
+                    vert_grid.add(async_button("Set number entries.", self._set_value))
+                    vert_grid.add(
+                        Text(text="This is some text"), margin=(10, 10, 30, 5)
+                    )
+                    vert_grid.add(async_button("button two,self", self._set_value))
 
-        with self.add(Group("This is a group of controlls")) as grp:
-            grp.add(async_button("button one", self._set_value))
         self.add(async_button("open other window", self._on_close))
-        self.add(async_button("set value", self._set_value))
 
     async def _on_close(self, evt):
         await self._controller.open_other_window()
