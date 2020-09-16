@@ -1,5 +1,6 @@
 from invoke import task
 
+
 @task
 def prep_project(ctx):
     print(">> Creating virtual env")

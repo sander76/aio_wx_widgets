@@ -1,13 +1,11 @@
 import logging
 
 from aio_wx_widgets.frame import DefaultFrame
-from demo.view_controllers_factory.factory import get_demo_controller_view
+from demo.controller.demo_controller import DemoController
+from demo.model.demo_model import DemoModel
+from demo.views.demo_views import DemoView
 
 _LOGGER = logging.getLogger(__name__)
-
-
-class DemoModel:
-    pass
 
 
 class MainWindow(DefaultFrame):
@@ -15,5 +13,10 @@ class MainWindow(DefaultFrame):
         super().__init__("Main window")
 
         model = DemoModel()
-        view, controller = get_demo_controller_view(self, model)
-        self.add(controller.view, create=False)
+        controller = DemoController(model)
+
+        view = DemoView(self, controller)
+        view.populate()
+
+        # view, controller = get_demo_controller_view(self, model)
+        self.add(view, create=False)

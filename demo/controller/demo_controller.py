@@ -1,6 +1,8 @@
 import logging
 from random import randint
 
+from events import Events
+
 from aio_wx_widgets.controller import BaseController
 from demo.windows import second_window
 
@@ -12,6 +14,11 @@ class DemoController(BaseController):
         self.value_1: int = 0
         self.a_string_value = "A certain string"
         super().__init__(model)
+
+        self.add_to_log = Events()
+
+    def _add_to_log(self, data: str):
+        self.add_to_log.on_change(data)
 
     async def open_other_window(self):
         """Open a second window."""

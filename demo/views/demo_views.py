@@ -7,7 +7,12 @@ from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
-from demo.view_controllers_factory.demo_controller import DemoController
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from demo.controller.demo_controller import DemoController
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,7 +22,13 @@ class DemoView(SimplePanel):
         self._controller = controller
         super().__init__(parent)
 
+    @property
+    def controller(self) -> "DemoController":
+        return self._controller
+
     def populate(self):
+        """Populate this view."""
+        self.add(IntEntry(binding=self.bind("value_1")))
         self.add(IntEntry(binding=Binding(self._controller, "value_1")))
         self.add(IntEntry(binding=Binding(self._controller, "value_1")))
         self.add(Entry(binding=Binding(self._controller, "a_string_value")))
@@ -55,5 +66,12 @@ class DemoViewOne(SimplePanel):
         super().__init__(parent)
 
     def populate(self):
+        self.add(
+            IntEntry(binding=Binding(self._controller, "value_1")),
+            margin=(10, 10, 5, 20),
+        )
         self.add(IntEntry(binding=Binding(self._controller, "value_1")))
-        self.add(IntEntry(binding=Binding(self._controller, "value_1")))
+        self.add(async_button("test button", self._press), margin=(10, 10, 5, 20))
+
+    async def _press(self, *args, **kwargs):
+        pass
