@@ -5,4 +5,10 @@ repos:
         - id: black
           args:
             - --safe
-  
+    - repo: https://gitlab.com/pycqa/flake8
+      rev: 3.8.3
+      hooks:
+        - id: flake8
+          verbose: true
+          additional_dependencies:
+            - pydocstyle==5.0.2

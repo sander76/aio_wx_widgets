@@ -16,7 +16,10 @@ def _get_app_icon_32(img_path: Path):
 
 
 class DefaultFrame(wx.Frame):
-    """A default frame for app windows."""
+    """A default frame for app windows.
+
+    Always add a panel to this frame first.
+    """
 
     def __init__(
         self,
@@ -48,33 +51,8 @@ class DefaultFrame(wx.Frame):
         if icon_img:
             self.SetIcon(_get_app_icon_32(icon_img))
 
-        self._sizer = self._set_sizer()
-        self.sizer_margin = 0
+        self.Bind(wx.EVT_CLOSE, self._on_close)
 
-    def add_stretch_spacer(self, prop=1):
-        """Add a stretch spacer to the current sizer."""
-        self._sizer.AddStretchSpacer(prop=prop)
-
-    def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
-        """Add a ui component to this container."""
-        args = [layout]
-
-        if layout != wx.EXPAND:
-            if margin is None:
-                args.append(self.sizer_margin)
-            else:
-                args.append(margin)
-
-        if create:
-            item = item(self)
-        self._sizer.Add(item, weight, *args)
-        return item
-
-    def _set_sizer(self):
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(sizer)
-        return sizer
-
-    def fit_sizer(self):
-        """Fit the sizer to the content."""
-        self._sizer.Fit(self)
+    def _on_close(self, evt):
+        _LOGGER.debug("Frame is closed.")
+        evt.Skip()

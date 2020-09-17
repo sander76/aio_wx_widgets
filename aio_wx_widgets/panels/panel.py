@@ -63,6 +63,15 @@ def _add(item, parent, sizer, weight, layout, margin, default_margin, create) ->
 class PanelMixin:
     """Mixin providing extra functionality."""
 
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
+
+    def _on_close(self, evt):
+        _LOGGER.debug("Window destroyed.")
+        self.controller.deactivate()
+        evt.Skip()
+
     @property
     def controller(self) -> "T.BaseController":
         """Return the controller for this panel."""
@@ -116,5 +125,6 @@ class SimplePanel(PanelMixin, wx.Panel):
         """Init."""
 
         super().__init__(parent)
+
         self._sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self._sizer)

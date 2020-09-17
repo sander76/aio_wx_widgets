@@ -1,8 +1,10 @@
 import logging
+
 import wx
 
+from aio_wx_widgets.panels.panel import _margin_wrapper
+
 _LOGGER = logging.getLogger(__name__)
-from aio_wx_widgets.panels.panel import wx as panels_wx, _margin_wrapper
 
 
 class MockWxWindow:

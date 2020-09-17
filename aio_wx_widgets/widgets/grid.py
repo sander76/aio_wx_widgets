@@ -38,7 +38,7 @@ class Grid(wx.BoxSizer):
     def add(
         self,
         item,
-        weight=1,
+        weight=0,
         layout=wx.EXPAND | wx.LEFT | wx.RIGHT,
         margin=None,
         create=True,

@@ -14,9 +14,5 @@ class MainWindow(DefaultFrame):
 
         model = DemoModel()
         controller = DemoController(model)
-
         view = DemoView(self, controller)
         view.populate()
-
-        # view, controller = get_demo_controller_view(self, model)
-        self.add(view, create=False)

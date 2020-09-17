@@ -22,8 +22,9 @@ class DemoController(BaseController):
 
     async def open_other_window(self):
         """Open a second window."""
-        _second_window = second_window.SecondWindow()
-        _second_window.Show()
+        second_window.SecondWindow().Show()
+        # _second_window.Show()
+        _LOGGER.debug("Closed second window ?")
 
     async def set_value(self):
         val = randint(1, 100)

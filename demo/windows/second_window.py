@@ -16,5 +16,3 @@ class SecondWindow(DefaultFrame):
         controller = demo_controller_one.DemoController(model)
         view = DemoViewOne(self, controller)
         view.populate()
-
-        self.add(view, create=False)
