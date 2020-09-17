@@ -4,6 +4,7 @@ import logging
 from asyncio import Task
 from typing import List, Awaitable
 
+# pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.binding import WATCHERS
 
