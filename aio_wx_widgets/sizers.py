@@ -2,7 +2,8 @@
 
 import collections
 import logging
-from typing import List, Tuple
+from enum import Enum
+from typing import List, Tuple, Optional, Union
 
 import wx
 
@@ -11,6 +12,14 @@ from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.binding import Binding
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class AlignHorizontal(Enum):
+    """Horizontal alignment options."""
+
+    left = wx.ALIGN_LEFT
+    right = wx.ALIGN_RIGHT
+    center = wx.ALIGN_CENTER_HORIZONTAL
 
 
 def _make_window(item: wx.Window, margins: List[Tuple[int, int]]):
@@ -39,7 +48,53 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
     return _margin_wrapper(item, margins)
 
 
-def _add(item, parent, sizer, weight, layout, margin, default_margin, create) -> object:
+# def _get_wx_alignment(horizontal_alignment:"AlignHorizontal"):
+#     if horizontal_alignment == AlignHorizontal.left:
+#         align=wx.ALIGN_LEFT
+#     elif horizontal_alignment== AlignHorizontal.right:
+#         align=wx.ALIGN_RIGHT
+#     else:
+#         align=wx.ALIGN_CENTER_HORIZONTAL
+#     return align
+
+# def _align_wrapper(item,horizontal_alignment:"AlignHorizontal"):
+#     sizer = wx.BoxSizer(orient=wx.VERTICAL)
+#
+#     align = _get_wx_alignment(horizontal_alignment)
+#
+#     sizer.Add(item,0,align,0)
+#     return sizer
+
+
+def _align_item(
+    item: [Union[wx.Window, wx.BoxSizer]],
+    current_sizer_orientation,
+    alignment: Optional["AlignHorizontal"],
+    current_layout: int,
+) -> Tuple[Union[wx.Window, wx.BoxSizer], int]:
+
+    if alignment is None:
+        return item, current_layout | wx.EXPAND
+
+    # wx_alignment = _get_wx_alignment(alignment)
+    if not current_sizer_orientation == wx.HORIZONTAL:
+        return item, current_layout | alignment.value
+
+    sizer = wx.BoxSizer(orient=wx.VERTICAL)
+    sizer.Add(item, 0, alignment.value, 0)
+    return sizer, current_layout
+
+
+def _add(
+    item,
+    parent,
+    sizer,
+    weight,
+    margin,
+    default_margin,
+    create,
+    align_horizontal: Optional[AlignHorizontal],
+) -> object:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
@@ -60,6 +115,16 @@ def _add(item, parent, sizer, weight, layout, margin, default_margin, create) ->
         ui_item = _margin_wrapper(ui_item, margins)
         margin = 0
 
+    layout = wx.ALL
+
+    ui_item, layout = _align_item(ui_item, sizer.Orientation, align_horizontal, layout)
+    # if align_horizontal is not None:
+    #     wx_alignment = _get_wx_alignment(align_horizontal)
+    #
+    # if align_horizontal is not None and sizer.Orientation == wx.HORIZONTAL:
+    #     ui_item = _align_wrapper(ui_item,align_horizontal)
+    # else:
+    #     layout = layout | _get_wx_alignment(hor)
     sizer.Add(ui_item, weight, layout, margin)
 
     return item
@@ -70,7 +135,15 @@ class SizerMixin:
 
     default_sizer_margin = 5
 
-    def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
+    def add(
+        self,
+        item,
+        weight=0,
+        layout=wx.EXPAND | wx.ALL,
+        margin=None,
+        create=True,
+        align_horizontal: Optional[AlignHorizontal] = None,
+    ):
         """Add an item to this panel
 
         Args:
@@ -94,10 +167,10 @@ class SizerMixin:
             parent,
             self._sizer,
             weight,
-            layout,
             margin,
             SizerMixin.default_sizer_margin,
             create,
+            align_horizontal=align_horizontal,
         )
 
 

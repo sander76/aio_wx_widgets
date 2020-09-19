@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from aio_wx_widgets.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
+from aio_wx_widgets.sizers import AlignHorizontal
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
@@ -12,7 +13,6 @@ from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
 if TYPE_CHECKING:
     from demo.controller.demo_controller import DemoController
     from demo.controller import demo_controller_one
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,14 +44,28 @@ class DemoView(SimplePanel):
 
         with self.add(Group("Nesting of grids")) as grp:
             with grp.add(Grid()) as grd:
-                grd.add(Text(text="A text"), weight=6, margin=5)
-                with grd.add(Grid(VERTICAL), weight=6) as vert_grid:
+                grd.add(
+                    Text(text="Right aligned text"),
+                    weight=3,
+                    margin=5,
+                    align_horizontal=AlignHorizontal.right,
+                )
+                with grd.add(Grid(VERTICAL), weight=6, margin=0) as vert_grid:
+                    vert_grid.add(
+                        AioButton("Left aligned button", self._set_value),
+                        align_horizontal=AlignHorizontal.left,
+                        margin=4,
+                    )
                     vert_grid.add(AioButton("Set number entries.", self._set_value))
                     vert_grid.add(
-                        Text(text="This is some text"), margin=(10, 10, 30, 5)
+                        Text(text="Center aligned text with a large margin."),
+                        margin=(10, 10, 30, 5),
+                        align_horizontal=AlignHorizontal.center,
                     )
                     vert_grid.add(
-                        AioButton("button two,self", self._set_value), weight=2
+                        AioButton("right aligned button.", self._set_value),
+                        weight=2,
+                        align_horizontal=AlignHorizontal.right,
                     )
 
         self.add(AioButton("open other window", self._on_open_second_window))
