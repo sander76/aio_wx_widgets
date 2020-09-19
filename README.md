@@ -11,8 +11,15 @@ See the demo folder for usage.
 Features:
 
 - Two way Property binding from controller properties to the view.
-- Margins.
+- Add widgets using context managers.
+- Margins and alignment of items
 
 ## Installation
 
-`pip install aio-wx-widgets`
+- Create a virtual env, activate it and `pip install aio-wx-widgets`
+
+## Running the demo
+
+- Install the libary as described above.
+- clone the repo.
+- from the activated virtualenv: `python -m demo`

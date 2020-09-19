@@ -48,26 +48,8 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
     return _margin_wrapper(item, margins)
 
 
-# def _get_wx_alignment(horizontal_alignment:"AlignHorizontal"):
-#     if horizontal_alignment == AlignHorizontal.left:
-#         align=wx.ALIGN_LEFT
-#     elif horizontal_alignment== AlignHorizontal.right:
-#         align=wx.ALIGN_RIGHT
-#     else:
-#         align=wx.ALIGN_CENTER_HORIZONTAL
-#     return align
-
-# def _align_wrapper(item,horizontal_alignment:"AlignHorizontal"):
-#     sizer = wx.BoxSizer(orient=wx.VERTICAL)
-#
-#     align = _get_wx_alignment(horizontal_alignment)
-#
-#     sizer.Add(item,0,align,0)
-#     return sizer
-
-
 def _align_item(
-    item: [Union[wx.Window, wx.BoxSizer]],
+    item: Union[wx.Window, wx.BoxSizer],
     current_sizer_orientation,
     alignment: Optional["AlignHorizontal"],
     current_layout: int,
@@ -156,16 +138,16 @@ class SizerMixin:
             create: A ready made component can be added to.
         """
         try:
-            parent = self._parent
+            parent = self._parent  # type: ignore
             if parent is None:
                 raise AttributeError("parent cannot be none.")
         except AttributeError:
-            parent = self.ui_item
+            parent = self.ui_item  # type: ignore
 
         return _add(
             item,
             parent,
-            self._sizer,
+            self._sizer,  # type: ignore
             weight,
             margin,
             SizerMixin.default_sizer_margin,

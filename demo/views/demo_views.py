@@ -28,8 +28,17 @@ class DemoView(SimplePanel):
 
     def populate(self):
         """Populate this view."""
-        with self.add(Group("Number text entries.")) as group:
+
+        # Use a context manager for container types like a group or grid.
+        # A group is a container with a label and a sizer inside. Inside
+        # this sizer widgets, or other containers can be placed.
+        with self.add(Group("A labelled container.")) as group:
+            group.add(Text(text="A horizontal grid."))
+
             with group.add(Grid()) as grd:
+                # the binding binds to an attribute defined in the controller
+                # the weight determines how much space a specific item should consume
+                # with respect to the other members of the container.
                 grd.add(IntEntry(binding=self.bind("value_1")), weight=6, margin=3)
                 grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
                 grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
