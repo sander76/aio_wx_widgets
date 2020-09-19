@@ -11,7 +11,7 @@ from aio_wx_widgets.const import is_debugging
 _LOGGER = logging.getLogger(__name__)
 
 
-class Text(wx.StaticText):
+class Text:
     """Static text."""
 
     def __init__(
@@ -32,19 +32,20 @@ class Text(wx.StaticText):
         self._font_size = None
         if font_size:
             self._font_size = wx.Font(wx.FontInfo(font_size))
+        self.ui_item = wx.StaticText()
 
     def __call__(self, parent):
-        self.Create(parent)
+        self.ui_item.Create(parent)
         if self._font_size:
-            self.SetFont(self._font_size)
+            self.ui_item.SetFont(self._font_size)
         self.set_text(self._text, self._color)
         if is_debugging():
-            self.SetBackgroundColour(GREEN)
+            self.ui_item.SetBackgroundColour(GREEN)
         return self
 
     def set_text(self, text, color=None):
         """Set text."""
         self._text = text
-        self.SetLabel(self._text)
+        self.ui_item.SetLabel(self._text)
         if color:
-            self.SetForegroundColour(color)
+            self.ui_item.SetForegroundColour(color)

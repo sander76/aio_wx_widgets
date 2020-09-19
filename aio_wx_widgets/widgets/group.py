@@ -10,8 +10,17 @@ from aio_wx_widgets.sizers import SizerMixin
 _LOGGER = logging.getLogger(__name__)
 
 
-class Group(SizerMixin, wx.StaticBox):
-    """A UI container."""
+class Group(SizerMixin):
+    """A Group widget.
+
+    +--<LABEL>-------------+
+    |                      |
+    |  - Widget 1          |
+    |  - Widget 2          |
+    |                      |
+    +----------------------+
+
+    """
 
     default_sizer_margin = 20
 
@@ -26,9 +35,9 @@ class Group(SizerMixin, wx.StaticBox):
         # if KEY_PLATFORM == KEY_LINUX:
         #     self._extra_bottom_border = 50
         self._sizer = wx.BoxSizer(wx.VERTICAL)
-
+        self.ui_item = wx.StaticBox()
         kwargs["sizer"] = self._sizer
-        super().__init__(**kwargs)
+        super().__init__()
         self._bottom_border = 1
 
     def __call__(self, parent):
@@ -38,12 +47,12 @@ class Group(SizerMixin, wx.StaticBox):
             parent: The parent of this ui item.
 
         """
-        self.Create(parent, label=self._label)
+        self.ui_item.Create(parent, label=self._label)
 
-        top, other = self.GetBordersForSizer()
+        top, other = self.ui_item.GetBordersForSizer()
         self._bottom_border = other + self._extra_bottom_border
         self._sizer.AddSpacer(top + 5)
-        self.SetSizer(self._sizer)
+        self.ui_item.SetSizer(self._sizer)
         return self
 
     def __enter__(self):

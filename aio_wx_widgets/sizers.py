@@ -41,8 +41,13 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
 
 def _add(item, parent, sizer, weight, layout, margin, default_margin, create) -> object:
     if create:
+        # this is an item which is part of the aio_wx_widgets family.
+        # It is assumed it has the ui_item property.
         item = item(parent)
-
+        ui_item = item.ui_item
+    else:
+        # this is assumed to be a "normal" wx-widgets item.
+        ui_item = item
     if margin is None:
         margin = default_margin
     elif isinstance(margin, collections.Sequence):
@@ -52,10 +57,10 @@ def _add(item, parent, sizer, weight, layout, margin, default_margin, create) ->
             (margin[2], wx.TOP),
             (margin[3], wx.BOTTOM),
         ]
-        item = _margin_wrapper(item, margins)
+        ui_item = _margin_wrapper(ui_item, margins)
         margin = 0
 
-    sizer.Add(item, weight, layout, margin)
+    sizer.Add(ui_item, weight, layout, margin)
 
     return item
 
@@ -64,19 +69,6 @@ class SizerMixin:
     """Mixin providing sizer functionality"""
 
     default_sizer_margin = 5
-
-    def __init__(self, sizer, **kwargs):
-        self._sizer = sizer
-        self._parent = None
-        super().__init__(**kwargs)
-
-    def set_parent(self, parent):
-        """Explicitly set the parent.
-        Use this when this Mixin is used inside a sizer (like boxsizer).
-
-        If not set explicitly the sizer will be used as parent, which is not possible.
-        """
-        self._parent = parent
 
     def add(self, item, weight=0, layout=wx.EXPAND | wx.ALL, margin=None, create=True):
         """Add an item to this panel
@@ -90,7 +82,12 @@ class SizerMixin:
                 A tuple (left,right,top,bottom) for side specific margins.
             create: A ready made component can be added to.
         """
-        parent = self._parent if self._parent is not None else self
+        try:
+            parent = self._parent
+            if parent is None:
+                raise AttributeError("parent cannot be none.")
+        except AttributeError:
+            parent = self.ui_item
 
         return _add(
             item,
@@ -104,12 +101,11 @@ class SizerMixin:
         )
 
 
-class PanelMixin(SizerMixin):
+class PanelMixin:
     """Mixin providing extra functionality."""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
+    def __init__(self):
+        self.ui_item.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
 
     def _on_close(self, evt):
         _LOGGER.debug("Window destroyed.")

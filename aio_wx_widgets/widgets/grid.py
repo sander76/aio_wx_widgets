@@ -15,7 +15,7 @@ VERTICAL = wx.VERTICAL
 HORIZONTAL = wx.HORIZONTAL
 
 
-class Grid(SizerMixin, wx.BoxSizer):
+class Grid(SizerMixin):
     """A grid component.
 
     Basically a boxsizer with some defaults.
@@ -23,38 +23,15 @@ class Grid(SizerMixin, wx.BoxSizer):
 
     default_sizer_margin = 0
 
-    def __init__(self, orientation=HORIZONTAL, **kwargs):
+    def __init__(self, orientation=HORIZONTAL):
         """Init."""
-        kwargs["orient"] = orientation
-        kwargs["sizer"] = self
-        super().__init__(**kwargs)
+        self.ui_item = self._sizer = wx.BoxSizer(orient=orientation)
+        self._parent = None
 
     def __call__(self, parent):
-        # the SizerMixin needs a parent. If below command is not run it will use
-        # this Grid as a parent. Which is a BoxSizer, which cannot be a parent.
-        super().set_parent(parent)
+        # setting a specific parent.
+        self._parent = parent
         return self
-
-    # # pylint: disable=duplicate-code
-    # def add(
-    #     self,
-    #     item,
-    #     weight=0,
-    #     layout=wx.EXPAND | wx.LEFT | wx.RIGHT,
-    #     margin=None,
-    #     create=True,
-    # ):
-    #     """Add a UI component to this UI container."""
-    #     return _add(
-    #         item,
-    #         self.parent,
-    #         self,
-    #         weight,
-    #         layout,
-    #         margin,
-    #         self.default_sizer_margin,
-    #         create,
-    #     )
 
     def __enter__(self):
         """Enter context manager."""

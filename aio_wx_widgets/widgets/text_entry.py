@@ -71,6 +71,7 @@ class Entry(Bindable):
             self._txt = wx_ctrl
 
         self._validator = validator
+        self.ui_item = self._txt
 
     def _set_ui_value(self, value):
         self._txt.SetValue(str(value))
@@ -89,7 +90,7 @@ class Entry(Bindable):
         self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
         self._make_binding()
 
-        return self._txt
+        return self
 
 
 class IntEntry(Entry):

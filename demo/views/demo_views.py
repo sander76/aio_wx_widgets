@@ -1,14 +1,13 @@
 import logging
+from typing import TYPE_CHECKING
 
 from aio_wx_widgets.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.widgets.button import async_button
+from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from demo.controller.demo_controller import DemoController
@@ -40,22 +39,22 @@ class DemoView(SimplePanel):
             group.add(Entry(binding=Binding(self._controller, "a_string_value")))
 
         with self.add(Grid()) as grd:
-            grd.add(async_button("button one", self._set_value), weight=6)
-            grd.add(async_button("button two,self", self._set_value), weight=6)
+            grd.add(AioButton("button one", self._set_value), weight=6)
+            grd.add(AioButton("button two,self", self._set_value), weight=6)
 
         with self.add(Group("Nesting of grids")) as grp:
             with grp.add(Grid()) as grd:
                 grd.add(Text(text="A text"), weight=6, margin=5)
                 with grd.add(Grid(VERTICAL), weight=6) as vert_grid:
-                    vert_grid.add(async_button("Set number entries.", self._set_value))
+                    vert_grid.add(AioButton("Set number entries.", self._set_value))
                     vert_grid.add(
                         Text(text="This is some text"), margin=(10, 10, 30, 5)
                     )
                     vert_grid.add(
-                        async_button("button two,self", self._set_value), weight=2
+                        AioButton("button two,self", self._set_value), weight=2
                     )
 
-        self.add(async_button("open other window", self._on_open_second_window))
+        self.add(AioButton("open other window", self._on_open_second_window))
 
     async def _on_open_second_window(self, evt):
         await self._controller.open_other_window()
@@ -86,11 +85,14 @@ class DemoViewOne(SimplePanel):
             margin=(10, 10, 5, 20),
         )
         self.add(IntEntry(binding=Binding(self._controller, "value_1")))
-        self.add(async_button("test button", self._press), margin=(10, 10, 5, 20))
+        self.add(
+            AioButton("test button with normal function as callback", self._press),
+            margin=(10, 10, 5, 20),
+        )
         self.add(self._text)
 
-    async def _press(self, *args, **kwargs):
-        pass
+    def _press(self, evt):
+        self._add_to_log("button pressed.")
 
     def _add_to_log(self, item: str):
         self._text.set_text(item)
