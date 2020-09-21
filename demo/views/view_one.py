@@ -11,7 +11,7 @@ from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
 
 if TYPE_CHECKING:
-    from demo.controller.demo_controller import ControllerOne
+    from demo.controller.controller_one import ControllerOne
 
 _LOGGER = logging.getLogger(__name__)
 
