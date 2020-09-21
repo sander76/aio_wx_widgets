@@ -3,47 +3,14 @@
 # pylint: disable=invalid-name,no-self-use
 
 import logging
-import string
 from typing import Union, Optional
 
 import wx
 
 from aio_wx_widgets.binding import Bindable, Binding
+from aio_wx_widgets.widgets.validators.validators import IntValidator
 
 _LOGGER = logging.getLogger(__name__)
-
-
-class IntValidator(wx.Validator):
-    """Validator."""
-
-    def __init__(self):
-        """Init."""
-        wx.Validator.__init__(self)
-        self.Bind(wx.EVT_CHAR, self._on_char)
-
-    def Clone(self):
-        """Clone."""
-        return IntValidator()
-
-    def _on_char(self, event):
-        value = event.GetKeyCode()
-        if value < wx.WXK_SPACE or value == wx.WXK_DELETE or value > 255:
-            event.Skip()
-            return
-        if chr(value) in string.digits:
-            event.Skip()
-            return
-        return
-
-    def Validate(self, win):
-        """Validate."""
-        ctrl = self.GetWindow()
-        value = ctrl.GetValue()
-        try:
-            int(value)
-        except ValueError:
-            return False
-        return True
 
 
 class Entry(Bindable):

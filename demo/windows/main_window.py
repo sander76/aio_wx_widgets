@@ -1,9 +1,9 @@
 import logging
 
 from aio_wx_widgets.frame import DefaultFrame
-from demo.controller.demo_controller import DemoController
+from demo.controller.controller_one import ControllerOne
 from demo.model.demo_model import DemoModel
-from demo.views.demo_views import DemoView
+from demo.views.view_one import ViewOne
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -13,6 +13,6 @@ class MainWindow(DefaultFrame):
         super().__init__("Main window")
 
         model = DemoModel()
-        controller = DemoController(model)
-        view = DemoView(self, controller)
+        controller = ControllerOne(model)
+        view = ViewOne(self, controller)
         view.populate()

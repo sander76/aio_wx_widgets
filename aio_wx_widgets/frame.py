@@ -9,7 +9,7 @@ import wx
 _LOGGER = logging.getLogger(__name__)
 
 
-def _get_app_icon_32(img_path: Path):
+def _get_app_icon_32(img_path: Path) -> wx.Icon:
     app_icon_32 = wx.Icon()
     app_icon_32.CopyFromBitmap(wx.Bitmap(str(img_path), wx.BITMAP_TYPE_PNG))
     return app_icon_32

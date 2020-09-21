@@ -9,7 +9,7 @@ from demo.windows import second_window
 _LOGGER = logging.getLogger(__name__)
 
 
-class DemoController(BaseController):
+class ControllerOne(BaseController):
     def __init__(self, model):
         self.value_1: int = 0
         self.a_string_value = "A certain string"

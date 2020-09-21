@@ -1,6 +1,6 @@
+from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
-
 from aio_wx_widgets.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.sizers import AlignHorizontal
@@ -11,19 +11,18 @@ from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
 
 if TYPE_CHECKING:
-    from demo.controller.demo_controller import DemoController
-    from demo.controller import demo_controller_one
+    from demo.controller.demo_controller import ControllerOne
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class DemoView(SimplePanel):
-    def __init__(self, parent, controller: "DemoController"):
+class ViewOne(SimplePanel):
+    def __init__(self, parent, controller: "ControllerOne"):
         self._controller = controller
         super().__init__(parent)
 
     @property
-    def controller(self) -> "DemoController":
+    def controller(self) -> "ControllerOne":
         return self._controller
 
     def populate(self):
@@ -87,35 +86,3 @@ class DemoView(SimplePanel):
 
     async def _set_value(self, evt):
         await self._controller.set_value()
-
-
-class DemoViewOne(SimplePanel):
-    """Second view."""
-
-    def __init__(self, parent, controller: "demo_controller_one.DemoController"):
-        self._controller = controller
-        super().__init__(parent)
-        self._text = Text("This is text that changes as a result of an event happening")
-        self._controller.add_to_log.subscribe(self._add_to_log)
-
-    @property
-    def controller(self) -> "demo_controller_one.DemoController":
-        return self._controller
-
-    def populate(self):
-        self.add(
-            IntEntry(binding=Binding(self._controller, "value_1")),
-            margin=(10, 10, 5, 20),
-        )
-        self.add(IntEntry(binding=Binding(self._controller, "value_1")))
-        self.add(
-            AioButton("test button with normal function as callback", self._press),
-            margin=(10, 10, 5, 20),
-        )
-        self.add(self._text)
-
-    def _press(self, evt):
-        self._add_to_log("button pressed.")
-
-    def _add_to_log(self, item: str):
-        self._text.set_text(item)

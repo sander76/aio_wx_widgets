@@ -1,4 +1,5 @@
 import pytest
+from wxasync import WxAsyncApp
 
 from aio_wx_widgets.controller import BaseController
 
@@ -14,3 +15,9 @@ def base_model():
 @pytest.fixture
 def base_controller(base_model):
     return BaseController(model=base_model)
+
+
+@pytest.fixture(scope="session")
+def wx_app():
+    app = WxAsyncApp()
+    return app

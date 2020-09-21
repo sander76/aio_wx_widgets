@@ -6,7 +6,6 @@ from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
-from wxasync import WxAsyncApp
 
 from aio_wx_widgets import widgets
 
@@ -57,7 +56,13 @@ def get_all_widget_classes(package):
                 kwargs["label"] = "grouplabel"
             elif name in ("Entry", "IntEntry"):
                 kwargs["binding"] = Mock()
+            elif name == "Select":
+                kwargs["choices"] = [Mock()]
             yield name, cls, kwargs
+
+
+# # todo: make this a module based fixture.
+# app = WxAsyncApp()
 
 
 @pytest.mark.parametrize(
@@ -67,6 +72,5 @@ def get_all_widget_classes(package):
         for _cls in get_all_widget_classes(widgets)
     ],
 )
-def test_init(widget_class, kwargs):
-    _ = WxAsyncApp()
+def test_init(widget_class, kwargs, wx_app):
     widget_class(**kwargs)

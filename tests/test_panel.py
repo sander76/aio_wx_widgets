@@ -2,6 +2,8 @@ import logging
 
 import wx
 
+from aio_wx_widgets.frame import DefaultFrame
+from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.sizers import _margin_wrapper
 
 _LOGGER = logging.getLogger(__name__)
@@ -45,3 +47,11 @@ def test_margin_wrapper(mocker):
     item = MockWxWindow(None)
     window = _margin_wrapper(item, margins)
     print(window)
+
+
+def test_simple_panel_init(wx_app):
+    """Smoke test of initializing the SimplePanel"""
+    frame = DefaultFrame("The title")
+    panel = SimplePanel(parent=frame)
+
+    assert isinstance(panel.ui_item, wx.Panel)

@@ -1,22 +1,33 @@
+from __future__ import annotations
+
 import asyncio
 import logging
 from asyncio import CancelledError
 from random import randint
+from typing import Sequence
 
 from aiosubpub import Channel
 
+from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.controller import BaseController
+from aio_wx_widgets.data_types import Choices
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class DemoController(BaseController):
+class ControllerTwo(BaseController):
     def __init__(self, model):
         self.value_1: int = 0
         self.a_string_value = "A certain string"
         super().__init__(model)
         self.create_task(self.value_setter())
         self.add_to_log = Channel("Log messages")
+
+        self.choices: Sequence[T.Choice] = [
+            Choices(label="choice 1", value={"value": 1}),
+            Choices(label="choice 2", value={"value": 2}),
+        ]
+        self.selected_item = self.choices[0]
 
     async def set_value(self):
         val = randint(1, 100)

@@ -1,7 +1,7 @@
 """Property binding."""
 
 import logging
-from typing import NamedTuple, TYPE_CHECKING
+from typing import NamedTuple, TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from aio_wx_widgets.controller import BaseController
@@ -25,7 +25,7 @@ class Bindable:
     property adding a watcher and emitting change events.
     """
 
-    def __init__(self, binding: "Binding"):
+    def __init__(self, binding: Optional["Binding"]):
         self._binding = binding
 
         # Flag to stop firing updates when a property value has changed.
@@ -33,6 +33,10 @@ class Bindable:
         self._fire_update_event = True
 
     def _make_binding(self):
+        if self._binding is None:
+            _LOGGER.debug("No binding defined.")
+            return
+
         if WATCHERS not in self._binding.bound_object.__dict__:
             self._binding.bound_object.__dict__[WATCHERS] = {}
         if (
@@ -47,9 +51,16 @@ class Bindable:
             self._binding.bound_property
         ].append(self._update)
 
-        value = getattr(self._binding.bound_object, self._binding.bound_property)
+        value = self.get_property_value()
 
         self._set_ui_value(value)
+
+    def get_property_value(self):
+        """Return the property value of the bound object.
+
+        This would be the attribute defined in the controller.
+        """
+        return getattr(self._binding.bound_object, self._binding.bound_property)
 
     def _set_property_value(self, value):
         setattr(self._binding.bound_object, self._binding.bound_property, value)
@@ -65,7 +76,10 @@ class Bindable:
 
     def _on_ui_change(self, *args, **kwargs):
         """Callback when UI widget value changes by user input."""
-        _LOGGER.debug("UI value changed")
+        if self._binding is None:
+            return
+
+        _LOGGER.debug("UI value changed. Trigger the binding.")
         if self._fire_update_event:
             _LOGGER.debug("Firing update")
             val = self._get_ui_value()

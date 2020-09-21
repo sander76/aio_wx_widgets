@@ -11,4 +11,4 @@ requires=["wxasync","wxpython","aiosubpub"]
 
 [tool.flit.metadata.requires-extra]
 test=["pytest","pytest-asyncio","pytest-mock","mypy"]
-dev = ["pylint","nox","pytest-cov","coverage[toml]>=5.0.3","pre-commit"]
+dev = ["pylint","nox","pytest-cov","coverage[toml]>=5.0.3","pre-commit","typing-extensions; python_version=='3.7'"]

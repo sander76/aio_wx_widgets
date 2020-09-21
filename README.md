@@ -12,7 +12,7 @@ Features:
 
 - Two way Property binding from controller properties to the view.
 - Add widgets using context managers.
-- Margins and alignment of items
+- Proper Margins and alignment of items
 
 ## Installation
 

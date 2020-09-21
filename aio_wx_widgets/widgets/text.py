@@ -45,7 +45,7 @@ class Text:
 
     def set_text(self, text, color=None):
         """Set text."""
-        self._text = text
+        self._text = str(text)
         self.ui_item.SetLabel(self._text)
         if color:
             self.ui_item.SetForegroundColour(color)
