@@ -4,7 +4,7 @@ from random import randint
 from events import Events
 
 from aio_wx_widgets.controller import BaseController
-from demo.windows import second_window
+from demo.windows import second_window, third_window
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,6 +25,9 @@ class ControllerOne(BaseController):
         second_window.SecondWindow().Show()
         # _second_window.Show()
         _LOGGER.debug("Closed second window ?")
+
+    async def open_third_window(self):
+        third_window.Window().Show()
 
     async def set_value(self):
         val = randint(1, 100)

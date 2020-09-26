@@ -100,13 +100,7 @@ def _add(
     layout = wx.ALL
 
     ui_item, layout = _align_item(ui_item, sizer.Orientation, align_horizontal, layout)
-    # if align_horizontal is not None:
-    #     wx_alignment = _get_wx_alignment(align_horizontal)
-    #
-    # if align_horizontal is not None and sizer.Orientation == wx.HORIZONTAL:
-    #     ui_item = _align_wrapper(ui_item,align_horizontal)
-    # else:
-    #     layout = layout | _get_wx_alignment(hor)
+
     sizer.Add(ui_item, weight, layout, margin)
 
     return item

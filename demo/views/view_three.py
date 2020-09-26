@@ -1,33 +1,45 @@
 from __future__ import annotations
+
 import logging
-from typing import TYPE_CHECKING
+
 from aio_wx_widgets.binding import Binding
-from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.sizers import AlignHorizontal
+from aio_wx_widgets.panels.splitter_panel import TwoSplitterWindow
+from aio_wx_widgets.sizers import AlignHorizontal, PanelMixin, SizerMixin
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
 
-if TYPE_CHECKING:
-    from demo.controller.controller_one import ControllerOne
-
 _LOGGER = logging.getLogger(__name__)
 
 
-class ViewOne(SimplePanel):
-    def __init__(self, parent, controller: "ControllerOne"):
+class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
+    def __init__(self, parent, controller, scrollable=False, window_one_width=250):
+        super().__init__(
+            parent, splitter_one_scrollable=False, splitter_two_scrollable=False
+        )
         self._controller = controller
-        super().__init__(parent)
+        self.splitter_window_two.add(Text("This is text"))
+        self.splitter_window_two.add(IntEntry(self.bind("value_1")))
 
     @property
-    def controller(self) -> "ControllerOne":
+    def controller(self):
+        return self._controller
+
+
+class ViewThree(SplitterWindow):
+    def __init__(self, parent, controller):
+        self._controller = controller
+        super().__init__(parent, controller)
+
+    @property
+    def controller(self):
         return self._controller
 
     def populate(self):
         """Populate this view."""
-
+        self.splitter_window_one.add(IntEntry(binding=self.bind("value_1")))
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
@@ -77,13 +89,9 @@ class ViewOne(SimplePanel):
                     )
 
         self.add(AioButton("open other window", self._on_open_second_window))
-        self.add(AioButton("open third window", self._on_open_third_window))
 
     async def _on_open_second_window(self, evt):
         await self._controller.open_other_window()
-
-    async def _on_open_third_window(self, evt):
-        await self._controller.open_third_window()
 
     async def _on_open(self, evt):
         await self._controller.open_other_window()

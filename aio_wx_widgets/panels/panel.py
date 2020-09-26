@@ -1,10 +1,10 @@
 """Panel. Sits in a frame. Holds widgets."""
+from __future__ import annotations
 
 import logging
 
 import wx
 
-# pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.sizers import PanelMixin, SizerMixin
 
@@ -23,5 +23,5 @@ class SimplePanel(PanelMixin, SizerMixin):
         self.ui_item.SetSizer(self._sizer)
 
     @property
-    def controller(self) -> "T.BaseController":
+    def controller(self) -> T.BaseController:
         raise NotImplementedError()
