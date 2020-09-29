@@ -40,7 +40,7 @@ class ViewOne(SimplePanel):
                 # with respect to the other members of the container.
                 grd.add(IntEntry(binding=self.bind("value_1")), weight=6, margin=3)
                 grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(Text(binding=self.bind("value_1")), weight=4, margin=3)
 
         with self.add(Group("Any text entry.")) as group:
             group.add(Entry(binding=Binding(self._controller, "a_string_value")))
