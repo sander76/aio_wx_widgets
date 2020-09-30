@@ -12,7 +12,7 @@ from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.select import Select
 from aio_wx_widgets.widgets.text import Text
-from aio_wx_widgets.widgets.text_entry import IntEntry
+from aio_wx_widgets.widgets.text_entry import Entry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,10 +34,9 @@ class ViewTwo(SimplePanel):
 
     def populate(self):
         self.add(
-            IntEntry(binding=Binding(self._controller, "value_1")),
-            margin=(10, 10, 5, 20),
+            Entry(binding=Binding(self._controller, "value_1")), margin=(10, 10, 5, 20),
         )
-        self.add(IntEntry(binding=Binding(self._controller, "value_1")))
+        self.add(Entry(binding=Binding(self._controller, "value_1")))
         self.add(
             AioButton("test button with normal function as callback", self._press),
             margin=(10, 10, 5, 20),

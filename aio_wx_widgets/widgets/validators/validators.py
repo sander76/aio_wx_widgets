@@ -1,45 +1,40 @@
 """Validators"""
 
-# todo: Rethink this.
-
 import logging
-import string
-
-import wx
 
 _LOGGER = logging.getLogger(__name__)
 
-# pylint: disable=invalid-name,no-self-use
+
+class ValidationError(Exception):
+    """Input validation error"""
 
 
-class IntValidator(wx.Validator):
-    """Validator."""
+__all__ = ["int_validator", "float_validator", "all_digits_validator"]
 
-    def __init__(self):
-        """Init."""
-        wx.Validator.__init__(self)
-        self.Bind(wx.EVT_CHAR, self._on_char)
 
-    def Clone(self):
-        """Clone."""
-        return IntValidator()
+def int_validator(value) -> int:
+    try:
+        converted = int(value)
+    except ValueError:
+        raise ValidationError("Not a valid integer.")
+    if value == str(converted):
+        return converted
+    raise ValidationError("not a valid integer.")
 
-    def _on_char(self, event):
-        value = event.GetKeyCode()
-        if value < wx.WXK_SPACE or value == wx.WXK_DELETE or value > 255:
-            event.Skip()
-            return
-        if chr(value) in string.digits:
-            event.Skip()
-            return
-        return
 
-    def Validate(self, win):
-        """Validate."""
-        ctrl = self.GetWindow()
-        value = ctrl.GetValue()
-        try:
-            int(value)
-        except ValueError:
-            return False
-        return True
+def float_validator(value) -> float:
+    try:
+        converted = float(value)
+    except ValueError:
+        raise ValidationError("Not a valid float.")
+    if converted == 0.0:
+        return converted
+    if value == str(converted):
+        return converted
+    raise ValidationError("not a valid float.")
+
+
+def all_digits_validator(value) -> str:
+    if value.isdigit():
+        return value
+    raise ValidationError("Only numbers are allowed.")

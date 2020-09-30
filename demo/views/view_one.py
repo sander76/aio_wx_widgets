@@ -8,7 +8,8 @@ from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
 from aio_wx_widgets.widgets.text import Text
-from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
+from aio_wx_widgets.widgets.text_entry import Entry
+from aio_wx_widgets.widgets import validators
 
 if TYPE_CHECKING:
     from demo.controller.controller_one import ControllerOne
@@ -38,8 +39,22 @@ class ViewOne(SimplePanel):
                 # the binding binds to an attribute defined in the controller
                 # the weight determines how much space a specific item should consume
                 # with respect to the other members of the container.
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=6, margin=3)
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(
+                    Entry(
+                        binding=self.bind("value_1"),
+                        validator=validators.float_validator,
+                    ),
+                    weight=6,
+                    margin=3,
+                )
+                grd.add(
+                    Entry(
+                        binding=self.bind("value_1"),
+                        validator=validators.float_validator,
+                    ),
+                    weight=4,
+                    margin=3,
+                )
                 grd.add(Text(binding=self.bind("value_1")), weight=4, margin=3)
 
         with self.add(Group("Any text entry.")) as group:

@@ -3,6 +3,8 @@
 import logging
 from typing import NamedTuple, TYPE_CHECKING, Optional
 
+from aio_wx_widgets.widgets.validators.validators import ValidationError
+
 if TYPE_CHECKING:
     from aio_wx_widgets.controller import BaseController
 
@@ -80,14 +82,31 @@ class Bindable:
             return
 
         _LOGGER.debug("UI value changed. Trigger the binding.")
-        if self._fire_update_event:
-            _LOGGER.debug("Firing update")
+        if not self._fire_update_event:
+            self._fire_update_event = True
+            return
+
+        _LOGGER.debug("Firing update")
+
+        try:
             val = self._get_ui_value()
+        except ValidationError as err:
+            self.display_error(err)
+        else:
             self._set_property_value(val)
-        self._fire_update_event = True
+            self._fire_update_event = True
+
+    def display_error(self, exception: ValidationError):
+        """To be overridden by the parent class.
+
+        Use this to display the error info on the widget.
+        """
 
     def _get_ui_value(self):
-        """Get the value from the ui widget."""
+        """Get the value from the ui widget.
+
+        Raises pydantic.ValidationError when validation fails.
+        """
         raise NotImplementedError()
 
     def _set_ui_value(self, value):

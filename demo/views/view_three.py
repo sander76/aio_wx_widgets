@@ -9,7 +9,7 @@ from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.group import Group
 from aio_wx_widgets.widgets.text import Text
-from aio_wx_widgets.widgets.text_entry import IntEntry, Entry
+from aio_wx_widgets.widgets.text_entry import Entry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
         )
         self._controller = controller
         self.splitter_window_two.add(Text("This is text"))
-        self.splitter_window_two.add(IntEntry(self.bind("value_1")))
+        self.splitter_window_two.add(Entry(self.bind("value_1")))
 
     @property
     def controller(self):
@@ -39,7 +39,7 @@ class ViewThree(SplitterWindow):
 
     def populate(self):
         """Populate this view."""
-        self.splitter_window_one.add(IntEntry(binding=self.bind("value_1")))
+        self.splitter_window_one.add(Entry(binding=self.bind("value_1")))
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
@@ -50,9 +50,9 @@ class ViewThree(SplitterWindow):
                 # the binding binds to an attribute defined in the controller
                 # the weight determines how much space a specific item should consume
                 # with respect to the other members of the container.
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=6, margin=3)
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
-                grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=6, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=4, margin=3)
 
         with self.add(Group("Any text entry.")) as group:
             group.add(Entry(binding=Binding(self._controller, "a_string_value")))
