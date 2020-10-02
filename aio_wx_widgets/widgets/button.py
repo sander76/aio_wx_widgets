@@ -23,13 +23,23 @@ class AioButton:
         label: str,
         callback: Union[Callable[[Any, Any], Awaitable], Callable[[Any, Any], None]],
     ):
-        self.label = label
+        self._label = label
+
         self._call_back = callback
 
         self.ui_item = wx.Button()
 
+    @property
+    def label(self):
+        return self._label
+
+    @label.setter
+    def label(self, value: str):
+        self._label = str(value)
+        self.ui_item.SetLabelText(self._label)
+
     def __call__(self, parent):
-        self.ui_item.Create(parent, label=self.label)
+        self.ui_item.Create(parent, label=self._label)
         if iscoroutinefunction(self._call_back):
 
             AsyncBind(wx.EVT_BUTTON, self._call_back, self.ui_item)

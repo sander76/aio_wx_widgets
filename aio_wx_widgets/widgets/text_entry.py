@@ -12,7 +12,7 @@ from aio_wx_widgets.binding import Bindable, Binding
 
 # from aio_wx_widgets.widgets.validators.validators import IntValidator
 from aio_wx_widgets.const import ERROR_COLOR
-from aio_wx_widgets.widgets.validators.validators import ValidationError
+from aio_wx_widgets.widgets.validators import ValidationError
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,37 +27,43 @@ class Entry(Bindable):
         self,
         binding: Binding,
         label: Union[None, int, str] = None,
-        wx_ctrl=None,
-        validator: Callable[[Any], Any] = None,
+        validator: Callable[[Any, bool], Any] = None,
     ):
 
         super().__init__(binding)
         self.value: Optional[int] = None
 
         self._label = label
-
-        if wx_ctrl is None:
-            self._txt = wx.TextCtrl()
-        else:
-            self._txt = wx_ctrl
-
+        self._txt = wx.TextCtrl()
         self._validator = validator
         self.ui_item = self._txt
         self._popup = None
 
+        self._txt.Bind(wx.EVT_KILL_FOCUS, self._on_focus_lost)
+
+    def _on_focus_lost(self, evt):
+        _LOGGER.debug("Lost focus on element.")
+        self._update_binding(force=True)
+        evt.Skip()
+
     def _set_ui_value(self, value):
+        _LOGGER.debug(
+            "Updating text entry with value: %s, instance %s", value, id(self)
+        )
         self._txt.SetValue(str(value))
+        _LOGGER.debug("Done updating.")
 
     def _kill_popup(self):
         if self._popup:
+            _LOGGER.debug("Destroying popup")
             self._popup.Destroy()
             self._popup = None
 
-    def _get_ui_value(self) -> Any:
+    def _get_ui_value(self, force: bool) -> Any:
         self._kill_popup()
 
         if self._validator:
-            return self._validator(self._txt.GetValue())
+            return self._validator(self._txt.GetValue(), force)
         return self._txt.GetValue()
 
     def __call__(self, parent):
@@ -82,11 +88,16 @@ class Entry(Bindable):
         pos = self.ui_item.ClientToScreen((0, 0))
         sz = self.ui_item.GetSize()
         self._popup.Position(pos, (0, sz[1]))
-        self._popup.Show(True)
+        self._popup.Show()
         self.ui_item.SetFocus()
 
 
 class ErrorPopup(wx.PopupWindow):
+    """A popup.
+
+    Opens near the widget when a validation error occurs.
+    """
+
     def __init__(self, parent, content, style=0):
         super().__init__(parent, style)
         panel = wx.Panel(self)
@@ -99,32 +110,3 @@ class ErrorPopup(wx.PopupWindow):
         sizer.Fit(panel)
         sizer.Fit(self)
         self.Layout()
-
-
-# class IntEntry(Entry):
-#     """Textentry which only allows numerical values."""
-#
-#     def __init__(self, binding: "Binding", label: Union[None, int, str] = None):
-#         super().__init__(binding=binding, label=label, validator=IntValidator())
-
-
-def text_ctrl(
-    label=None, parent=None, multiline=False, validator=wx.DefaultValidator,
-):
-    """Create a wx text control."""
-    txt = wx.TextCtrl()
-    style = 0
-    if multiline:
-        style = style | wx.TE_MULTILINE
-
-    def _create(parent):
-        args = {"style": style, "validator": validator}
-        if label:
-            args["value"] = str(label)
-
-        txt.Create(parent, **args)
-        return txt
-
-    if parent:
-        return _create(parent)
-    return _create

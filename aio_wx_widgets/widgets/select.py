@@ -12,13 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Select(Bindable):
-    """Dropdown selection widget.
-
-    Args:
-        choices: Used to populate the dropdown.
-        on_select_call_back: called when selection is made.
-        default:
-    """
+    """Dropdown selection widget."""
 
     def __init__(
         self,
@@ -26,6 +20,14 @@ class Select(Bindable):
         on_select_callback: Optional[Callable[[T.Choice], None]] = None,
         binding: Optional[T.Binding] = None,
     ):
+        """
+        Init.
+
+        Args:
+            choices: Used to populate the dropdown.
+            on_select_callback: called when selection is made.
+            binding:
+        """
         super().__init__(binding)
         self.choices = choices
         self._on_select_callback = on_select_callback
@@ -60,7 +62,7 @@ class Select(Bindable):
         if self._on_select_callback:
             self._on_select_callback(self._selected_item)
 
-    def _get_ui_value(self):
+    def _get_ui_value(self, force):
         return self._selected_item
 
     def __call__(self, parent):

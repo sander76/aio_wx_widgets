@@ -14,6 +14,11 @@ from aio_wx_widgets.widgets.select import Select
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from demo.controller.controller_two import ControllerTwo
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -24,12 +29,15 @@ class ViewTwo(SimplePanel):
         self._controller = controller
         super().__init__(parent)
         self._text = Text("This is text that changes as a result of an event happening")
-        self._controller.add_to_log.subscribe(self._add_to_log)
+
+        # self._controller.add_task(self._controller.add_to_log.subscribe(self._add_to_log))
+        self.controller.add_to_log.publish += self._add_to_log
+
         self._callback_text = Text("Nothing selected yet")
         self._bound_selected_item = Text("Nothing selected yet")
 
     @property
-    def controller(self):
+    def controller(self) -> ControllerTwo:
         return self._controller
 
     def populate(self):

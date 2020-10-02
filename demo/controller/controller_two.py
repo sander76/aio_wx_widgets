@@ -6,7 +6,7 @@ from asyncio import CancelledError
 from random import randint
 from typing import Sequence
 
-from aiosubpub import Channel
+from events import Events
 
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.controller import BaseController
@@ -21,8 +21,8 @@ class ControllerTwo(BaseController):
         self.a_string_value = "A certain string"
         super().__init__(model)
         self.create_task(self.value_setter())
-        self.add_to_log = Channel("Log messages")
-
+        # self.add_to_log = Channel("Log messages")
+        self.add_to_log = Events()
         self.choices: Sequence[T.Choice] = [
             Choices(label="choice 1", value={"value": 1}),
             Choices(label="choice 2", value={"value": 2}),

@@ -33,6 +33,8 @@ class ViewThree(SplitterWindow):
         self._controller = controller
         super().__init__(parent, controller)
 
+        self.split_button = AioButton("Remove split", self._toggle_window_2)
+
     @property
     def controller(self):
         return self._controller
@@ -89,6 +91,25 @@ class ViewThree(SplitterWindow):
                     )
 
         self.add(AioButton("open other window", self._on_open_second_window))
+        self.add_space(2)
+
+        self.add(
+            self.split_button, align_horizontal=AlignHorizontal.right,
+        )
+        self._set_split_button_text()
+
+    def _set_split_button_text(self):
+        if self.is_split:
+            self.split_button.label = "Close"
+        else:
+            self.split_button.label = "Open"
+
+    def _toggle_window_2(self, evt):
+        if self.is_split:
+            self.hide_window2()
+        else:
+            self.show_window2()
+        self._set_split_button_text()
 
     async def _on_open_second_window(self, evt):
         await self._controller.open_other_window()

@@ -88,3 +88,21 @@ class TwoSplitterWindow(SizerMixin):
         )
         self._sizer = self.splitter_window_one.sizer
         self._parent = self.splitter_window_one.ui_item
+
+    def hide_window2(self):
+        """Hide the second window."""
+        self.ui_item.Unsplit(self.splitter_window_two.ui_item)
+
+    def show_window2(self):
+        """Show the second window."""
+        if self.ui_item.IsSplit():
+            _LOGGER.debug("Window is already split.")
+            return
+
+        self.ui_item.SplitVertically(
+            self.splitter_window_one.ui_item, self.splitter_window_two.ui_item
+        )
+
+    @property
+    def is_split(self) -> bool:
+        return self.ui_item.IsSplit()

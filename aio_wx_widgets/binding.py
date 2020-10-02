@@ -3,7 +3,7 @@
 import logging
 from typing import NamedTuple, TYPE_CHECKING, Optional
 
-from aio_wx_widgets.widgets.validators.validators import ValidationError
+from aio_wx_widgets.widgets.validators import ValidationError
 
 if TYPE_CHECKING:
     from aio_wx_widgets.controller import BaseController
@@ -55,6 +55,7 @@ class Bindable:
 
         value = self.get_property_value()
 
+        self._fire_update_event = False
         self._set_ui_value(value)
 
     def get_property_value(self):
@@ -75,21 +76,33 @@ class Bindable:
         _LOGGER.debug("Updating entry with new value.")
         self._fire_update_event = False
         self._set_ui_value(value)
+        _LOGGER.debug("Updated.")
 
     def _on_ui_change(self, *args, **kwargs):
         """Callback when UI widget value changes by user input."""
         if self._binding is None:
             return
-
-        _LOGGER.debug("UI value changed. Trigger the binding.")
+        _LOGGER.debug("UI value changed on id %s", id(self))
         if not self._fire_update_event:
+            _LOGGER.debug("Not updating bindings as fire_update_event is False")
             self._fire_update_event = True
             return
+        _LOGGER.debug("Trigger the binding")
+
+        self._update_binding()
 
         _LOGGER.debug("Firing update")
 
+    def _update_binding(self, force=False):
+        """Update the binding property.
+
+        Args:
+            force: [bool] this will force the value to be cast into the value according
+                to the validator.
+
+        """
         try:
-            val = self._get_ui_value()
+            val = self._get_ui_value(force)
         except ValidationError as err:
             self.display_error(err)
         else:
@@ -102,7 +115,7 @@ class Bindable:
         Use this to display the error info on the widget.
         """
 
-    def _get_ui_value(self):
+    def _get_ui_value(self, force: bool):
         """Get the value from the ui widget.
 
         Raises pydantic.ValidationError when validation fails.

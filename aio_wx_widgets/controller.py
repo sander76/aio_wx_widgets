@@ -7,6 +7,7 @@ from typing import List, Awaitable
 # pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.binding import WATCHERS
+from aio_wx_widgets.sizers import T_var
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,15 +15,19 @@ _LOGGER = logging.getLogger(__name__)
 class BaseController:
     """Base implementation of a controller."""
 
-    def __init__(self, model: object):
+    def __init__(self, model: T_var):
         """Init.
 
         Args:
             model: The model.
         """
 
-        self.model = model
+        self._model: T_var = model
         self._tasks: List[Task] = []
+
+    @property
+    def model(self):
+        return self._model
 
     def __setattr__(self, item, value):
         print(f"Setting item {item} to value {value}")
@@ -64,5 +69,6 @@ class BaseController:
 
     def deactivate(self):
         """Run on closing this step."""
+
         for task in self._tasks:
             task.cancel()

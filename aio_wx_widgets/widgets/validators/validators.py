@@ -2,17 +2,15 @@
 
 import logging
 
+from aio_wx_widgets.widgets.validators.exception import ValidationError
+
 _LOGGER = logging.getLogger(__name__)
-
-
-class ValidationError(Exception):
-    """Input validation error"""
-
 
 __all__ = ["int_validator", "float_validator", "all_digits_validator"]
 
 
-def int_validator(value) -> int:
+def int_validator(value, force) -> int:
+    """Int validator."""
     try:
         converted = int(value)
     except ValueError:
@@ -22,19 +20,24 @@ def int_validator(value) -> int:
     raise ValidationError("not a valid integer.")
 
 
-def float_validator(value) -> float:
+def float_validator(value, force) -> float:
+    """Float validator."""
     try:
         converted = float(value)
     except ValueError:
         raise ValidationError("Not a valid float.")
-    if converted == 0.0:
-        return converted
     if value == str(converted):
         return converted
-    raise ValidationError("not a valid float.")
+    if force:
+        return converted
+    return value
 
 
-def all_digits_validator(value) -> str:
+def all_digits_validator(value, force) -> str:
+    """All digits validator.
+
+    Only numbers are allowed.
+    """
     if value.isdigit():
         return value
     raise ValidationError("Only numbers are allowed.")

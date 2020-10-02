@@ -3,7 +3,7 @@
 import collections
 import logging
 from enum import Enum
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple, Optional, Union, TypeVar
 
 import wx
 
@@ -13,6 +13,8 @@ from aio_wx_widgets.binding import Binding
 
 _LOGGER = logging.getLogger(__name__)
 
+T_var = TypeVar("T_var")
+
 
 class AlignHorizontal(Enum):
     """Horizontal alignment options."""
@@ -20,6 +22,12 @@ class AlignHorizontal(Enum):
     left = wx.ALIGN_LEFT
     right = wx.ALIGN_RIGHT
     center = wx.ALIGN_CENTER_HORIZONTAL
+
+
+class VertAlign(Enum):
+    top = wx.ALIGN_TOP
+    bottom = wx.ALIGN_BOTTOM
+    center = wx.ALIGN_CENTER_VERTICAL
 
 
 def _make_window(item: wx.Window, margins: List[Tuple[int, int]]):
@@ -68,7 +76,7 @@ def _align_item(
 
 
 def _add(
-    item,
+    item: T_var,
     parent,
     sizer,
     weight,
@@ -76,7 +84,7 @@ def _add(
     default_margin,
     create,
     align_horizontal: Optional[AlignHorizontal],
-) -> object:
+) -> T_var:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
@@ -113,13 +121,13 @@ class SizerMixin:
 
     def add(
         self,
-        item,
+        item: T_var,
         weight=0,
         layout=wx.EXPAND | wx.ALL,
-        margin=None,
+        margin=(5, 5, 1, 1),  # left,right,top,bottom
         create=True,
         align_horizontal: Optional[AlignHorizontal] = None,
-    ):
+    ) -> T_var:
         """Add an item to this panel
 
         Args:
@@ -148,6 +156,10 @@ class SizerMixin:
             create,
             align_horizontal=align_horizontal,
         )
+
+    def add_space(self, proportion=1):
+        """Add a stretching spacer."""
+        self._sizer.AddStretchSpacer(prop=proportion)
 
 
 class PanelMixin:

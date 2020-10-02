@@ -5,8 +5,10 @@ from aio_wx_widgets.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.sizers import AlignHorizontal
 from aio_wx_widgets.widgets.button import AioButton
+from aio_wx_widgets.widgets.checkbox import CheckBox
 from aio_wx_widgets.widgets.grid import Grid, VERTICAL
-from aio_wx_widgets.widgets.group import Group
+from aio_wx_widgets.widgets.group import Group, Section
+from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
 from aio_wx_widgets.widgets import validators
@@ -20,7 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 class ViewOne(SimplePanel):
     def __init__(self, parent, controller: "ControllerOne"):
         self._controller = controller
-        super().__init__(parent)
+        super().__init__(parent, scrollable=True)
 
     @property
     def controller(self) -> "ControllerOne":
@@ -32,34 +34,56 @@ class ViewOne(SimplePanel):
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
-        with self.add(Group("A labelled container.")) as group:
-            group.add(Text(text="A horizontal grid."))
-
-            with group.add(Grid()) as grd:
+        self.add(
+            LabelledItem(
+                "Label text",
+                Entry(
+                    binding=self.bind("float_val"), validator=validators.float_validator
+                ),
+            )
+        )
+        with self.add(Section("Float validators")) as sc:
+            with sc.add(Grid()) as grd:
                 # the binding binds to an attribute defined in the controller
                 # the weight determines how much space a specific item should consume
                 # with respect to the other members of the container.
                 grd.add(
                     Entry(
-                        binding=self.bind("value_1"),
+                        binding=self.bind("float_val"),
                         validator=validators.float_validator,
                     ),
                     weight=6,
-                    margin=3,
                 )
                 grd.add(
                     Entry(
-                        binding=self.bind("value_1"),
+                        binding=self.bind("float_val"),
                         validator=validators.float_validator,
                     ),
                     weight=4,
-                    margin=3,
                 )
-                grd.add(Text(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(Text(binding=self.bind("float_val")), weight=4, margin=3)
+        with self.add(Section("Int validators")) as sc:
+            sc.add(Text("Only integer values are allowed."))
+            with sc.add(Grid()) as grd:
+                grd.add(
+                    Entry(
+                        binding=self.bind("int_val"),
+                        validator=validators.int_validator,
+                    ),
+                    weight=6,
+                )
+                grd.add(
+                    Entry(
+                        binding=self.bind("int_val"),
+                        validator=validators.int_validator,
+                    ),
+                    weight=4,
+                )
+                grd.add(Text(binding=self.bind("int_val")), weight=4, margin=3)
 
-        with self.add(Group("Any text entry.")) as group:
-            group.add(Entry(binding=Binding(self._controller, "a_string_value")))
-            group.add(Entry(binding=Binding(self._controller, "a_string_value")))
+        with self.add(Grid()) as grd:
+            grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
+            grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
 
         with self.add(Grid()) as grd:
             grd.add(AioButton("button one", self._set_value), weight=6)
@@ -90,7 +114,10 @@ class ViewOne(SimplePanel):
                         weight=2,
                         align_horizontal=AlignHorizontal.right,
                     )
-
+        self.add(CheckBox("A checkbox", binding=self.bind("a_checkbox_value")))
+        self.add(
+            CheckBox("The same checkbox value", binding=self.bind("a_checkbox_value"))
+        )
         self.add(AioButton("open other window", self._on_open_second_window))
         self.add(AioButton("open third window", self._on_open_third_window))
 
