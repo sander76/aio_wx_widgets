@@ -9,6 +9,8 @@ from wxasync import AsyncBind  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
 
+__all__ = ["AioButton"]
+
 
 class AioButton:
     """Button widget.

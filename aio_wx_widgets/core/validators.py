@@ -2,8 +2,6 @@
 
 import logging
 
-from aio_wx_widgets.widgets.validators.exception import ValidationError
-
 _LOGGER = logging.getLogger(__name__)
 
 __all__ = ["int_validator", "float_validator", "all_digits_validator"]
@@ -41,3 +39,7 @@ def all_digits_validator(value, force) -> str:
     if value.isdigit():
         return value
     raise ValidationError("Only numbers are allowed.")
+
+
+class ValidationError(Exception):
+    """Input validation error"""

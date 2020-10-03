@@ -7,14 +7,13 @@ from typing import Union, Optional, Callable, Any
 
 import wx
 
-
-from aio_wx_widgets.binding import Bindable, Binding
-
-# from aio_wx_widgets.widgets.validators.validators import IntValidator
-from aio_wx_widgets.const import ERROR_COLOR
-from aio_wx_widgets.widgets.validators import ValidationError
+from aio_wx_widgets.core.binding import Bindable, Binding
+from aio_wx_widgets.core.error_message import ErrorPopup
+from aio_wx_widgets.core.validators import ValidationError
 
 _LOGGER = logging.getLogger(__name__)
+
+__all__ = ["Entry"]
 
 
 class Entry(Bindable):
@@ -90,23 +89,3 @@ class Entry(Bindable):
         self._popup.Position(pos, (0, sz[1]))
         self._popup.Show()
         self.ui_item.SetFocus()
-
-
-class ErrorPopup(wx.PopupWindow):
-    """A popup.
-
-    Opens near the widget when a validation error occurs.
-    """
-
-    def __init__(self, parent, content, style=0):
-        super().__init__(parent, style)
-        panel = wx.Panel(self)
-        panel.SetBackgroundColour(ERROR_COLOR)
-        message = wx.StaticText(panel, -1, content)
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(message, 0, wx.ALL, 5)
-        panel.SetSizer(sizer)
-        sizer.Fit(panel)
-        sizer.Fit(self)
-        self.Layout()

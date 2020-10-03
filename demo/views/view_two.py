@@ -5,11 +5,11 @@ import logging
 import wx
 
 from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.binding import Binding
+from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.sizers import AlignHorizontal
+from aio_wx_widgets.core.sizers import AlignHorizontal
 from aio_wx_widgets.widgets.button import AioButton
-from aio_wx_widgets.widgets.grid import Grid, VERTICAL
+from aio_wx_widgets.containers.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.select import Select
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry

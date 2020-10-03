@@ -9,7 +9,7 @@ import wx
 
 # pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.binding import Binding
+from aio_wx_widgets.core.binding import Binding
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -101,12 +101,12 @@ def _align_item(
             current_sizer_orientation,
         )
         sizer = wx.BoxSizer(orient=wx.VERTICAL)
-        sizer.Add(item, 0, hor_alignment.value)
+        sizer.Add(item, 0, hor_alignment.value, 0)
         return _align_item(sizer, wx.VERTICAL, None, ver_alignment, current_layout)
 
     if ver_alignment:
         sizer = wx.BoxSizer()
-        sizer.Add(item, 0, ver_alignment.value)
+        sizer.Add(item, 0, ver_alignment.value, 0)
         return _align_item(sizer, wx.HORIZONTAL, hor_alignment, None, current_layout)
     return item, current_layout
 

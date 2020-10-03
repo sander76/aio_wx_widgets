@@ -3,7 +3,7 @@
 import logging
 from typing import NamedTuple, TYPE_CHECKING, Optional
 
-from aio_wx_widgets.widgets.validators import ValidationError
+from aio_wx_widgets.core.validators import ValidationError
 
 if TYPE_CHECKING:
     from aio_wx_widgets.controller import BaseController

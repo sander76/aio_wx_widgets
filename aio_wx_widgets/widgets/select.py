@@ -6,9 +6,11 @@ from typing import Callable, Optional, Sequence
 
 import wx
 from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.binding import Bindable
+from aio_wx_widgets.core.binding import Bindable
 
 _LOGGER = logging.getLogger(__name__)
+
+__all__ = ["Select"]
 
 
 class Select(Bindable):

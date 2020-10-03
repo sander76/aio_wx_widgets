@@ -1,9 +1,11 @@
 import logging
 import wx
 
-from aio_wx_widgets.binding import Bindable, Binding
+from aio_wx_widgets.core.binding import Bindable, Binding
 
 _LOGGER = logging.getLogger(__name__)
+
+__all__ = ["CheckBox"]
 
 
 class CheckBox(Bindable):

@@ -6,8 +6,8 @@ from typing import List, Awaitable
 
 # pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.binding import WATCHERS
-from aio_wx_widgets.sizers import T_var
+from aio_wx_widgets.core.binding import WATCHERS
+from aio_wx_widgets.core.sizers import T_var
 
 _LOGGER = logging.getLogger(__name__)
 

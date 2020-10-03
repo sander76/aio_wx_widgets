@@ -7,7 +7,7 @@ import logging
 import wx
 from wx.lib import scrolledpanel
 
-from aio_wx_widgets.sizers import SizerMixin
+from aio_wx_widgets.core.sizers import SizerMixin
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 import logging
 from unittest.mock import Mock
 
-from aio_wx_widgets.binding import WATCHERS
+from aio_wx_widgets.core.binding import WATCHERS
 
 _LOGGER = logging.getLogger(__name__)
 

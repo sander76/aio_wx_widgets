@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from aio_wx_widgets.sizers import wx, _align_item, AlignHorizontal
+from aio_wx_widgets.core.sizers import wx, _align_item, AlignHorizontal
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +42,6 @@ def test_align_hor_alignment_vert_sizer(box_sizer):
         UiItem(), wx.VERTICAL, AlignHorizontal.center, None, current_layout=0
     )
     assert isinstance(al[0], UiItem)
-    assert al[1] == 8192
 
 
 def test_aling_hor_alignment_hor_sizer(box_sizer):
@@ -54,4 +53,3 @@ def test_aling_hor_alignment_hor_sizer(box_sizer):
 
     assert isinstance(al[0], MockBoxSizer)
     assert isinstance(al[0].item, UiItem)
-    assert al[0].orient == 512

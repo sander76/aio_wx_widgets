@@ -5,11 +5,13 @@ from typing import Optional
 
 import wx
 
-from aio_wx_widgets.binding import Bindable
+from aio_wx_widgets.core.binding import Bindable
 from aio_wx_widgets.colors import GREEN
 from aio_wx_widgets.const import is_debugging
 
 _LOGGER = logging.getLogger(__name__)
+
+__all__ = ["Text"]
 
 
 def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> wx.Font:

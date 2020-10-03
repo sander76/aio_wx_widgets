@@ -1,6 +1,6 @@
 import logging
 import pytest
-from aio_wx_widgets.binding import Binding, Bindable, WATCHERS
+from aio_wx_widgets.core.binding import Binding, Bindable, WATCHERS
 from aio_wx_widgets.controller import BaseController
 
 _LOGGER = logging.getLogger(__name__)

@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import logging
 
-from aio_wx_widgets.binding import Binding
+from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.panels.splitter_panel import TwoSplitterWindow
-from aio_wx_widgets.sizers import AlignHorizontal, PanelMixin, SizerMixin
+from aio_wx_widgets.core.sizers import AlignHorizontal, PanelMixin, SizerMixin
 from aio_wx_widgets.widgets.button import AioButton
-from aio_wx_widgets.widgets.grid import Grid, VERTICAL
-from aio_wx_widgets.widgets.group import Group
+from aio_wx_widgets.containers.grid import Grid, VERTICAL
+from aio_wx_widgets.containers.group import Group
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
 

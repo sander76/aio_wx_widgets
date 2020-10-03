@@ -10,7 +10,7 @@ from events import Events
 
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.controller import BaseController
-from aio_wx_widgets.data_types import Choices
+from aio_wx_widgets.core.data_types import Choices
 
 _LOGGER = logging.getLogger(__name__)
 

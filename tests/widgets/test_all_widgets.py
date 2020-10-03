@@ -54,10 +54,16 @@ def get_all_widget_classes(package):
                 kwargs["callback"] = Mock()
             elif name == "Group":
                 kwargs["label"] = "grouplabel"
-            elif name in ("Entry", "IntEntry"):
+            elif name == "Entry":
                 kwargs["binding"] = Mock()
             elif name == "Select":
                 kwargs["choices"] = [Mock()]
+            elif name == "CheckBox":
+                kwargs["label"] = "checkbox_label"
+                kwargs["binding"] = Mock()
+            elif name == "LabelledItem":
+                kwargs["label_text"] = "labeltext"
+                kwargs["item"] = Mock()
             yield name, cls, kwargs
 
 

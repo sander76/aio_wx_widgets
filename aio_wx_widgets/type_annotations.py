@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 
 if TYPE_CHECKING:
-    from aio_wx_widgets.binding import Binding
+    from aio_wx_widgets.core.binding import Binding
 
     from aio_wx_widgets.controller import BaseController
     from asyncio import AbstractEventLoop

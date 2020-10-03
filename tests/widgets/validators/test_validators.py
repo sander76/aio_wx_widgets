@@ -2,7 +2,7 @@ import logging
 import pytest
 
 
-from aio_wx_widgets.widgets.validators.validators import (
+from aio_wx_widgets.core.validators import (
     int_validator,
     all_digits_validator,
     ValidationError,
