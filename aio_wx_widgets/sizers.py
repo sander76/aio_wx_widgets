@@ -59,20 +59,23 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
 def _align_item(
     item: Union[wx.Window, wx.BoxSizer],
     current_sizer_orientation,
-    alignment: Optional["AlignHorizontal"],
+    hor_alignment: Optional["AlignHorizontal"],
+    ver_alignment: Optional[VertAlign],
     current_layout: int,
 ) -> Tuple[Union[wx.Window, wx.BoxSizer], int]:
 
-    if alignment is None:
-        return item, current_layout | wx.EXPAND
+    if current_sizer_orientation == wx.VERTICAL:
+        if hor_alignment:
+            current_layout = current_layout | hor_alignment.value
+            return _align_item(
+                item, current_sizer_orientation, None, ver_alignment, current_layout
+            )
 
-    # wx_alignment = _get_wx_alignment(alignment)
-    if not current_sizer_orientation == wx.HORIZONTAL:
-        return item, current_layout | alignment.value
-
-    sizer = wx.BoxSizer(orient=wx.VERTICAL)
-    sizer.Add(item, 0, alignment.value, 0)
-    return sizer, current_layout
+    if hor_alignment:
+        sizer = wx.BoxSizer(orient=wx.VERTICAL)
+        sizer.Add(item, 0, hor_alignment.value, 0)
+        return _align_item(sizer, wx.VERTICAL, None, ver_alignment, current_layout)
+    return item, current_layout
 
 
 def _add(
@@ -83,7 +86,8 @@ def _add(
     margin,
     default_margin,
     create,
-    align_horizontal: Optional[AlignHorizontal],
+    hor_align: Optional[AlignHorizontal],
+    ver_align: Optional[VertAlign],
 ) -> T_var:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
@@ -107,7 +111,12 @@ def _add(
 
     layout = wx.ALL
 
-    ui_item, layout = _align_item(ui_item, sizer.Orientation, align_horizontal, layout)
+    if hor_align is None and ver_align is None:
+        layout = layout | wx.EXPAND
+    else:
+        ui_item, layout = _align_item(
+            ui_item, sizer.Orientation, hor_align, ver_align, layout
+        )
 
     sizer.Add(ui_item, weight, layout, margin)
 
@@ -154,7 +163,8 @@ class SizerMixin:
             margin,
             SizerMixin.default_sizer_margin,
             create,
-            align_horizontal=align_horizontal,
+            hor_align=align_horizontal,
+            ver_align=None,
         )
 
     def add_space(self, proportion=1):
