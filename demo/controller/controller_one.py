@@ -34,4 +34,4 @@ class ControllerOne(BaseController):
     async def set_value(self):
         val = randint(1, 100)
         _LOGGER.debug("Setting bound property to %s", val)
-        self.value_1 = val
+        self.int_val = val

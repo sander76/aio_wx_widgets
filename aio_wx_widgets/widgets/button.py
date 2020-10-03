@@ -24,9 +24,7 @@ class AioButton:
         callback: Union[Callable[[Any, Any], Awaitable], Callable[[Any, Any], None]],
     ):
         self._label = label
-
         self._call_back = callback
-
         self.ui_item = wx.Button()
 
     @property

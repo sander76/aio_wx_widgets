@@ -56,6 +56,21 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
     return _margin_wrapper(item, margins)
 
 
+def b_align_item(
+    item: Union[wx.Window, wx.BoxSizer],
+    current_sizer_orientation,
+    hor_alignment: Optional["AlignHorizontal"],
+    ver_alignment: Optional[VertAlign],
+    current_layout: int,
+):
+    if hor_alignment:
+        current_layout = current_layout | hor_alignment.value
+    if ver_alignment:
+        current_layout = current_layout | ver_alignment.value
+
+    return item, current_layout
+
+
 def _align_item(
     item: Union[wx.Window, wx.BoxSizer],
     current_sizer_orientation,
@@ -65,16 +80,34 @@ def _align_item(
 ) -> Tuple[Union[wx.Window, wx.BoxSizer], int]:
 
     if current_sizer_orientation == wx.VERTICAL:
+        _LOGGER.debug("Current sizer is vertical")
         if hor_alignment:
+            _LOGGER.debug("Item has hor alignment set.")
             current_layout = current_layout | hor_alignment.value
             return _align_item(
                 item, current_sizer_orientation, None, ver_alignment, current_layout
             )
-
+    if current_sizer_orientation == wx.HORIZONTAL:
+        _LOGGER.debug("Current sizer is horizontal.")
+        if ver_alignment:
+            _LOGGER.debug("Item has ver alignment set.")
+            current_layout = current_layout | ver_alignment.value
+            return _align_item(
+                item, current_sizer_orientation, hor_alignment, None, current_layout
+            )
     if hor_alignment:
+        _LOGGER.debug(
+            "Setting a horizontal alignment but current orientation is %s",
+            current_sizer_orientation,
+        )
         sizer = wx.BoxSizer(orient=wx.VERTICAL)
-        sizer.Add(item, 0, hor_alignment.value, 0)
+        sizer.Add(item, 0, hor_alignment.value)
         return _align_item(sizer, wx.VERTICAL, None, ver_alignment, current_layout)
+
+    if ver_alignment:
+        sizer = wx.BoxSizer()
+        sizer.Add(item, 0, ver_alignment.value)
+        return _align_item(sizer, wx.HORIZONTAL, hor_alignment, None, current_layout)
     return item, current_layout
 
 
@@ -111,7 +144,11 @@ def _add(
 
     layout = wx.ALL
 
+    _LOGGER.debug(
+        ">> Aligning %s, ver_align(%s), hor_align(%s)", type(item), ver_align, hor_align
+    )
     if hor_align is None and ver_align is None:
+
         layout = layout | wx.EXPAND
     else:
         ui_item, layout = _align_item(
@@ -132,10 +169,10 @@ class SizerMixin:
         self,
         item: T_var,
         weight=0,
-        layout=wx.EXPAND | wx.ALL,
         margin=(5, 5, 1, 1),  # left,right,top,bottom
         create=True,
         align_horizontal: Optional[AlignHorizontal] = None,
+        ver_align: Optional[VertAlign] = None,
     ) -> T_var:
         """Add an item to this panel
 
@@ -164,7 +201,7 @@ class SizerMixin:
             SizerMixin.default_sizer_margin,
             create,
             hor_align=align_horizontal,
-            ver_align=None,
+            ver_align=ver_align,
         )
 
     def add_space(self, proportion=1):
