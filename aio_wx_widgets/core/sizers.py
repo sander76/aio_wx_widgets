@@ -2,7 +2,6 @@
 
 import collections
 import logging
-from enum import Enum
 from typing import List, Tuple, Optional, Union, TypeVar
 
 import wx
@@ -10,24 +9,11 @@ import wx
 # pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.core.binding import Binding
+from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 
 _LOGGER = logging.getLogger(__name__)
 
 T_var = TypeVar("T_var")
-
-
-class AlignHorizontal(Enum):
-    """Horizontal alignment options."""
-
-    left = wx.ALIGN_LEFT
-    right = wx.ALIGN_RIGHT
-    center = wx.ALIGN_CENTER_HORIZONTAL
-
-
-class VertAlign(Enum):
-    top = wx.ALIGN_TOP
-    bottom = wx.ALIGN_BOTTOM
-    center = wx.ALIGN_CENTER_VERTICAL
 
 
 def _make_window(item: wx.Window, margins: List[Tuple[int, int]]):
@@ -56,58 +42,43 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
     return _margin_wrapper(item, margins)
 
 
-def b_align_item(
-    item: Union[wx.Window, wx.BoxSizer],
-    current_sizer_orientation,
-    hor_alignment: Optional["AlignHorizontal"],
-    ver_alignment: Optional[VertAlign],
-    current_layout: int,
-):
-    if hor_alignment:
-        current_layout = current_layout | hor_alignment.value
-    if ver_alignment:
-        current_layout = current_layout | ver_alignment.value
-
-    return item, current_layout
-
-
 def _align_item(
     item: Union[wx.Window, wx.BoxSizer],
     current_sizer_orientation,
-    hor_alignment: Optional["AlignHorizontal"],
-    ver_alignment: Optional[VertAlign],
+    hor_align: Optional["HorAlign"],
+    ver_align: Optional[VerAlign],
     current_layout: int,
 ) -> Tuple[Union[wx.Window, wx.BoxSizer], int]:
 
     if current_sizer_orientation == wx.VERTICAL:
         _LOGGER.debug("Current sizer is vertical")
-        if hor_alignment:
+        if hor_align:
             _LOGGER.debug("Item has hor alignment set.")
-            current_layout = current_layout | hor_alignment.value
+            current_layout = current_layout | hor_align.value
             return _align_item(
-                item, current_sizer_orientation, None, ver_alignment, current_layout
+                item, current_sizer_orientation, None, ver_align, current_layout
             )
     if current_sizer_orientation == wx.HORIZONTAL:
         _LOGGER.debug("Current sizer is horizontal.")
-        if ver_alignment:
+        if ver_align:
             _LOGGER.debug("Item has ver alignment set.")
-            current_layout = current_layout | ver_alignment.value
+            current_layout = current_layout | ver_align.value
             return _align_item(
-                item, current_sizer_orientation, hor_alignment, None, current_layout
+                item, current_sizer_orientation, hor_align, None, current_layout
             )
-    if hor_alignment:
+    if hor_align:
         _LOGGER.debug(
             "Setting a horizontal alignment but current orientation is %s",
             current_sizer_orientation,
         )
         sizer = wx.BoxSizer(orient=wx.VERTICAL)
-        sizer.Add(item, 0, hor_alignment.value, 0)
-        return _align_item(sizer, wx.VERTICAL, None, ver_alignment, current_layout)
+        sizer.Add(item, 0, hor_align.value, 0)
+        return _align_item(sizer, wx.VERTICAL, None, ver_align, current_layout)
 
-    if ver_alignment:
+    if ver_align:
         sizer = wx.BoxSizer()
-        sizer.Add(item, 0, ver_alignment.value, 0)
-        return _align_item(sizer, wx.HORIZONTAL, hor_alignment, None, current_layout)
+        sizer.Add(item, 0, ver_align.value, 0)
+        return _align_item(sizer, wx.HORIZONTAL, hor_align, None, current_layout)
     return item, current_layout
 
 
@@ -119,8 +90,8 @@ def _add(
     margin,
     default_margin,
     create,
-    hor_align: Optional[AlignHorizontal],
-    ver_align: Optional[VertAlign],
+    hor_align: Optional[HorAlign],
+    ver_align: Optional[VerAlign],
 ) -> T_var:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
@@ -171,8 +142,8 @@ class SizerMixin:
         weight=0,
         margin=(5, 5, 1, 1),  # left,right,top,bottom
         create=True,
-        align_horizontal: Optional[AlignHorizontal] = None,
-        ver_align: Optional[VertAlign] = None,
+        hor_align: Optional[HorAlign] = None,
+        ver_align: Optional[VerAlign] = None,
     ) -> T_var:
         """Add an item to this panel
 
@@ -200,7 +171,7 @@ class SizerMixin:
             margin,
             SizerMixin.default_sizer_margin,
             create,
-            hor_align=align_horizontal,
+            hor_align=hor_align,
             ver_align=ver_align,
         )
 

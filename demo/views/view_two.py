@@ -7,7 +7,7 @@ import wx
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.core.sizers import AlignHorizontal
+from aio_wx_widgets.core.data_types import HorAlign
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.containers.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.select import Select
@@ -58,7 +58,7 @@ class ViewTwo(SimplePanel):
             grd.add(
                 Text("This is a selection dropdown"),
                 weight=4,
-                align_horizontal=AlignHorizontal.right,
+                hor_align=HorAlign.right,
             )
             with grd.add(Grid(orientation=VERTICAL), weight=6) as grd:
                 grd.add(
@@ -67,7 +67,7 @@ class ViewTwo(SimplePanel):
                         on_select_callback=self._on_select_callback,
                         binding=self.bind("selected_item"),
                     ),
-                    align_horizontal=AlignHorizontal.left,
+                    hor_align=HorAlign.left,
                 )
                 grd.add(Text("Selection based on callback:"))
                 grd.add(self._callback_text)

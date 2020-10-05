@@ -1,6 +1,6 @@
 import logging
 
-from aio_wx_widgets.core.sizers import AlignHorizontal, VertAlign
+from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.containers.grid import Grid
 from aio_wx_widgets.widgets.text import Text
 
@@ -23,14 +23,14 @@ class LabelledItem(Grid):
     def __call__(self, parent, *args, **kwargs):
         super().__call__(parent)
         if self.align_right:
-            hor_alignment = AlignHorizontal.right
+            hor_alignment = HorAlign.right
         else:
             hor_alignment = None
         self.add(
             Text(self.label_text),
             weight=self._label_weight,
-            align_horizontal=hor_alignment,
-            ver_align=VertAlign.center,
+            hor_align=hor_alignment,
+            ver_align=VerAlign.center,
         )
         self.add(self._item, weight=self._item_weight)
 

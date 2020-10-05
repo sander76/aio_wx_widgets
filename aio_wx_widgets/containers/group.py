@@ -10,6 +10,8 @@ from aio_wx_widgets.widgets import text
 
 _LOGGER = logging.getLogger(__name__)
 
+__all__ = ["Group", "Section"]
+
 
 class Group(SizerMixin):
     """A Group widget.

@@ -11,6 +11,8 @@ from aio_wx_widgets.core.sizers import SizerMixin
 
 _LOGGER = logging.getLogger(__name__)
 
+__all__ = ["Grid", "VERTICAL", "HORIZONTAL"]
+
 VERTICAL = wx.VERTICAL
 HORIZONTAL = wx.HORIZONTAL
 

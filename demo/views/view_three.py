@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import logging
 
-from aio_wx_widgets.core.binding import Binding
-from aio_wx_widgets.panels.splitter_panel import TwoSplitterWindow
-from aio_wx_widgets.core.sizers import AlignHorizontal, PanelMixin, SizerMixin
-from aio_wx_widgets.widgets.button import AioButton
-from aio_wx_widgets.containers.grid import Grid, VERTICAL
+from aio_wx_widgets.containers.grid import Grid
 from aio_wx_widgets.containers.group import Group
+from aio_wx_widgets.core.binding import Binding
+from aio_wx_widgets.core.sizers import PanelMixin, SizerMixin
+from aio_wx_widgets.panels.splitter_panel import TwoSplitterWindow
+from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
 
@@ -20,7 +20,7 @@ class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
             parent, splitter_one_scrollable=False, splitter_two_scrollable=False
         )
         self._controller = controller
-        self.splitter_window_two.add(Text("This is text"))
+        # self.splitter_window_two.add(Text("This is text"))
         self.splitter_window_two.add(Entry(self.bind("value_1")))
 
     @property
@@ -46,7 +46,7 @@ class ViewThree(SplitterWindow):
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
         with self.add(Group("A labelled container.")) as group:
-            group.add(Text(text="A horizontal grid."))
+            # group.add(Text(text="A horizontal grid."))
 
             with group.add(Grid()) as grd:
                 # the binding binds to an attribute defined in the controller
@@ -64,38 +64,18 @@ class ViewThree(SplitterWindow):
             grd.add(AioButton("button one", self._set_value), weight=6)
             grd.add(AioButton("button two,self", self._set_value), weight=6)
 
-        with self.add(Group("Nesting of grids")) as grp:
-            with grp.add(Grid()) as grd:
-                grd.add(
-                    Text(text="Right aligned text"),
-                    weight=3,
-                    margin=5,
-                    align_horizontal=AlignHorizontal.right,
-                )
-                with grd.add(Grid(VERTICAL), weight=6, margin=0) as vert_grid:
-                    vert_grid.add(
-                        AioButton("Left aligned button", self._set_value),
-                        align_horizontal=AlignHorizontal.left,
-                        margin=4,
-                    )
-                    vert_grid.add(AioButton("Set number entries.", self._set_value))
-                    vert_grid.add(
-                        Text(text="Center aligned text with a large margin."),
-                        margin=(10, 10, 30, 5),
-                        align_horizontal=AlignHorizontal.center,
-                    )
-                    vert_grid.add(
-                        AioButton("right aligned button.", self._set_value),
-                        weight=2,
-                        align_horizontal=AlignHorizontal.right,
-                    )
-
-        self.add(AioButton("open other window", self._on_open_second_window))
-        self.add_space(2)
-
         self.add(
-            self.split_button, align_horizontal=AlignHorizontal.right,
+            Text(
+                "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text"
+            ),
+            margin=15,
         )
+
+        # self.add_space(2)
+
+        # self.add(
+        #     self.split_button, hor_align=HorAlign.right,
+        # )
         self._set_split_button_text()
 
     def _set_split_button_text(self):
@@ -110,9 +90,6 @@ class ViewThree(SplitterWindow):
         else:
             self.show_window2()
         self._set_split_button_text()
-
-    async def _on_open_second_window(self, evt):
-        await self._controller.open_other_window()
 
     async def _on_open(self, evt):
         await self._controller.open_other_window()

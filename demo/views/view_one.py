@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.core.sizers import AlignHorizontal, VertAlign
+from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
 from aio_wx_widgets.containers.grid import Grid, VERTICAL
@@ -63,7 +63,7 @@ class ViewOne(SimplePanel):
                 grd.add(
                     Text(binding=self.bind("float_val")),
                     weight=4,
-                    ver_align=VertAlign.center,
+                    ver_align=VerAlign.center,
                 )
         with self.add(Section("Int validators")) as sc:
             sc.add(Text("Only integer values are allowed."))
@@ -91,25 +91,25 @@ class ViewOne(SimplePanel):
                 grd.add(
                     Text(text="Right aligned text"),
                     weight=3,
-                    align_horizontal=AlignHorizontal.right,
-                    ver_align=VertAlign.center,
+                    hor_align=HorAlign.right,
+                    ver_align=VerAlign.center,
                 )
                 with grd.add(Grid(VERTICAL), weight=6, margin=0) as vert_grid:
                     vert_grid.add(
                         AioButton("Left aligned button", self._set_value),
-                        align_horizontal=AlignHorizontal.left,
+                        hor_align=HorAlign.left,
                         margin=4,
                     )
                     vert_grid.add(AioButton("Set number entries.", self._set_value))
                     vert_grid.add(
                         Text(text="Center aligned text with a large margin."),
                         margin=(10, 10, 30, 5),
-                        align_horizontal=AlignHorizontal.center,
+                        hor_align=HorAlign.center,
                     )
                     vert_grid.add(
                         AioButton("right aligned button.", self._set_value),
                         weight=2,
-                        align_horizontal=AlignHorizontal.right,
+                        hor_align=HorAlign.right,
                     )
         self.add(CheckBox("A checkbox", binding=self.bind("a_checkbox_value")))
         self.add(
