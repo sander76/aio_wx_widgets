@@ -7,12 +7,15 @@ from typing import Callable, Any, Awaitable, Union
 import wx
 from wxasync import AsyncBind  # type: ignore
 
+from aio_wx_widgets.core.binding import Binding
+from aio_wx_widgets.widgets.base_widget import BaseWidget
+
 _LOGGER = logging.getLogger(__name__)
 
 __all__ = ["AioButton"]
 
 
-class AioButton:
+class AioButton(BaseWidget):
     """Button widget.
 
     Args:
@@ -24,16 +27,11 @@ class AioButton:
         self,
         label: str,
         callback: Union[Callable[[Any, Any], Awaitable], Callable[[Any, Any], None]],
+        enabled: Union[bool, Binding] = True,
     ):
+        super().__init__(wx.Button(), enabled)
         self._label = label
         self._call_back = callback
-        self.ui_item = wx.Button()
-
-    def enable(self):
-        self.ui_item.Disable()
-
-    def disable(self):
-        self.ui_item.Enable()
 
     @property
     def label(self):
@@ -51,4 +49,6 @@ class AioButton:
             AsyncBind(wx.EVT_BUTTON, self._call_back, self.ui_item)
         else:
             self.ui_item.Bind(wx.EVT_BUTTON, self._call_back)
+
+        self._make_bindings()
         return self

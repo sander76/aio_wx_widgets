@@ -107,7 +107,11 @@ class ViewOne(SimplePanel):
                         hor_align=HorAlign.center,
                     )
                     vert_grid.add(
-                        AioButton("right aligned button.", self._set_value),
+                        AioButton(
+                            "right aligned button.",
+                            self._set_value,
+                            enabled=self.bind("a_checkbox_value"),
+                        ),
                         weight=2,
                         hor_align=HorAlign.right,
                     )

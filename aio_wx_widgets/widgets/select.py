@@ -2,18 +2,19 @@
 
 from __future__ import annotations
 import logging
-from typing import Callable, Optional, Sequence
+from typing import Callable, Optional, Sequence, Union
 
 import wx
 from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.core.binding import Bindable
+from aio_wx_widgets.core.binding import Bindable, Binding
+from aio_wx_widgets.widgets.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 
 __all__ = ["Select"]
 
 
-class Select(Bindable):
+class Select(BaseWidget):
     """Dropdown selection widget."""
 
     def __init__(
@@ -22,6 +23,7 @@ class Select(Bindable):
         on_select_callback: Optional[Callable[[T.Choice], None]] = None,
         binding: Optional[T.Binding] = None,
         min_width=300,
+        enabled: Union[bool, Binding] = True,
     ):
         """
         Init.
@@ -33,15 +35,15 @@ class Select(Bindable):
             min_width: when alignment is set, this is the advised minimal width the
                 the widget should take.
         """
-        super().__init__(binding)
+        super().__init__(wx.Choice(), enabled)
         self.choices = choices
         self._on_select_callback = on_select_callback
         self._selected_item = None
 
-        self.ui_item = wx.Choice()
         self.ui_item.Bind(wx.EVT_CHOICE, self._on_choice)
         self.ui_item.Bind(wx.EVT_MOUSEWHEEL, self._on_mouse_wheel)
         self._min_width = min_width
+        self._value_binding = Bindable(binding, self._get_ui_value, self._set_ui_value)
 
     def _on_mouse_wheel(self, evt):
         """Capturing as I want to disable selection when scrolling"""
@@ -64,7 +66,7 @@ class Select(Bindable):
         _idx = self.ui_item.GetSelection()
         _LOGGER.debug("Selected idx: %s", _idx)
         self._selected_item = self.choices[_idx]
-        self._on_ui_change()
+        self._value_binding.on_ui_change()
         if self._on_select_callback:
             self._on_select_callback(self._selected_item)
 
@@ -74,6 +76,6 @@ class Select(Bindable):
     def __call__(self, parent):
         self.init(parent)
         self.ui_item.SetSizeHints((self._min_width, -1))
-        self._make_binding()
+        self._make_bindings()
 
         return self

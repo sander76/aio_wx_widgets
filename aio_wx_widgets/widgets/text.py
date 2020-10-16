@@ -8,6 +8,7 @@ import wx
 from aio_wx_widgets.core.binding import Bindable
 from aio_wx_widgets.colors import GREEN
 from aio_wx_widgets.const import is_debugging
+from aio_wx_widgets.widgets.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> w
     return font
 
 
-class Text(Bindable):
+class Text(BaseWidget):
     """Static text."""
 
     def __init__(
@@ -51,16 +52,19 @@ class Text(Bindable):
             text:
             font_size:
         """
+        super().__init__(wx.StaticText(), True)
         self._parent = None
         self._color = color
         self._text = text
         self._wrap = wrap
 
-        super().__init__(binding)
-
-        self.ui_item = wx.StaticText()
-
         self._font = _get_font_info(self.ui_item.GetFont(), font_size, bold=bold)
+
+        self._value_binding = None
+        if binding:
+            self._value_binding = Bindable(
+                binding, self._get_ui_value, self._set_ui_value
+            )
 
     def _set_ui_value(self, value):
         self.ui_item.SetLabelText(str(value))
@@ -78,8 +82,10 @@ class Text(Bindable):
         self.set_text(self._text, self._color)
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
-        self._make_binding()
+        if self._value_binding:
+            self._value_binding.make_binding()
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
+        self._make_bindings()
         return self
 
     def _on_size(self, evt):

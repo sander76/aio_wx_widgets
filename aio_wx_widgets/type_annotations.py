@@ -1,7 +1,6 @@
 """All type annotations go here."""
 
-from typing import TYPE_CHECKING, Any
-
+from typing import TYPE_CHECKING, Any, TypeVar
 
 if TYPE_CHECKING:
     from aio_wx_widgets.core.binding import Binding
@@ -23,3 +22,5 @@ if TYPE_CHECKING:
 
         label: str
         value: Any
+
+    T_var = TypeVar("T_var")

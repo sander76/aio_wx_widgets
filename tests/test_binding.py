@@ -34,7 +34,7 @@ def some_bindable(mocker, some_binding):
 
 
 def test_make_binding(some_bindable, some_controller):
-    some_bindable._make_binding()
+    some_bindable.make_binding()
 
     # check if watcher is added to list of watchers.
     watchers = some_controller.__dict__[WATCHERS]["a_value"]
