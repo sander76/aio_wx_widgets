@@ -42,6 +42,7 @@ class Text(Bindable):
         color: Optional[int] = None,
         binding=None,
         bold=False,
+        wrap=False,
     ):
         """Init.
 
@@ -50,8 +51,10 @@ class Text(Bindable):
             text:
             font_size:
         """
+        self._parent = None
         self._color = color
         self._text = text
+        self._wrap = wrap
 
         super().__init__(binding)
 
@@ -67,6 +70,7 @@ class Text(Bindable):
         return None
 
     def __call__(self, parent):
+        self._parent = parent
         self.ui_item.Create(parent)
         if self._font:
             self.ui_item.SetFont(self._font)
@@ -75,7 +79,19 @@ class Text(Bindable):
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
         self._make_binding()
+        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
         return self
+
+    def _on_size(self, evt):
+        if not self._wrap:
+            return
+
+        self.ui_item.Unbind(wx.EVT_SIZE)
+        size = self.ui_item.GetSize()
+        self.ui_item.SetLabel(self._text)
+        self.ui_item.Wrap(size[0])
+        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
+        evt.Skip()
 
     def set_text(self, text, color=None):
         """Set text."""

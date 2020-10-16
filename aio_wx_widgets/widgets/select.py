@@ -21,6 +21,7 @@ class Select(Bindable):
         choices: Sequence[T.Choice],
         on_select_callback: Optional[Callable[[T.Choice], None]] = None,
         binding: Optional[T.Binding] = None,
+        min_width=300,
     ):
         """
         Init.
@@ -29,6 +30,8 @@ class Select(Bindable):
             choices: Used to populate the dropdown.
             on_select_callback: called when selection is made.
             binding:
+            min_width: when alignment is set, this is the advised minimal width the
+                the widget should take.
         """
         super().__init__(binding)
         self.choices = choices
@@ -38,6 +41,7 @@ class Select(Bindable):
         self.ui_item = wx.Choice()
         self.ui_item.Bind(wx.EVT_CHOICE, self._on_choice)
         self.ui_item.Bind(wx.EVT_MOUSEWHEEL, self._on_mouse_wheel)
+        self._min_width = min_width
 
     def _on_mouse_wheel(self, evt):
         """Capturing as I want to disable selection when scrolling"""
@@ -69,6 +73,7 @@ class Select(Bindable):
 
     def __call__(self, parent):
         self.init(parent)
+        self.ui_item.SetSizeHints((self._min_width, -1))
         self._make_binding()
 
         return self

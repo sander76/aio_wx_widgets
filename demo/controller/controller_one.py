@@ -10,10 +10,12 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class ControllerOne(BaseController):
+    float_val: float = 0
+
     def __init__(self, model):
-        self.float_val: float = 0
+        # self.float_val: float = 0
         self.int_val: int = 0
-        self.a_string_value = "A certain string"
+        self.a_string_value = None
         self.a_checkbox_value: bool = True
         super().__init__(model)
 

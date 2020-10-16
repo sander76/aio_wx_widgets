@@ -17,7 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
     def __init__(self, parent, controller, scrollable=False, window_one_width=250):
         super().__init__(
-            parent, splitter_one_scrollable=False, splitter_two_scrollable=False
+            parent, splitter_one_scrollable=False, splitter_two_scrollable=True
         )
         self._controller = controller
         # self.splitter_window_two.add(Text("This is text"))
@@ -31,9 +31,10 @@ class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
 class ViewThree(SplitterWindow):
     def __init__(self, parent, controller):
         self._controller = controller
-        super().__init__(parent, controller)
+        super().__init__(parent, controller, scrollable=False)
 
         self.split_button = AioButton("Remove split", self._toggle_window_2)
+        self._toggle_state = True
 
     @property
     def controller(self):
@@ -66,10 +67,15 @@ class ViewThree(SplitterWindow):
 
         self.add(
             Text(
-                "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text"
+                "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text.",
+                wrap=True,
             ),
             margin=15,
         )
+        self._btn = AioButton("toggle", self._toggle)
+        with self.add(Grid()) as grd:
+            grd.add(AioButton("toggle", self._toggle))
+            grd.add(self._btn)
 
         # self.add_space(2)
 
@@ -77,6 +83,13 @@ class ViewThree(SplitterWindow):
         #     self.split_button, hor_align=HorAlign.right,
         # )
         self._set_split_button_text()
+
+    def _toggle(self, evt):
+        self._toggle_state = not self._toggle_state
+        if self._toggle_state:
+            self._btn.disable()
+        else:
+            self._btn.enable()
 
     def _set_split_button_text(self):
         if self.is_split:

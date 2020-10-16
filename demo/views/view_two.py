@@ -5,9 +5,11 @@ import logging
 import wx
 
 from aio_wx_widgets import type_annotations as T
+from aio_wx_widgets.containers import Section
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.core.data_types import HorAlign
+from aio_wx_widgets.widgets import LabelledItem
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.containers.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.select import Select
@@ -41,6 +43,38 @@ class ViewTwo(SimplePanel):
         return self._controller
 
     def populate(self):
+        with self.add(Section("Labelled items.")) as sec:
+            sec.add(Text("default labelled item:"))
+            sec.add(
+                LabelledItem(
+                    "Item",
+                    Select(self.controller.choices, binding=self.bind("selected_item")),
+                )
+            )
+
+            l_item = LabelledItem(
+                "Item",
+                Select(self._controller.choices, binding=self.bind("selected_item")),
+                align_right=False,
+            )
+            sec.add(Text(str(l_item)))
+            sec.add(l_item)
+            l_item = LabelledItem(
+                "Item",
+                Select(self._controller.choices, binding=self.bind("selected_item")),
+                item_weight=2,
+            )
+            sec.add(Text(str(l_item)))
+            sec.add(l_item)
+            l_item = LabelledItem(
+                "Item",
+                Select(self._controller.choices, binding=self.bind("selected_item")),
+                item_weight=2,
+                item_alignment=HorAlign.left,
+            )
+            sec.add(Text(str(l_item)))
+            sec.add(l_item)
+
         self.add(
             Entry(binding=Binding(self._controller, "value_1")), margin=(10, 10, 5, 20),
         )

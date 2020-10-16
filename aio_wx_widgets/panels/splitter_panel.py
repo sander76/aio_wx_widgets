@@ -89,6 +89,16 @@ class TwoSplitterWindow(SizerMixin):
         self._sizer = self.splitter_window_one.sizer
         self._parent = self.splitter_window_one.ui_item
 
+        self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
+
+    def _on_resize(self, evt):
+        _LOGGER.debug("resizing splitter window.")
+        self.splitter_window_one.ui_item.Refresh()
+
+        self._sizer.Layout()
+        self.splitter_window_two.sizer.Layout()
+        evt.Skip()
+
     def hide_window2(self):
         """Hide the second window."""
         self.ui_item.Unsplit(self.splitter_window_two.ui_item)

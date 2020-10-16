@@ -30,7 +30,7 @@ class BaseController:
         return self._model
 
     def __setattr__(self, item, value):
-        print(f"Setting item {item} to value {value}")
+        # print(f"Setting item {item} to value {value}")
         self.__dict__[item] = value
         if WATCHERS not in self.__dict__:
             return

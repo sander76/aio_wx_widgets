@@ -29,6 +29,12 @@ class AioButton:
         self._call_back = callback
         self.ui_item = wx.Button()
 
+    def enable(self):
+        self.ui_item.Disable()
+
+    def disable(self):
+        self.ui_item.Enable()
+
     @property
     def label(self):
         return self._label

@@ -33,6 +33,7 @@ class Bindable:
         # Flag to stop firing updates when a property value has changed.
         # Prevents infinite loop of updating the value and firing update events.
         self._fire_update_event = True
+        self._allow_none = False
 
     def _make_binding(self):
         if self._binding is None:
@@ -54,6 +55,11 @@ class Bindable:
         ].append(self._update)
 
         value = self.get_property_value()
+        if value is None:
+            _LOGGER.debug(
+                "Original property has value None %s", self._binding.bound_property
+            )
+            self._allow_none = True
 
         self._fire_update_event = False
         self._set_ui_value(value)

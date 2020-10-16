@@ -23,7 +23,7 @@ _LOGGER = logging.getLogger(__name__)
 class ViewOne(SimplePanel):
     def __init__(self, parent, controller: "ControllerOne"):
         self._controller = controller
-        super().__init__(parent, scrollable=True)
+        super().__init__(parent, scrollable=False)
 
     @property
     def controller(self) -> "ControllerOne":

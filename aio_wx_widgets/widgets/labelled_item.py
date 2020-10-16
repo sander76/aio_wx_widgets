@@ -11,7 +11,13 @@ __all__ = ["LabelledItem"]
 
 class LabelledItem(Grid):
     def __init__(
-        self, label_text: str, item, align_right=True, label_weight=1, item_weight=1
+        self,
+        label_text: str,
+        item,
+        align_right=True,
+        label_weight=1,
+        item_weight=1,
+        item_alignment=None,
     ):
         super().__init__()
         self.label_text = label_text
@@ -19,6 +25,7 @@ class LabelledItem(Grid):
         self._label_weight = label_weight
         self._item_weight = item_weight
         self.align_right = align_right
+        self._item_alignment = item_alignment
 
     def __call__(self, parent, *args, **kwargs):
         super().__call__(parent)
@@ -32,6 +39,9 @@ class LabelledItem(Grid):
             hor_align=hor_alignment,
             ver_align=VerAlign.center,
         )
-        self.add(self._item, weight=self._item_weight)
+        self.add(self._item, weight=self._item_weight, hor_align=self._item_alignment)
 
         return self
+
+    def __str__(self):
+        return f"{self.__class__.__name__}, label_weigth({self._label_weight}), item_weight({self._item_weight}), align_right({self.align_right}), item_alignment({self._item_alignment})"

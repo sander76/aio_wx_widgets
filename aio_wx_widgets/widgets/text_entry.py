@@ -1,7 +1,7 @@
 """Text entry widgets."""
 
 # pylint: disable=invalid-name,no-self-use
-
+from __future__ import annotations
 import logging
 from typing import Union, Optional, Callable, Any
 
@@ -27,18 +27,21 @@ class Entry(Bindable):
         binding: Binding,
         label: Union[None, int, str] = None,
         validator: Callable[[Any, bool], Any] = None,
+        on_change: Callable[[Entry, Any], None] = None,
+        min_width=300,
     ):
 
         super().__init__(binding)
         self.value: Optional[int] = None
-
         self._label = label
         self._txt = wx.TextCtrl()
         self._validator = validator
+        self._min_width = min_width
         self.ui_item = self._txt
         self._popup = None
 
         self._txt.Bind(wx.EVT_KILL_FOCUS, self._on_focus_lost)
+        self._on_change = on_change
 
     def _on_focus_lost(self, evt):
         _LOGGER.debug("Lost focus on element.")
@@ -46,6 +49,8 @@ class Entry(Bindable):
         evt.Skip()
 
     def _set_ui_value(self, value):
+        if value is None:
+            value = ""
         _LOGGER.debug(
             "Updating text entry with value: %s, instance %s", value, id(self)
         )
@@ -60,10 +65,20 @@ class Entry(Bindable):
 
     def _get_ui_value(self, force: bool) -> Any:
         self._kill_popup()
+        val = self._txt.GetValue()
+
+        if val == "" and self._allow_none:
+            _LOGGER.debug("Setting property to None, %s", self._binding.bound_property)
+            return None
 
         if self._validator:
             return self._validator(self._txt.GetValue(), force)
         return self._txt.GetValue()
+
+    def _on_ui_change(self, *args, **kwargs):
+        super()._on_ui_change(*args, **kwargs)
+        if self._on_change:
+            self._on_change(self, self._get_ui_value(True))
 
     def __call__(self, parent):
         args = dict({"parent": parent})
@@ -73,6 +88,7 @@ class Entry(Bindable):
             args["value"] = str(self._label)
 
         self._txt.Create(**args)
+        self.ui_item.SetSizeHints(self._min_width, -1)
         self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
         self._make_binding()
 
