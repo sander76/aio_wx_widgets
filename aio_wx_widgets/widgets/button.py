@@ -28,8 +28,9 @@ class AioButton(BaseWidget):
         label: str,
         callback: Union[Callable[[Any, Any], Awaitable], Callable[[Any, Any], None]],
         enabled: Union[bool, Binding] = True,
+        min_width=-1,
     ):
-        super().__init__(wx.Button(), enabled)
+        super().__init__(wx.Button(), min_width=min_width, enabled=enabled)
         self._label = label
         self._call_back = callback
 
@@ -50,5 +51,6 @@ class AioButton(BaseWidget):
         else:
             self.ui_item.Bind(wx.EVT_BUTTON, self._call_back)
 
-        self._make_bindings()
+        # self._make_bindings()
+        self._init()
         return self

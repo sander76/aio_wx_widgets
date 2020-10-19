@@ -10,10 +10,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class BaseWidget:
-    def __init__(self, ui_item: T.T_var, enabled: Optional[bool, Binding] = True):
+    def __init__(
+        self, ui_item: T.T_var, min_width: int, enabled: Optional[bool, Binding] = True,
+    ):
         self._enabled = enabled
         self.ui_item = ui_item
         self._value_binding = None
+        self._min_width = min_width
 
         self._enabled_binding = None
         if isinstance(self._enabled, Binding):
@@ -32,3 +35,8 @@ class BaseWidget:
             self._value_binding.make_binding()
         if self._enabled_binding:
             self._enabled_binding.make_binding()
+
+    def _init(self):
+        self._make_bindings()
+        if self._min_width > -1:
+            self.ui_item.SetSizeHints(self._min_width, -1)

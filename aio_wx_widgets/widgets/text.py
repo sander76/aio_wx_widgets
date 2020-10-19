@@ -44,6 +44,7 @@ class Text(BaseWidget):
         binding=None,
         bold=False,
         wrap=False,
+        min_width=-1,
     ):
         """Init.
 
@@ -52,7 +53,7 @@ class Text(BaseWidget):
             text:
             font_size:
         """
-        super().__init__(wx.StaticText(), True)
+        super().__init__(wx.StaticText(), min_width=min_width, enabled=True)
         self._parent = None
         self._color = color
         self._text = text
@@ -85,7 +86,9 @@ class Text(BaseWidget):
         if self._value_binding:
             self._value_binding.make_binding()
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
-        self._make_bindings()
+
+        self._init()
+        # self._make_bindings()
         return self
 
     def _on_size(self, evt):

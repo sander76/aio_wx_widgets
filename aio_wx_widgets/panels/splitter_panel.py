@@ -60,6 +60,7 @@ class TwoSplitterWindow(SizerMixin):
         window_one_width=250,
         splitter_one_scrollable=True,
         splitter_two_scrollable=True,
+        add_window2_close_button=False,
     ):
         """Init.
 

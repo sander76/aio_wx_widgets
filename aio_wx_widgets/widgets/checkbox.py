@@ -18,6 +18,7 @@ class CheckBox(BaseWidget):
         binding: Binding,
         change_callback: Optional[Callable[[bool], None]] = None,
         enabled: Union[bool, Binding] = True,
+        min_width=-1,
     ):
         """Init.
 
@@ -26,7 +27,7 @@ class CheckBox(BaseWidget):
             binding: property binding.
             change_callback: called when checkbox value changes.
         """
-        super().__init__(wx.CheckBox(), enabled)
+        super().__init__(wx.CheckBox(), min_width=min_width, enabled=enabled)
         self._label = str(label)
         self._change_callback = change_callback
 
@@ -55,6 +56,7 @@ class CheckBox(BaseWidget):
         self.ui_item.Create(parent, label=self._label)
         self.ui_item.Bind(wx.EVT_CHECKBOX, self._on_ui_change)
 
-        self._make_bindings()
+        # self._make_bindings()
+        self._init()
 
         return self

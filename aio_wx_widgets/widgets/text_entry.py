@@ -30,12 +30,12 @@ class Entry(BaseWidget):
         enabled: Union[bool, Binding] = True,
     ):
 
-        super().__init__(wx.TextCtrl(), enabled)
+        super().__init__(wx.TextCtrl(), min_width=min_width, enabled=enabled)
         self.value: Optional[int] = None
         self._label = label
         self._txt = self.ui_item
         self._validator = validator
-        self._min_width = min_width
+        # self._min_width = min_width
         self._popup = None
         self._allow_none = True
 
@@ -96,11 +96,11 @@ class Entry(BaseWidget):
             args["value"] = str(self._label)
 
         self._txt.Create(**args)
-        self.ui_item.SetSizeHints(self._min_width, -1)
+        # self.ui_item.SetSizeHints(self._min_width, -1)
         self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
 
-        self._make_bindings()
-
+        # self._make_bindings()
+        super()._init()
         return self
 
     def display_error(self, exception: ValidationError):

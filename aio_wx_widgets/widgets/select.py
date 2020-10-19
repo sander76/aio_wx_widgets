@@ -35,7 +35,7 @@ class Select(BaseWidget):
             min_width: when alignment is set, this is the advised minimal width the
                 the widget should take.
         """
-        super().__init__(wx.Choice(), enabled)
+        super().__init__(wx.Choice(), min_width, enabled)
         self.choices = choices
         self._on_select_callback = on_select_callback
         self._selected_item = None
@@ -48,9 +48,8 @@ class Select(BaseWidget):
     def _on_mouse_wheel(self, evt):
         """Capturing as I want to disable selection when scrolling"""
 
-    def init(self, parent):
-        """Initialize the component."""
-        self.ui_item.Create(parent, choices=[choice.label for choice in self.choices])
+    # def init(self, parent):
+    #     """Initialize the component."""
 
     def _set_ui_value(self, value: T.Choice):
         try:
@@ -74,8 +73,9 @@ class Select(BaseWidget):
         return self._selected_item
 
     def __call__(self, parent):
-        self.init(parent)
-        self.ui_item.SetSizeHints((self._min_width, -1))
-        self._make_bindings()
-
+        # self.init(parent)
+        self.ui_item.Create(parent, choices=[choice.label for choice in self.choices])
+        # self.ui_item.SetSizeHints((self._min_width, -1))
+        # self._make_bindings()
+        self._init()
         return self
