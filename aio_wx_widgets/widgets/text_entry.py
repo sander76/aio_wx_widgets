@@ -7,10 +7,10 @@ from typing import Union, Optional, Callable, Any
 
 import wx
 
-from aio_wx_widgets.core.binding import Bindable, Binding
+from aio_wx_widgets.core.binding import TwoWayBindable, Binding
 from aio_wx_widgets.core.error_message import ErrorPopup
 from aio_wx_widgets.core.validators import ValidationError
-from aio_wx_widgets.widgets.base_widget import BaseWidget
+from aio_wx_widgets.core.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,25 +29,26 @@ class Entry(BaseWidget):
         min_width=300,
         enabled: Union[bool, Binding] = True,
     ):
-
-        super().__init__(wx.TextCtrl(), min_width=min_width, enabled=enabled)
+        super().__init__(
+            wx.TextCtrl(),
+            min_width=min_width,
+            value_binding=TwoWayBindable(
+                binding,
+                self._get_ui_value,
+                self._set_ui_value,
+                display_error=self.display_error,
+            ),
+            enabled=enabled,
+        )
         self.value: Optional[int] = None
         self._label = label
         self._txt = self.ui_item
         self._validator = validator
-        # self._min_width = min_width
         self._popup = None
         self._allow_none = True
 
         self.ui_item.Bind(wx.EVT_KILL_FOCUS, self._on_focus_lost)
         self._on_change = on_change
-
-        self._value_binding = Bindable(
-            binding,
-            self._get_ui_value,
-            self._set_ui_value,
-            display_error=self.display_error,
-        )
 
     def _on_focus_lost(self, evt):
         _LOGGER.debug("Lost focus on element.")
@@ -76,7 +77,7 @@ class Entry(BaseWidget):
         if val == "" and self._allow_none:
             _LOGGER.debug(
                 "Setting property to None, %s",
-                self._value_binding._binding.bound_property,
+                self._value_binding.binding.bound_property,
             )
             return None
 

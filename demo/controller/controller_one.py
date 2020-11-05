@@ -14,7 +14,7 @@ class ControllerOne(BaseController):
 
     def __init__(self, model):
         # self.float_val: float = 0
-        self.int_val: int = 0
+        self.int_val: int = 987
         self.a_string_value = None
         self.a_checkbox_value: bool = True
         super().__init__(model)
@@ -37,3 +37,7 @@ class ControllerOne(BaseController):
         val = randint(1, 100)
         _LOGGER.debug("Setting bound property to %s", val)
         self.int_val = val
+
+    @property
+    def value(self):
+        return 10

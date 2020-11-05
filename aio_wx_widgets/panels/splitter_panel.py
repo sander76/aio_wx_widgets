@@ -22,7 +22,7 @@ class _ScrollPanel(SizerMixin):
         self.ui_item = scrolledpanel.ScrolledPanel(parent)
         self._sizer = wx.BoxSizer(wx.VERTICAL)
         self.ui_item.SetSizer(self._sizer)
-        self.ui_item.SetupScrolling()
+        self.ui_item.SetupScrolling(scroll_x=False)
 
         super().__init__()
 
@@ -60,7 +60,6 @@ class TwoSplitterWindow(SizerMixin):
         window_one_width=250,
         splitter_one_scrollable=True,
         splitter_two_scrollable=True,
-        add_window2_close_button=False,
     ):
         """Init.
 
@@ -90,13 +89,13 @@ class TwoSplitterWindow(SizerMixin):
         self._sizer = self.splitter_window_one.sizer
         self._parent = self.splitter_window_one.ui_item
 
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
+        # self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
 
     def _on_resize(self, evt):
         _LOGGER.debug("resizing splitter window.")
         self.splitter_window_one.ui_item.Refresh()
-
         self._sizer.Layout()
+
         self.splitter_window_two.sizer.Layout()
         evt.Skip()
 

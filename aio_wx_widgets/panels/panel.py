@@ -5,7 +5,7 @@ import logging
 
 import wx
 from wx.lib.scrolledpanel import ScrolledPanel
-from aio_wx_widgets import type_annotations as T
+from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.sizers import PanelMixin, SizerMixin
 
 _LOGGER = logging.getLogger(__name__)

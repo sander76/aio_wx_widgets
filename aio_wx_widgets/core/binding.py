@@ -32,10 +32,15 @@ class OneWayBindable:
         self._binding = binding
         self._set_ui_value = set_ui_value
 
+    @property
+    def binding(self):
+        return self._binding
+
     def make_binding(self):
-        # if self._binding is None:
-        #     _LOGGER.debug("No binding defined.")
-        #     return
+        """Create the binding."""
+        if self._binding is None:
+            _LOGGER.debug("No binding defined.")
+            return
 
         if WATCHERS not in self._binding.bound_object.__dict__:
             self._binding.bound_object.__dict__[WATCHERS] = {}
@@ -79,7 +84,7 @@ class OneWayBindable:
         return getattr(self._binding.bound_object, self._binding.bound_property)
 
 
-class Bindable(OneWayBindable):
+class TwoWayBindable(OneWayBindable):
     """Base class for binding a property to a widget.
 
     Make a widget inherit from this. The binding property modifies the controller bound
@@ -115,7 +120,7 @@ class Bindable(OneWayBindable):
         _LOGGER.debug("Setting fire event to False on %s", id(self))
         super()._update(value)
 
-    def on_ui_change(self, *args, **kwargs):
+    def on_ui_change(self, *args, **kwargs):  # noqa
         """Callback when UI widget value changes by user input."""
         _LOGGER.debug("UI value changed on id %s", id(self))
         if not self._fire_update_event:

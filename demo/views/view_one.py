@@ -35,7 +35,7 @@ class ViewOne(SimplePanel):
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
-
+        self.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
         self.add(
             LabelledItem(
                 "Label text",

@@ -1,13 +1,12 @@
 """Sizer and Layout tooling."""
-
+from __future__ import annotations
 import collections
 import logging
 from typing import List, Tuple, Optional, Union, TypeVar
 
 import wx
 
-# pylint: disable=unused-import
-from aio_wx_widgets import type_annotations as T
+from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 
@@ -151,10 +150,11 @@ class SizerMixin:
             item: the item to be added.
             weight: The relative weight to other items in this container and the size
                 it should take
-            layout: The layout
-            margin: None to use default. An int to use one margin for all sides.
+            margin: An int to use one margin for all sides.
                 A tuple (left,right,top,bottom) for side specific margins.
             create: A ready made component can be added to.
+            hor_align: Horizontal alignment.
+            ver_align: Vertical alignment.
         """
         try:
             parent = self._parent  # type: ignore
@@ -192,7 +192,7 @@ class PanelMixin:
         evt.Skip()
 
     @property
-    def controller(self) -> "T.BaseController":
+    def controller(self) -> T.BaseController:
         """Return the controller for this panel."""
         raise NotImplementedError()
 

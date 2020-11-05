@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0
+
+- Releasing version 1.0.0
+
 ## v0.0.9
 
 - Add "Section widget"

@@ -1,6 +1,8 @@
 import logging
+from unittest.mock import Mock
+
 import pytest
-from aio_wx_widgets.core.binding import Binding, Bindable, WATCHERS
+from aio_wx_widgets.core.binding import Binding, TwoWayBindable, WATCHERS
 from aio_wx_widgets.controller import BaseController
 
 _LOGGER = logging.getLogger(__name__)
@@ -27,10 +29,12 @@ def some_binding(some_controller):
 
 @pytest.fixture
 def some_bindable(mocker, some_binding):
-    mocker.patch.object(Bindable, "_get_ui_value")
-    mocker.patch.object(Bindable, "_set_ui_value")
+    get_ui_value = Mock()
+    set_ui_value = Mock()
+    # mocker.patch.object(TwoWayBindable, "_get_ui_value")
+    # mocker.patch.object(TwoWayBindable, "_set_ui_value")
 
-    return Bindable(some_binding)
+    return TwoWayBindable(some_binding, get_ui_value, set_ui_value)
 
 
 def test_make_binding(some_bindable, some_controller):

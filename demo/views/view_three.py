@@ -17,7 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
     def __init__(self, parent, controller, scrollable=False, window_one_width=250):
         super().__init__(
-            parent, splitter_one_scrollable=False, splitter_two_scrollable=True
+            parent, splitter_one_scrollable=False, splitter_two_scrollable=False
         )
         self._controller = controller
         # self.splitter_window_two.add(Text("This is text"))
@@ -42,7 +42,7 @@ class ViewThree(SplitterWindow):
 
     def populate(self):
         """Populate this view."""
-        self.splitter_window_one.add(Entry(binding=self.bind("value_1")))
+        self.splitter_window_one.add(Entry(binding=self.bind("value_1")), margin=20)
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
@@ -64,14 +64,16 @@ class ViewThree(SplitterWindow):
         with self.add(Grid()) as grd:
             grd.add(AioButton("button one", self._set_value), weight=6)
             grd.add(AioButton("button two,self", self._set_value), weight=6)
+        with self.add(Grid(), margin=20) as grd:
+            grd.add(
+                Text(
+                    "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text.",
+                    wrap=True,
+                ),
+                weight=1,
+                margin=0,
+            )
 
-        self.add(
-            Text(
-                "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text.",
-                wrap=True,
-            ),
-            margin=15,
-        )
         self._btn = AioButton("toggle", self._toggle)
         with self.add(Grid()) as grd:
             grd.add(AioButton("toggle", self._toggle))

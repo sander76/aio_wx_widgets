@@ -5,7 +5,7 @@ from asyncio import Task
 from typing import List, Awaitable
 
 # pylint: disable=unused-import
-from aio_wx_widgets import type_annotations as T
+from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import WATCHERS
 from aio_wx_widgets.core.sizers import T_var
 
@@ -27,11 +27,14 @@ class BaseController:
 
     @property
     def model(self):
+        """Return the model of this controller."""
         return self._model
 
     def __setattr__(self, item, value):
         # print(f"Setting item {item} to value {value}")
-        self.__dict__[item] = value
+        # self.__dict__[item] = value
+        # setattr(self,item,value)
+        super().__setattr__(item, value)
         if WATCHERS not in self.__dict__:
             return
         if item not in self.__dict__[WATCHERS]:

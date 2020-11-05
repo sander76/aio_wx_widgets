@@ -5,10 +5,10 @@ from typing import Optional
 
 import wx
 
-from aio_wx_widgets.core.binding import Bindable
+from aio_wx_widgets.core.binding import OneWayBindable, Binding
 from aio_wx_widgets.colors import GREEN
 from aio_wx_widgets.const import is_debugging
-from aio_wx_widgets.widgets.base_widget import BaseWidget
+from aio_wx_widgets.core.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -22,13 +22,9 @@ def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> w
         current_font_size = current_font.GetPointSize()
         new_font_size = int(font_size * current_font_size)
         font.SetPointSize(new_font_size)
-        # font_info=wx.FontInfo(new_font_size)
-    # else:
-    #     font_info=wx.FontInfo()
 
     if bold:
         font.MakeBold()
-        # font_info.Weight(wx.FONTWEIGHT_BOLD)
 
     return font
 
@@ -41,7 +37,8 @@ class Text(BaseWidget):
         text="",
         font_size: float = 1,
         color: Optional[int] = None,
-        binding=None,
+        enabled: Optional[Binding] = True,
+        binding: Optional[Binding] = None,
         bold=False,
         wrap=False,
         min_width=-1,
@@ -49,11 +46,19 @@ class Text(BaseWidget):
         """Init.
 
         Args:
-            parent:
             text:
             font_size:
         """
-        super().__init__(wx.StaticText(), min_width=min_width, enabled=True)
+        value_binding = (
+            OneWayBindable(binding, self._set_ui_value) if binding is not None else None
+        )
+
+        super().__init__(
+            wx.StaticText(),
+            min_width=min_width,
+            value_binding=value_binding,
+            enabled=enabled,
+        )
         self._parent = None
         self._color = color
         self._text = text
@@ -61,16 +66,12 @@ class Text(BaseWidget):
 
         self._font = _get_font_info(self.ui_item.GetFont(), font_size, bold=bold)
 
-        self._value_binding = None
-        if binding:
-            self._value_binding = Bindable(
-                binding, self._get_ui_value, self._set_ui_value
-            )
+        self._previous_size = None
 
     def _set_ui_value(self, value):
-        self.ui_item.SetLabelText(str(value))
+        self.set_text(value)
 
-    def _get_ui_value(self, force: bool):
+    def _get_ui_value(self, force: bool):  # noqa
         """This is a one way binding. Not implementing this."""
         return None
 
@@ -80,31 +81,43 @@ class Text(BaseWidget):
         if self._font:
             self.ui_item.SetFont(self._font)
 
-        self.set_text(self._text, self._color)
+        if self._text:
+            self.set_text(self._text, self._color)
+        if self._value_binding:
+            self.set_text(self._value_binding.get_property_value(), self._color)
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
-        if self._value_binding:
-            self._value_binding.make_binding()
+        self._init()
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
 
-        self._init()
-        # self._make_bindings()
         return self
 
-    def _on_size(self, evt):
-        if not self._wrap:
-            return
-
+    def _set_text(self, color=None, client_size=None):
+        # _LOGGER.debug("Setting text to: %s", self._text)
         self.ui_item.Unbind(wx.EVT_SIZE)
-        size = self.ui_item.GetSize()
-        self.ui_item.SetLabel(self._text)
-        self.ui_item.Wrap(size[0])
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
-        evt.Skip()
 
-    def set_text(self, text, color=None):
-        """Set text."""
-        self._text = str(text)
-        self.ui_item.SetLabel(self._text)
+        self.ui_item.SetLabel(str(self._text))
+
+        if self._wrap:
+            if client_size:
+                self.ui_item.Wrap(client_size[0])
+
         if color:
             self.ui_item.SetForegroundColour(color)
+
+        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
+
+    def _on_size(self, evt):
+        size = evt.Size
+        if self._previous_size is not None and self._previous_size[0] == size[0]:
+            return
+        else:
+            self._previous_size = size
+            self._set_text(client_size=size)
+
+        # evt.Skip()
+
+    def set_text(self, text, color=None):
+        """Set or change the text."""
+        self._text = str(text)
+        self._set_text(color)

@@ -25,6 +25,8 @@ class HorAlign(Enum):
 
 
 class VerAlign(Enum):
+    """Vertical alignment options."""
+
     top = wx.ALIGN_TOP
     bottom = wx.ALIGN_BOTTOM
     center = wx.ALIGN_CENTER_VERTICAL

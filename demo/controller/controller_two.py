@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import asyncio
 import logging
-from asyncio import CancelledError
 from random import randint
 from typing import Sequence
 
@@ -20,7 +18,7 @@ class ControllerTwo(BaseController):
         self.value_1: int = 0
         self.a_string_value = "A certain string"
         super().__init__(model)
-        self.create_task(self.value_setter())
+        # self.create_task(self.value_setter())
         # self.add_to_log = Channel("Log messages")
         self.add_to_log = Events()
         self.choices: Sequence[T.Choice] = [
@@ -34,12 +32,12 @@ class ControllerTwo(BaseController):
         _LOGGER.debug("Setting bound property to %s", val)
         self.value_1 = val
 
-    async def value_setter(self):
-        try:
-            while 1:
-                val = str(randint(1, 100))
-                _LOGGER.debug("Setting value to : %s", val)
-                self.add_to_log.publish(val)
-                await asyncio.sleep(2)
-        except CancelledError:
-            _LOGGER.debug("Stopping value setter task.")
+    # async def value_setter(self):
+    #     try:
+    #         while 1:
+    #             val = str(randint(1, 100))
+    #             _LOGGER.debug("Setting value to : %s", val)
+    #             self.add_to_log.publish(val)
+    #             await asyncio.sleep(2)
+    #     except CancelledError:
+    #         _LOGGER.debug("Stopping value setter task.")

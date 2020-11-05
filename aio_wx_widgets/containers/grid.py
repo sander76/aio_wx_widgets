@@ -33,7 +33,7 @@ class Grid(SizerMixin):
         self.ui_item = self._sizer = wx.BoxSizer(orient=orientation)
         self._parent = None
 
-    def __call__(self, parent):
+    def __call__(self, parent) -> SizerMixin:
         # setting a specific parent.
         self._parent = parent
         return self

@@ -1,3 +1,8 @@
+"""Error messages.
+
+Used in combination with validators.
+"""
+
 import logging
 
 import wx

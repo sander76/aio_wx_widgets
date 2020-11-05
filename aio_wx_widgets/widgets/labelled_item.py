@@ -1,3 +1,5 @@
+"""A labelled item."""
+
 import logging
 
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
@@ -10,6 +12,8 @@ __all__ = ["LabelledItem"]
 
 
 class LabelledItem(Grid):
+    """Labelled item."""
+
     def __init__(
         self,
         label_text: str,
@@ -44,4 +48,10 @@ class LabelledItem(Grid):
         return self
 
     def __str__(self):
-        return f"{self.__class__.__name__}, label_weigth({self._label_weight}), item_weight({self._item_weight}), align_right({self.align_right}), item_alignment({self._item_alignment})"
+        return (
+            f"{self.__class__.__name__}, "
+            f"label_weigth({self._label_weight}), "
+            f"item_weight({self._item_weight}), "
+            f"align_right({self.align_right}), "
+            f"item_alignment({self._item_alignment})"
+        )

@@ -5,9 +5,9 @@ import logging
 from typing import Callable, Optional, Sequence, Union
 
 import wx
-from aio_wx_widgets import type_annotations as T
-from aio_wx_widgets.core.binding import Bindable, Binding
-from aio_wx_widgets.widgets.base_widget import BaseWidget
+from aio_wx_widgets import type_annotations as T  # noqa
+from aio_wx_widgets.core.binding import TwoWayBindable, Binding
+from aio_wx_widgets.core.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,7 +35,15 @@ class Select(BaseWidget):
             min_width: when alignment is set, this is the advised minimal width the
                 the widget should take.
         """
-        super().__init__(wx.Choice(), min_width, enabled)
+        value_binding = (
+            TwoWayBindable(binding, self._get_ui_value, self._set_ui_value)
+            if binding is not None
+            else None
+        )
+
+        super().__init__(
+            wx.Choice(), min_width, value_binding=value_binding, enabled=enabled,
+        )
         self.choices = choices
         self._on_select_callback = on_select_callback
         self._selected_item = None
@@ -43,13 +51,9 @@ class Select(BaseWidget):
         self.ui_item.Bind(wx.EVT_CHOICE, self._on_choice)
         self.ui_item.Bind(wx.EVT_MOUSEWHEEL, self._on_mouse_wheel)
         self._min_width = min_width
-        self._value_binding = Bindable(binding, self._get_ui_value, self._set_ui_value)
 
     def _on_mouse_wheel(self, evt):
         """Capturing as I want to disable selection when scrolling"""
-
-    # def init(self, parent):
-    #     """Initialize the component."""
 
     def _set_ui_value(self, value: T.Choice):
         try:
@@ -60,8 +64,11 @@ class Select(BaseWidget):
             _LOGGER.error("Default product not available")
         else:
             self.ui_item.Select(_idx)
+        # setting this value manually as the SetValue command does -in this case-
+        # not trigger the _on_ui_change callback.
+        self._value_binding._fire_update_event = True
 
-    def _on_choice(self, event):
+    def _on_choice(self, event):  # noqa
         _idx = self.ui_item.GetSelection()
         _LOGGER.debug("Selected idx: %s", _idx)
         self._selected_item = self.choices[_idx]
@@ -69,13 +76,11 @@ class Select(BaseWidget):
         if self._on_select_callback:
             self._on_select_callback(self._selected_item)
 
-    def _get_ui_value(self, force):
+    def _get_ui_value(self, force):  # noqa
         return self._selected_item
 
     def __call__(self, parent):
-        # self.init(parent)
         self.ui_item.Create(parent, choices=[choice.label for choice in self.choices])
-        # self.ui_item.SetSizeHints((self._min_width, -1))
-        # self._make_bindings()
         self._init()
+
         return self

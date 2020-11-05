@@ -4,10 +4,15 @@ import logging
 
 _LOGGER = logging.getLogger(__name__)
 
-__all__ = ["int_validator", "float_validator", "all_digits_validator"]
+__all__ = [
+    "int_validator",
+    "float_validator",
+    "all_digits_validator",
+    "ValidationError",
+]
 
 
-def int_validator(value, force) -> int:
+def int_validator(value, force) -> int:  # noqa
     """Int validator."""
     try:
         converted = int(value)
@@ -31,7 +36,7 @@ def float_validator(value, force) -> float:
     return value
 
 
-def all_digits_validator(value, force) -> str:
+def all_digits_validator(value, force) -> str:  # noqa
     """All digits validator.
 
     Only numbers are allowed.
