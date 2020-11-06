@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.2
+
+- Fix binding issue on select widget.
+
 ## v1.0.1
 
 - Fix pylint and mypy

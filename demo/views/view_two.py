@@ -48,7 +48,10 @@ class ViewTwo(SimplePanel):
             sec.add(
                 LabelledItem(
                     "Item",
-                    Select(self.controller.choices, binding=self.bind("selected_item")),
+                    Select(
+                        self.controller.choices,
+                        on_select_callback=self._on_select_callback,
+                    ),
                 )
             )
 

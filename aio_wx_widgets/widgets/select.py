@@ -73,7 +73,8 @@ class Select(BaseWidget):
         _idx = self.ui_item.GetSelection()
         _LOGGER.debug("Selected idx: %s", _idx)
         self._selected_item = self.choices[_idx]
-        self._value_binding.on_ui_change()
+        if self._value_binding:
+            self._value_binding.on_ui_change()
         if self._on_select_callback:
             self._on_select_callback(self._selected_item)
 
