@@ -22,12 +22,13 @@ ignored-modules=wx
 disable=
   fixme,
   cyclic-import, # needs to be enabled in the end.
-  protected-access, # needs to be enabled in the end.
+  # protected-access, # needs to be enabled in the end.
   format,
   too-few-public-methods,
   too-many-arguments,
   too-many-instance-attributes,
   unused-argument,
   # wrong-import-order
+  duplicate-code
 enable=
   use-symbolic-message-instead

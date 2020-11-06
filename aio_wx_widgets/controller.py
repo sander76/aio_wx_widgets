@@ -1,4 +1,5 @@
 """MVC controller."""
+from __future__ import annotations
 import asyncio
 import logging
 from asyncio import Task
@@ -7,7 +8,6 @@ from typing import List, Awaitable
 # pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import WATCHERS
-from aio_wx_widgets.core.sizers import T_var
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,14 +15,14 @@ _LOGGER = logging.getLogger(__name__)
 class BaseController:
     """Base implementation of a controller."""
 
-    def __init__(self, model: T_var):
+    def __init__(self, model: T.T):
         """Init.
 
         Args:
             model: The model.
         """
 
-        self._model: T_var = model
+        self._model: T.T = model
         self._tasks: List[Task] = []
 
     @property

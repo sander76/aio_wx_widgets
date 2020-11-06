@@ -44,7 +44,7 @@ class Entry(BaseWidget):
         self._label = label
         self._txt = self.ui_item
         self._validator = validator
-        self._popup = None
+        self._popup: Optional[ErrorPopup] = None
         self._allow_none = True
 
         self.ui_item.Bind(wx.EVT_KILL_FOCUS, self._on_focus_lost)
@@ -75,6 +75,7 @@ class Entry(BaseWidget):
         val = self._txt.GetValue()
 
         if val == "" and self._allow_none:
+            assert self._value_binding is not None
             _LOGGER.debug(
                 "Setting property to None, %s",
                 self._value_binding.binding.bound_property,
@@ -105,6 +106,7 @@ class Entry(BaseWidget):
         return self
 
     def display_error(self, exception: ValidationError):
+        """Display a validation error."""
         self._kill_popup()
 
         message = str(exception)

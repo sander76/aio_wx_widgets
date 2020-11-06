@@ -1,6 +1,7 @@
 """Validators"""
 
 import logging
+from typing import Union
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,18 +18,18 @@ def int_validator(value, force) -> int:  # noqa
     try:
         converted = int(value)
     except ValueError:
-        raise ValidationError("Not a valid integer.")
+        raise ValidationError("Not a valid integer.") from None
     if value == str(converted):
         return converted
     raise ValidationError("not a valid integer.")
 
 
-def float_validator(value, force) -> float:
+def float_validator(value: str, force) -> Union[float, str]:
     """Float validator."""
     try:
         converted = float(value)
     except ValueError:
-        raise ValidationError("Not a valid float.")
+        raise ValidationError("Not a valid float.") from None
     if value == str(converted):
         return converted
     if force:
@@ -36,7 +37,7 @@ def float_validator(value, force) -> float:
     return value
 
 
-def all_digits_validator(value, force) -> str:  # noqa
+def all_digits_validator(value: str, force) -> str:  # noqa
     """All digits validator.
 
     Only numbers are allowed.

@@ -114,5 +114,6 @@ class TwoSplitterWindow(SizerMixin):
         )
 
     @property
-    def is_split(self) -> bool:
+    def is_split(self):
+        """Return whether this window is split or not."""
         return self.ui_item.IsSplit()

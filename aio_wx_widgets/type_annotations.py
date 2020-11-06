@@ -1,12 +1,13 @@
 """All type annotations go here."""
 
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 if TYPE_CHECKING:
+    from aio_wx_widgets.core.base_widget import BaseWidget
     from aio_wx_widgets.core.binding import Binding
-
     from aio_wx_widgets.controller import BaseController
     from asyncio import AbstractEventLoop
+    import wx
 
     try:
         import Protocol  # type: ignore
@@ -16,6 +17,8 @@ if TYPE_CHECKING:
     assert BaseController
     assert AbstractEventLoop
     assert Binding
+    assert wx
+    assert BaseWidget
 
     class Choice(Protocol):
         """Typing protocol to be used for static type checking."""
@@ -23,4 +26,6 @@ if TYPE_CHECKING:
         label: str
         value: Any
 
-    T_var = TypeVar("T_var")
+    T = TypeVar("T")  # pylint: disable=invalid-name
+
+    Widget = Union[BaseWidget, wx.Window, wx.BoxSizer]

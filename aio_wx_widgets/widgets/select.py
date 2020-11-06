@@ -66,7 +66,8 @@ class Select(BaseWidget):
             self.ui_item.Select(_idx)
         # setting this value manually as the SetValue command does -in this case-
         # not trigger the _on_ui_change callback.
-        self._value_binding._fire_update_event = True
+        assert self._value_binding is not None
+        self._value_binding.fire_update_event = True
 
     def _on_choice(self, event):  # noqa
         _idx = self.ui_item.GetSelection()

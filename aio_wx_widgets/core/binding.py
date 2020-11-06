@@ -31,9 +31,14 @@ class OneWayBindable:
         """Read only binding."""
         self._binding = binding
         self._set_ui_value = set_ui_value
+        self._allow_none = False
+        # Flag to stop firing updates when a property value has changed.
+        # Prevents infinite loop of updating the value and firing update events.
+        self.fire_update_event = True
 
     @property
     def binding(self):
+        """Return the binding values."""
         return self._binding
 
     def make_binding(self):
@@ -63,7 +68,7 @@ class OneWayBindable:
             )
             self._allow_none = True
 
-        self._fire_update_event = False
+        self.fire_update_event = False
         self._set_ui_value(value)
 
     def _update(self, value):
@@ -72,7 +77,6 @@ class OneWayBindable:
         Update the control with the new value
         """
         _LOGGER.debug("Updating entry with new value.")
-        # self._fire_update_event = False
         self._set_ui_value(value)
         _LOGGER.debug("Updated.")
 
@@ -92,19 +96,11 @@ class TwoWayBindable(OneWayBindable):
     """
 
     def __init__(
-        self,
-        binding: Binding,
-        get_ui_value,
-        set_ui_value,
-        display_error: Optional = None,
+        self, binding: Binding, get_ui_value, set_ui_value, display_error=None,
     ):
 
         super().__init__(binding, set_ui_value)
 
-        # Flag to stop firing updates when a property value has changed.
-        # Prevents infinite loop of updating the value and firing update events.
-        self._fire_update_event = True
-        self._allow_none = False
         self._get_ui_value = get_ui_value
         self._display_error = display_error
 
@@ -116,17 +112,17 @@ class TwoWayBindable(OneWayBindable):
 
         Update the control with the new value
         """
-        self._fire_update_event = False
+        self.fire_update_event = False
         _LOGGER.debug("Setting fire event to False on %s", id(self))
         super()._update(value)
 
     def on_ui_change(self, *args, **kwargs):  # noqa
         """Callback when UI widget value changes by user input."""
         _LOGGER.debug("UI value changed on id %s", id(self))
-        if not self._fire_update_event:
+        if not self.fire_update_event:
             _LOGGER.debug("Not updating bindings as fire_update_event is False")
             _LOGGER.debug("Setting fire event to True on %s", id(self))
-            self._fire_update_event = True
+            self.fire_update_event = True
             return
         _LOGGER.debug("Trigger the binding")
 
@@ -149,4 +145,4 @@ class TwoWayBindable(OneWayBindable):
         else:
             self._set_property_value(val)
             _LOGGER.debug("Setting fire event to True on %s", id(self))
-            self._fire_update_event = True
+            self.fire_update_event = True

@@ -1,7 +1,7 @@
 """Text widgets."""
 
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 import wx
 
@@ -37,7 +37,7 @@ class Text(BaseWidget):
         text="",
         font_size: float = 1,
         color: Optional[int] = None,
-        enabled: Optional[Binding] = True,
+        enabled: Union[bool, Binding] = True,
         binding: Optional[Binding] = None,
         bold=False,
         wrap=False,
@@ -70,10 +70,6 @@ class Text(BaseWidget):
 
     def _set_ui_value(self, value):
         self.set_text(value)
-
-    def _get_ui_value(self, force: bool):  # noqa
-        """This is a one way binding. Not implementing this."""
-        return None
 
     def __call__(self, parent):
         self._parent = parent
@@ -111,9 +107,9 @@ class Text(BaseWidget):
         size = evt.Size
         if self._previous_size is not None and self._previous_size[0] == size[0]:
             return
-        else:
-            self._previous_size = size
-            self._set_text(client_size=size)
+
+        self._previous_size = size
+        self._set_text(client_size=size)
 
         # evt.Skip()
 

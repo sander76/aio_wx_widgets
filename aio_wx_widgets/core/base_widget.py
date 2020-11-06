@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
+from typing import Union
 
 from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import Binding, OneWayBindable, TwoWayBindable
@@ -16,10 +16,10 @@ class BaseWidget:
 
     def __init__(
         self,
-        ui_item: T.T_var,
+        ui_item: T.wx,
         min_width: int,
-        value_binding: Optional[OneWayBindable, TwoWayBindable],
-        enabled: Optional[bool, Binding] = True,
+        value_binding: Union[OneWayBindable, TwoWayBindable, None],
+        enabled: Union[bool, Binding] = True,
     ):
         self._enabled = enabled
         self.ui_item = ui_item
@@ -48,3 +48,6 @@ class BaseWidget:
         self._make_bindings()
         if self._min_width > -1:
             self.ui_item.SetSizeHints(self._min_width, -1)
+
+    def __call__(self, parent):
+        raise NotImplementedError

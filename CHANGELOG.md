@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1
+
+- Fix pylint and mypy
+
 ## v1.0.0
 
 - Releasing version 1.0.0

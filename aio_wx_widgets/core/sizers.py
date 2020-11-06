@@ -1,8 +1,9 @@
 """Sizer and Layout tooling."""
 from __future__ import annotations
+
 import collections
 import logging
-from typing import List, Tuple, Optional, Union, TypeVar
+from typing import List, Tuple, Optional, Union
 
 import wx
 
@@ -12,7 +13,7 @@ from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 
 _LOGGER = logging.getLogger(__name__)
 
-T_var = TypeVar("T_var")
+# T_var = TypeVar("T_var")
 
 
 def _make_window(item: wx.Window, margins: List[Tuple[int, int]]):
@@ -82,7 +83,7 @@ def _align_item(
 
 
 def _add(
-    item: T_var,
+    item: T.Widget,
     parent,
     sizer,
     weight,
@@ -91,7 +92,7 @@ def _add(
     create,
     hor_align: Optional[HorAlign],
     ver_align: Optional[VerAlign],
-) -> T_var:
+) -> T.Widget:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
@@ -137,13 +138,13 @@ class SizerMixin:
 
     def add(
         self,
-        item: T_var,
+        item: T.Widget,
         weight=0,
         margin=(5, 5, 1, 1),  # left,right,top,bottom
         create=True,
         hor_align: Optional[HorAlign] = None,
         ver_align: Optional[VerAlign] = None,
-    ) -> T_var:
+    ) -> T.Widget:
         """Add an item to this panel
 
         Args:

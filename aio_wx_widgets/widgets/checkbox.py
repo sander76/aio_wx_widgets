@@ -31,6 +31,7 @@ class CheckBox(BaseWidget):
             binding: property binding.
             change_callback: called when checkbox value changes.
         """
+
         value_binding = (
             TwoWayBindable(binding, self._get_ui_value, self._set_ui_value)
             if binding is not None
@@ -52,10 +53,10 @@ class CheckBox(BaseWidget):
 
         # setting this value manually as the SetValue command does -in this case-
         # not trigger the _on_ui_change callback.
-        self._value_binding._fire_update_event = True
+        self._value_binding.fire_update_event = True
 
     def _get_ui_value(self, force: bool) -> bool:  # noqa
-        val = self.ui_item.GetValue()
+        val: bool = self.ui_item.GetValue()
         return val
 
     def _on_ui_change(self, *args, **kwargs):
