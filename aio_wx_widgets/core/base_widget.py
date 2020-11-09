@@ -47,7 +47,9 @@ class BaseWidget:
     def _init(self):
         self._make_bindings()
         if self._min_width > -1:
-            self.ui_item.SetSizeHints(self._min_width, -1)
+            actual_x_value = self.ui_item.GetSize()[0]
+            if actual_x_value < self._min_width:
+                self.ui_item.SetMinSize((self._min_width, -1))
 
     def __call__(self, parent):
         raise NotImplementedError

@@ -36,6 +36,9 @@ class ViewOne(SimplePanel):
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
         self.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
+        with self.add(Grid()) as grd:
+            grd.add(Text("This is long text", min_width=50))
+            grd.add(Text("short", min_width=50))
         self.add(
             LabelledItem(
                 "Label text",
@@ -70,13 +73,15 @@ class ViewOne(SimplePanel):
             with sc.add(Grid()) as grd:
                 grd.add(
                     Entry(binding=self.bind("int_val"), validator=int_validator,),
-                    weight=6,
+                    weight=3,
+                    margin=0,
                 )
                 grd.add(
                     Entry(binding=self.bind("int_val"), validator=int_validator,),
-                    weight=4,
+                    weight=1,
+                    margin=0,
                 )
-                grd.add(Text(binding=self.bind("int_val")), weight=4, margin=3)
+                grd.add(Text(binding=self.bind("int_val")), weight=1, margin=0)
 
         with self.add(Grid()) as grd:
             grd.add(Entry(binding=Binding(self._controller, "a_string_value")))

@@ -26,7 +26,7 @@ class Entry(BaseWidget):
         label: Union[None, int, str] = None,
         validator: Callable[[Any, bool], Any] = None,
         on_change: Callable[[Entry, Any], None] = None,
-        min_width=300,
+        min_width=-1,
         enabled: Union[bool, Binding] = True,
     ):
         super().__init__(

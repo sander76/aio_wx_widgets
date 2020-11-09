@@ -74,6 +74,7 @@ class Text(BaseWidget):
     def __call__(self, parent):
         self._parent = parent
         self.ui_item.Create(parent)
+
         if self._font:
             self.ui_item.SetFont(self._font)
 

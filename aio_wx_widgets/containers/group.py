@@ -33,14 +33,12 @@ class Group(SizerMixin):
         Args:
             label:
         """
+        super().__init__()
         self._label = label
         self._extra_bottom_border = 10
-        # if KEY_PLATFORM == KEY_LINUX:
-        #     self._extra_bottom_border = 50
         self._sizer = wx.BoxSizer(wx.VERTICAL)
         self.ui_item = wx.StaticBox()
         kwargs["sizer"] = self._sizer
-        super().__init__()
         self._bottom_border = 1
 
     def __call__(self, parent):
@@ -56,6 +54,7 @@ class Group(SizerMixin):
         self._bottom_border = other + self._extra_bottom_border
         self._sizer.AddSpacer(top + 5)
         self.ui_item.SetSizer(self._sizer)
+
         return self
 
     def __enter__(self):
@@ -82,6 +81,7 @@ class Section(SizerMixin):
 
     def __init__(self, header: str, add_closing_line=True):
         """Init."""
+        super().__init__()
         self.ui_item = self._sizer = wx.BoxSizer(orient=wx.VERTICAL)
         self._parent = None
         self._header = header

@@ -186,6 +186,7 @@ class PanelMixin:
 
     def __init__(self):
         self.ui_item.Bind(wx.EVT_WINDOW_DESTROY, self._on_close)
+        super().__init__()
 
     def _on_close(self, evt):
         _LOGGER.debug("Window destroyed.")

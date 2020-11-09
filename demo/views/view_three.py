@@ -46,16 +46,16 @@ class ViewThree(SplitterWindow):
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
-        with self.add(Group("A labelled container.")) as group:
+        with self.splitter_window_one.add(Group("A labelled container.")) as group:
             # group.add(Text(text="A horizontal grid."))
 
             with group.add(Grid()) as grd:
                 # the binding binds to an attribute defined in the controller
                 # the weight determines how much space a specific item should consume
                 # with respect to the other members of the container.
-                grd.add(Entry(binding=self.bind("value_1")), weight=6, margin=3)
-                grd.add(Entry(binding=self.bind("value_1")), weight=4, margin=3)
-                grd.add(Entry(binding=self.bind("value_1")), weight=4, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=3, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=1, margin=3)
+                grd.add(Entry(binding=self.bind("value_1")), weight=1, margin=3)
 
         with self.add(Group("Any text entry.")) as group:
             group.add(Entry(binding=Binding(self._controller, "a_string_value")))
