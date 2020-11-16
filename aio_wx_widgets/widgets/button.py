@@ -2,13 +2,13 @@
 
 import logging
 from asyncio import iscoroutinefunction
-from typing import Callable, Any, Awaitable, Union
+from typing import Awaitable, Callable, Union
 
 import wx
 from wxasync import AsyncBind  # type: ignore
 
-from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.base_widget import BaseWidget
+from aio_wx_widgets.core.binding import Binding
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,7 +26,9 @@ class AioButton(BaseWidget):
     def __init__(
         self,
         label: str,
-        callback: Union[Callable[[Any, Any], Awaitable], Callable[[Any, Any], None]],
+        callback: Union[
+            Callable[[object, wx.Event], Awaitable], Callable[[object, wx.Event], None]
+        ],
         enabled: Union[bool, Binding] = True,
         min_width=-1,
     ):

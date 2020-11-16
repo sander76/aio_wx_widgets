@@ -2,9 +2,9 @@ import logging
 
 import wx
 
+from aio_wx_widgets.core.sizers import _margin_wrapper
 from aio_wx_widgets.frame import DefaultFrame
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.core.sizers import _margin_wrapper
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -5,10 +5,10 @@ from typing import Optional, Union
 
 import wx
 
-from aio_wx_widgets.core.binding import OneWayBindable, Binding
 from aio_wx_widgets.colors import GREEN
 from aio_wx_widgets.const import is_debugging
 from aio_wx_widgets.core.base_widget import BaseWidget
+from aio_wx_widgets.core.binding import Binding, OneWayBindable
 
 _LOGGER = logging.getLogger(__name__)
 

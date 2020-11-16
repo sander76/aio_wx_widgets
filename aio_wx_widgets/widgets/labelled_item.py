@@ -2,8 +2,8 @@
 
 import logging
 
-from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.containers.grid import Grid
+from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.widgets.text import Text
 
 _LOGGER = logging.getLogger(__name__)

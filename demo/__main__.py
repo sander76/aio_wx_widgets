@@ -1,9 +1,9 @@
 import asyncio
 import logging
 import os
-from wxasync import WxAsyncApp
 
 from demo.windows.main_window import MainWindow
+from wxasync import WxAsyncApp
 
 _LOGGER = logging.getLogger(__name__)
 

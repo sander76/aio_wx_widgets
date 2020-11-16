@@ -2,15 +2,16 @@
 
 # pylint: disable=invalid-name,no-self-use
 from __future__ import annotations
+
 import logging
-from typing import Union, Optional, Callable, Any
+from typing import Any, Callable, Optional, Union
 
 import wx
 
-from aio_wx_widgets.core.binding import TwoWayBindable, Binding
+from aio_wx_widgets.core.base_widget import BaseWidget
+from aio_wx_widgets.core.binding import Binding, TwoWayBindable
 from aio_wx_widgets.core.error_message import ErrorPopup
 from aio_wx_widgets.core.validators import ValidationError
-from aio_wx_widgets.core.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
 

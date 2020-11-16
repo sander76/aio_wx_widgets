@@ -1,22 +1,21 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import wx
 
 from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.containers import Section
+from aio_wx_widgets.containers.grid import VERTICAL, Grid
 from aio_wx_widgets.core.binding import Binding
-from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.core.data_types import HorAlign
+from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets import LabelledItem
 from aio_wx_widgets.widgets.button import AioButton
-from aio_wx_widgets.containers.grid import Grid, VERTICAL
 from aio_wx_widgets.widgets.select import Select
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from demo.controller.controller_two import ControllerTwo

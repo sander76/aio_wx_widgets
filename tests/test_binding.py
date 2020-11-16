@@ -2,8 +2,9 @@ import logging
 from unittest.mock import Mock
 
 import pytest
-from aio_wx_widgets.core.binding import Binding, TwoWayBindable, WATCHERS
+
 from aio_wx_widgets.controller import BaseController
+from aio_wx_widgets.core.binding import WATCHERS, Binding, TwoWayBindable
 
 _LOGGER = logging.getLogger(__name__)
 #

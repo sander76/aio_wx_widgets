@@ -1,11 +1,11 @@
 import logging
+
 import pytest
 
-
 from aio_wx_widgets.core.validators import (
-    int_validator,
-    all_digits_validator,
     ValidationError,
+    all_digits_validator,
+    int_validator,
 )
 
 _LOGGER = logging.getLogger(__name__)

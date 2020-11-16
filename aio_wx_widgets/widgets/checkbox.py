@@ -1,12 +1,12 @@
 """Checkbox."""
 
 import logging
-from typing import Optional, Callable, Union
+from typing import Callable, Optional, Union
 
 import wx
 
-from aio_wx_widgets.core.binding import TwoWayBindable, Binding
 from aio_wx_widgets.core.base_widget import BaseWidget
+from aio_wx_widgets.core.binding import Binding, TwoWayBindable
 
 _LOGGER = logging.getLogger(__name__)
 

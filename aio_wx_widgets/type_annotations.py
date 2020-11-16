@@ -3,11 +3,13 @@
 from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 if TYPE_CHECKING:
+    from asyncio import AbstractEventLoop
+
+    import wx
+
+    from aio_wx_widgets.controller import BaseController
     from aio_wx_widgets.core.base_widget import BaseWidget
     from aio_wx_widgets.core.binding import Binding
-    from aio_wx_widgets.controller import BaseController
-    from asyncio import AbstractEventLoop
-    import wx
 
     try:
         import Protocol  # type: ignore

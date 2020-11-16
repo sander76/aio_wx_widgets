@@ -2,7 +2,7 @@
 
 import logging
 from enum import Enum
-from typing import NamedTuple, Any
+from typing import Any, NamedTuple
 
 import wx
 

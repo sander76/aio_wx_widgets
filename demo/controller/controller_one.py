@@ -1,10 +1,10 @@
 import logging
 from random import randint
 
+from demo.windows import second_window, third_window
 from events import Events
 
 from aio_wx_widgets.controller import BaseController
-from demo.windows import second_window, third_window
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,9 +1,10 @@
 import logging
 
-from aio_wx_widgets.frame import DefaultFrame
-from demo.model.demo_model import DemoModel
 from demo.controller import controller_two
+from demo.model.demo_model import DemoModel
 from demo.views.view_two import ViewTwo
+
+from aio_wx_widgets.frame import DefaultFrame
 
 _LOGGER = logging.getLogger(__name__)
 

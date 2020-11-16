@@ -1,7 +1,8 @@
 """Property binding."""
 from __future__ import annotations
+
 import logging
-from typing import NamedTuple, TYPE_CHECKING, Optional, Callable, Any
+from typing import TYPE_CHECKING, Any, Callable, NamedTuple, Optional
 
 from aio_wx_widgets.core.validators import ValidationError
 

@@ -1,13 +1,15 @@
 """A dropdown selection widget."""
 
 from __future__ import annotations
+
 import logging
 from typing import Callable, Optional, Sequence, Union
 
 import wx
+
 from aio_wx_widgets import type_annotations as T  # noqa
-from aio_wx_widgets.core.binding import TwoWayBindable, Binding
 from aio_wx_widgets.core.base_widget import BaseWidget
+from aio_wx_widgets.core.binding import Binding, TwoWayBindable
 
 _LOGGER = logging.getLogger(__name__)
 

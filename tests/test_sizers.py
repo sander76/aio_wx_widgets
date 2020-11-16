@@ -2,8 +2,8 @@ import logging
 
 import pytest
 
-from aio_wx_widgets.core.sizers import wx, _align_item
 from aio_wx_widgets.core.data_types import HorAlign
+from aio_wx_widgets.core.sizers import _align_item, wx
 
 _LOGGER = logging.getLogger(__name__)
 

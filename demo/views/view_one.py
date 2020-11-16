@@ -1,18 +1,19 @@
 from __future__ import annotations
+
 import logging
 from typing import TYPE_CHECKING
+
+from aio_wx_widgets.containers.grid import VERTICAL, Grid
+from aio_wx_widgets.containers.group import Group, Section
 from aio_wx_widgets.core.binding import Binding
+from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
-from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
-from aio_wx_widgets.containers.grid import Grid, VERTICAL
-from aio_wx_widgets.containers.group import Group, Section
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
-
 
 if TYPE_CHECKING:
     from demo.controller.controller_one import ControllerOne
@@ -136,5 +137,5 @@ class ViewOne(SimplePanel):
     async def _on_open(self, evt):
         await self._controller.open_other_window()
 
-    async def _set_value(self, evt):
+    async def _set_value(self: ViewOne):
         await self._controller.set_value()
