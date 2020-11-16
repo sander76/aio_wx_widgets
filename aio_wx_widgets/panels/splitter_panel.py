@@ -19,12 +19,21 @@ class _ScrollPanel(SizerMixin):
     """
 
     def __init__(self, parent):
-        self.ui_item = scrolledpanel.ScrolledPanel(parent)
-        self._sizer = wx.BoxSizer(wx.VERTICAL)
-        self.ui_item.SetSizer(self._sizer)
-        self.ui_item.SetupScrolling(scroll_x=False)
+        self._ui_item = scrolledpanel.ScrolledPanel(parent)
+        self._sizer_ = wx.BoxSizer(wx.VERTICAL)
+        self._ui_item.SetSizer(self._sizer)
+        self._ui_item.SetupScrolling(scroll_x=False)
 
         super().__init__()
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        return self._ui_item
+
+    @property
+    def _sizer(self):
+        return self._sizer_
 
     @property
     def sizer(self):
@@ -39,11 +48,20 @@ class _SplitterPanel(SizerMixin):
     """
 
     def __init__(self, parent):
-        self.ui_item = wx.Panel(parent)
-        self._sizer = wx.BoxSizer(wx.VERTICAL)
+        self._ui_item = wx.Panel(parent)
+        self._sizer_ = wx.BoxSizer(wx.VERTICAL)
         self.ui_item.SetSizer(self._sizer)
 
         super().__init__()
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        return self._ui_item
+
+    @property
+    def _sizer(self):
+        return self._sizer_
 
     @property
     def sizer(self):
@@ -68,7 +86,7 @@ class TwoSplitterWindow(SizerMixin):
             window_one_width:
         """
 
-        self.ui_item = wx.SplitterWindow(parent)
+        self._ui_item = wx.SplitterWindow(parent)
         super().__init__()
         if splitter_one_scrollable:
             self.splitter_window_one = _ScrollPanel(self.ui_item)
@@ -86,10 +104,19 @@ class TwoSplitterWindow(SizerMixin):
             self.splitter_window_two.ui_item,
             window_one_width,
         )
-        self._sizer = self.splitter_window_one.sizer
+        self._sizer_ = self.splitter_window_one.sizer
         self._parent = self.splitter_window_one.ui_item
 
         self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
+
+    @property
+    def _sizer(self):
+        return self._sizer_
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        return self._ui_item
 
     def _on_resize(self, evt):
         _LOGGER.debug("resizing splitter window.")

@@ -136,6 +136,10 @@ class SizerMixin:
 
     default_sizer_margin = 5
 
+    def __init__(self):
+        self._parent = None
+        super().__init__()
+
     def add(
         self,
         item: T.Widget,
@@ -176,6 +180,15 @@ class SizerMixin:
             ver_align=ver_align,
         )
 
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        raise NotImplementedError()
+
+    @property
+    def _sizer(self):
+        raise NotImplementedError()
+
     def add_space(self, proportion=1):
         """Add a stretching spacer."""
         self._sizer.AddStretchSpacer(prop=proportion)
@@ -196,6 +209,11 @@ class PanelMixin:
     @property
     def controller(self) -> T.BaseController:
         """Return the controller for this panel."""
+        raise NotImplementedError()
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
         raise NotImplementedError()
 
     def bind(self, prop: str):

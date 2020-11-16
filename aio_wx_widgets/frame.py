@@ -54,6 +54,6 @@ class DefaultFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
     # pylint: disable=no-self-use
-    def _on_close(self, evt):
+    def _on_close(self, evt):  # noqa
         _LOGGER.debug("Frame is closed.")
         evt.Skip()

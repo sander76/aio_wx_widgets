@@ -36,10 +36,19 @@ class Group(SizerMixin):
         super().__init__()
         self._label = label
         self._extra_bottom_border = 10
-        self._sizer = wx.BoxSizer(wx.VERTICAL)
-        self.ui_item = wx.StaticBox()
+        self._sizer_ = wx.BoxSizer(wx.VERTICAL)
+        self._ui_item = wx.StaticBox()
         kwargs["sizer"] = self._sizer
         self._bottom_border = 1
+
+    @property
+    def _sizer(self):
+        return self._sizer_
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        return self._ui_item
 
     def __call__(self, parent):
         """Call this class as a function.
@@ -82,10 +91,19 @@ class Section(SizerMixin):
     def __init__(self, header: str, add_closing_line=True):
         """Init."""
         super().__init__()
-        self.ui_item = self._sizer = wx.BoxSizer(orient=wx.VERTICAL)
+        self._ui_item = self._sizer_ = wx.BoxSizer(orient=wx.VERTICAL)
         self._parent = None
         self._header = header
         self._add_closing_line = add_closing_line
+
+    @property
+    def ui_item(self):
+        """Return UI item."""
+        return self._ui_item
+
+    @property
+    def _sizer(self):
+        return self._sizer_
 
     def __call__(self, parent):
         self._parent = parent
@@ -94,7 +112,7 @@ class Section(SizerMixin):
     def __enter__(self):
         """Enter the context manager."""
         self.add(
-            text.Text(text=self._header, font_size=1.5, bold=True), margin=(5, 0, 15, 0)
+            text.Text(text=self._header, font_size=1.5, bold=True), margin=(0, 0, 15, 0)
         )
         return self
 

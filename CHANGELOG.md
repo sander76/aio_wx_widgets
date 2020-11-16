@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.4
+
+- Internal changes.
+- Set section margin to 0
+
 ## v1.0.3
 
 - Made minsize to -1 as it messes up grid.
