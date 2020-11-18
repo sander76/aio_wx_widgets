@@ -55,6 +55,7 @@ jobs:
       - run: pip install flit
       - name: Flit publish
         env:
-          FLIT_USERNAME: ${{ secrets.PYPI_USER }}
+          FLIT_USERNAME: "__token__"
           FLIT_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+          FLIT_INDEX_URL: "https://upload.pypi.org/legacy/"
         run: flit publish
