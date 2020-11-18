@@ -2,17 +2,20 @@
 from __future__ import annotations
 
 import logging
+from typing import Generic, TypeVar
 
 import wx
 from wx.lib.scrolledpanel import ScrolledPanel
 
-from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.sizers import PanelMixin, SizerMixin
 
 _LOGGER = logging.getLogger(__name__)
 
+#  pylint: disable=invalid-name
+C = TypeVar("C")  # noqa
 
-class SimplePanel(PanelMixin, SizerMixin):
+
+class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
     """A simple panel."""
 
     @property
@@ -24,9 +27,9 @@ class SimplePanel(PanelMixin, SizerMixin):
     def _sizer(self):
         return self._sizer_
 
-    def __init__(self, parent, scrollable=False, **kwargs):
+    def __init__(self, parent, controller: C, scrollable=False, **kwargs):
         """Init."""
-
+        self._controller = controller
         if scrollable:
             self._ui_item = ScrolledPanel(parent)
             self._ui_item.SetupScrolling()
@@ -38,6 +41,6 @@ class SimplePanel(PanelMixin, SizerMixin):
         self.ui_item.SetSizer(self._sizer)
 
     @property
-    def controller(self) -> T.BaseController:
+    def controller(self) -> C:
         """Return the controller."""
-        raise NotImplementedError()
+        return self._controller

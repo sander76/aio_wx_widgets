@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.6
+
+- 
+
+## v1.0.5
+
+- MyPy typing fixes.
+
 ## v1.0.4
 
 - Internal changes.

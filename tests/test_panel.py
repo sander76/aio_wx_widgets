@@ -49,9 +49,9 @@ def test_margin_wrapper(mocker):
     print(window)
 
 
-def test_simple_panel_init(wx_app):
+def test_simple_panel_init(wx_app, base_controller):
     """Smoke test of initializing the SimplePanel"""
     frame = DefaultFrame("The title")
-    panel = SimplePanel(parent=frame)
+    panel = SimplePanel(parent=frame, controller=base_controller)
 
     assert isinstance(panel.ui_item, wx.Panel)

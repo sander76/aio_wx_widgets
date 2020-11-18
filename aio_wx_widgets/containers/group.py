@@ -5,6 +5,7 @@ import logging
 
 import wx
 
+from aio_wx_widgets.core.base_widget import CallableItem
 from aio_wx_widgets.core.sizers import SizerMixin
 from aio_wx_widgets.widgets import text
 
@@ -13,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 __all__ = ["Group", "Section"]
 
 
-class Group(SizerMixin):
+class Group(SizerMixin, CallableItem):
     """A Group widget.
 
     +--<LABEL>-------------+
@@ -78,7 +79,7 @@ class Group(SizerMixin):
         self._sizer.AddSpacer(self._bottom_border)
 
 
-class Section(SizerMixin):
+class Section(SizerMixin, CallableItem):
     """A section with a large header text and an optional closing line.
 
     LARGE HEADER TEXT

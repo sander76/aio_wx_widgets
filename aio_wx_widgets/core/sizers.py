@@ -96,6 +96,7 @@ def _add(
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
+
         item = item(parent)
         ui_item = item.ui_item
     else:
@@ -207,7 +208,7 @@ class PanelMixin:
         evt.Skip()
 
     @property
-    def controller(self) -> T.BaseController:
+    def controller(self):
         """Return the controller for this panel."""
         raise NotImplementedError()
 

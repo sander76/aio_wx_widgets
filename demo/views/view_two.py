@@ -23,12 +23,12 @@ if TYPE_CHECKING:
 _LOGGER = logging.getLogger(__name__)
 
 
-class ViewTwo(SimplePanel):
+class ViewTwo(SimplePanel["ControllerTwo"]):
     """Second view."""
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller: ControllerTwo):
         self._controller = controller
-        super().__init__(parent)
+        super().__init__(parent, controller)
         self._text = Text("This is text that changes as a result of an event happening")
 
         # self._controller.add_task(self._controller.add_to_log.subscribe(self._add_to_log))
@@ -36,10 +36,6 @@ class ViewTwo(SimplePanel):
 
         self._callback_text = Text("Nothing selected yet")
         # self._bound_selected_item = Text("Nothing selected yet")
-
-    @property
-    def controller(self) -> ControllerTwo:
-        return self._controller
 
     def populate(self):
         with self.add(Section("Labelled items.")) as sec:

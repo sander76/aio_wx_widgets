@@ -7,6 +7,7 @@ import logging
 
 import wx
 
+from aio_wx_widgets.core.base_widget import CallableItem
 from aio_wx_widgets.core.sizers import SizerMixin
 
 _LOGGER = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ VERTICAL = wx.VERTICAL
 HORIZONTAL = wx.HORIZONTAL
 
 
-class Grid(SizerMixin):
+class Grid(SizerMixin, CallableItem):
     """A grid component.
 
     Basically a boxsizer with some defaults.

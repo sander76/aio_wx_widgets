@@ -34,3 +34,27 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./cov.xml
+
+  release:
+    name: Publish to pypi
+    needs: test
+    runs-on: windows-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v1
+      - uses: actions/cache@v1
+          with:
+            path: ~/.cache/pip
+            key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+            restore-keys: |
+              ${{ runner.os }}-pip-
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install flit
+      - name: Flit publish
+        env:
+          FLIT_USERNAME: ${{ secrets.PYPI_USER }}
+          FLIT_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: flit publish

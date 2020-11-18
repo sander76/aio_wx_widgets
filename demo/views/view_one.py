@@ -21,14 +21,9 @@ if TYPE_CHECKING:
 _LOGGER = logging.getLogger(__name__)
 
 
-class ViewOne(SimplePanel):
+class ViewOne(SimplePanel["ControllerOne"]):
     def __init__(self, parent, controller: "ControllerOne"):
-        self._controller = controller
-        super().__init__(parent, scrollable=False)
-
-    @property
-    def controller(self) -> "ControllerOne":
-        return self._controller
+        super().__init__(parent, controller, scrollable=False)
 
     def populate(self):
         """Populate this view."""

@@ -4,30 +4,32 @@ from __future__ import annotations
 import asyncio
 import logging
 from asyncio import Task
-from typing import Awaitable, List
+from typing import Awaitable, Generic, List, TypeVar
 
-# pylint: disable=unused-import
 from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import WATCHERS
 
 _LOGGER = logging.getLogger(__name__)
 
+#  pylint: disable=invalid-name
+M = TypeVar("M")
 
-class BaseController:
+
+class BaseController(Generic[M]):
     """Base implementation of a controller."""
 
-    def __init__(self, model: T.T):
+    def __init__(self, model: M):
         """Init.
 
         Args:
             model: The model.
         """
 
-        self._model: T.T = model
+        self._model = model
         self._tasks: List[Task] = []
 
     @property
-    def model(self):
+    def model(self) -> M:
         """Return the model of this controller."""
         return self._model
 
@@ -46,7 +48,7 @@ class BaseController:
             watcher(value)
 
     @property
-    def _loop(self) -> "T.AbstractEventLoop":
+    def _loop(self) -> T.AbstractEventLoop:
         return asyncio.get_running_loop()
 
     def create_task(self, coro: Awaitable, callback=None) -> Task:

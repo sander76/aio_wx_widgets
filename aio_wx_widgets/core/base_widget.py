@@ -11,7 +11,14 @@ from aio_wx_widgets.core.binding import Binding, OneWayBindable, TwoWayBindable
 _LOGGER = logging.getLogger(__name__)
 
 
-class BaseWidget:
+class CallableItem:
+    """An item that is callable. (Able to be added to a container)."""
+
+    def __call__(self, parent):
+        raise NotImplementedError()
+
+
+class BaseWidget(CallableItem):
     """All widgets should inherit from this."""
 
     def __init__(
@@ -52,4 +59,4 @@ class BaseWidget:
                 self.ui_item.SetMinSize((self._min_width, -1))
 
     def __call__(self, parent):
-        raise NotImplementedError
+        raise NotImplementedError()
