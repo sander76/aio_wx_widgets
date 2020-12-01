@@ -1,8 +1,8 @@
 # Changelog
 
-## v1.0.6
+## v1.0.7
 
-- 
+- Allow binding with starting value is None to select pulldown.
 
 ## v1.0.5
 

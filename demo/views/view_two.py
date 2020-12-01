@@ -72,6 +72,11 @@ class ViewTwo(SimplePanel["ControllerTwo"]):
             )
             sec.add(Text(str(l_item)))
             sec.add(l_item)
+        with self.add(Section("Selectable, bound to None")) as sec:
+            sec.add(
+                Select(self._controller.choices, binding=self.bind("selected_item2"))
+            )
+            sec.add(Text(binding=self.bind("selected_item2")))
 
         self.add(
             Entry(binding=Binding(self._controller, "value_1")), margin=(10, 10, 5, 20),

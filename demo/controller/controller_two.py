@@ -26,6 +26,7 @@ class ControllerTwo(BaseController):
             Choices(label="choice 2", value={"value": 2}),
         ]
         self.selected_item = self.choices[0]
+        self.selected_item2 = None
 
     async def set_value(self):
         val = randint(1, 100)

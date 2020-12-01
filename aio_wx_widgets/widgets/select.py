@@ -57,15 +57,20 @@ class Select(BaseWidget):
     def _on_mouse_wheel(self, evt):
         """Capturing as I want to disable selection when scrolling"""
 
-    def _set_ui_value(self, value: T.Choice):
-        try:
-            _idx = next(
-                (i for i, val in enumerate(self.choices) if val.value == value.value)
-            )
-        except StopIteration:
-            _LOGGER.error("Default product not available")
-        else:
-            self.ui_item.Select(_idx)
+    def _set_ui_value(self, value: Optional[T.Choice]):
+        if value is not None:
+            try:
+                _idx = next(
+                    (
+                        i
+                        for i, val in enumerate(self.choices)
+                        if val.value == value.value
+                    )
+                )
+            except StopIteration:
+                _LOGGER.error("Default product not available")
+            else:
+                self.ui_item.Select(_idx)
         # setting this value manually as the SetValue command does -in this case-
         # not trigger the _on_ui_change callback.
         assert self._value_binding is not None
