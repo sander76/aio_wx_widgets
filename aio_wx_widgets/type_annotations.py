@@ -1,7 +1,7 @@
 """All type annotations go here."""
 
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Callable, Union
 
 if TYPE_CHECKING:
     from asyncio import AbstractEventLoop
@@ -30,3 +30,4 @@ if TYPE_CHECKING:
         value: Any
 
     Widget = Union[BaseWidget, wx.Window, wx.BoxSizer, CallableItem]
+    ConverterType = Callable[[Any], Union[float, int, str, bool]]

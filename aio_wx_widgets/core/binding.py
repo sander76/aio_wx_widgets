@@ -2,23 +2,24 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Callable, NamedTuple, Optional
+from dataclasses import dataclass
+from typing import Any, Callable, Optional
 
+from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.core.validators import ValidationError
-
-if TYPE_CHECKING:
-    from aio_wx_widgets.controller import BaseController
 
 _LOGGER = logging.getLogger(__name__)
 
 WATCHERS = "_watchers_"
 
 
-class Binding(NamedTuple):
+@dataclass
+class Binding:
     """Binding data."""
 
-    bound_object: "BaseController"
-    bound_property: "str"
+    bound_object: T.BaseController
+    bound_property: str
+    converter: Optional[T.ConverterType] = None
 
 
 class OneWayBindable:
@@ -78,15 +79,17 @@ class OneWayBindable:
         Update the control with the new value
         """
         _LOGGER.debug("Updating entry with new value.")
+        if self._binding.converter:
+            value = self._binding.converter(value)
         self._set_ui_value(value)
-        _LOGGER.debug("Updated.")
 
     def get_property_value(self):
         """Return the property value of the bound object.
 
         This would be the attribute defined in the controller.
         """
-        return getattr(self._binding.bound_object, self._binding.bound_property)
+        value = getattr(self._binding.bound_object, self._binding.bound_property)
+        return value
 
 
 class TwoWayBindable(OneWayBindable):

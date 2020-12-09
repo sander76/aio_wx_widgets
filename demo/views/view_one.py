@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from aio_wx_widgets.colors import BLACK, RED
 from aio_wx_widgets.containers.grid import VERTICAL, Grid
 from aio_wx_widgets.containers.group import Group, Section
 from aio_wx_widgets.core.binding import Binding
@@ -19,6 +20,16 @@ if TYPE_CHECKING:
     from demo.controller.controller_one import ControllerOne
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _bool_to_color(value) -> int:
+    """Convert a boolean to a color value.
+
+    Used in a binding.
+    """
+    if value is True:
+        return RED
+    return BLACK
 
 
 class ViewOne(SimplePanel["ControllerOne"]):
@@ -79,6 +90,24 @@ class ViewOne(SimplePanel["ControllerOne"]):
                 )
                 grd.add(Text(binding=self.bind("int_val")), weight=1, margin=0)
 
+        with self.add(Section("Colors")) as sec:
+            with sec.add(Grid()) as grd:
+                grd.add(
+                    Text(
+                        "A Text widget with text color bound to the checkbox value.",
+                        wrap=True,
+                    ),
+                    weight=1,
+                )
+                with grd.add(Grid(), weight=1) as grd1:
+                    grd1.add(CheckBox("RED", self.bind("color_red")))
+                    grd1.add(
+                        Text(
+                            text="This is text with a color binding",
+                            color=self.bind("color_red", converter=_bool_to_color),
+                        )
+                    )
+
         with self.add(Grid()) as grd:
             grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
             grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
@@ -116,6 +145,7 @@ class ViewOne(SimplePanel["ControllerOne"]):
                         weight=2,
                         hor_align=HorAlign.right,
                     )
+
         self.add(CheckBox("A checkbox", binding=self.bind("a_checkbox_value")))
         self.add(
             CheckBox("The same checkbox value", binding=self.bind("a_checkbox_value"))

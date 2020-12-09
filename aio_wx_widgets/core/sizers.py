@@ -217,13 +217,17 @@ class PanelMixin:
         """Return UI item."""
         raise NotImplementedError()
 
-    def bind(self, prop: str):
+    def bind(self, prop: str, converter: Optional[T.ConverterType] = None):
         """Bind a property to a bindable control.
 
         Args:
             prop: the attribute/property to bind.
+            converter: An optional callable that converts the bound property to a
+                value consumable by the ui property it is bound to.
+                An example would be to convert a bound boolean value (like success)
+                To text color (red or green) to emphasize success or not.
         """
-        return Binding(self.controller, prop)
+        return Binding(self.controller, prop, converter=converter)
 
     def populate(self):
         """Add and configure widgets here."""

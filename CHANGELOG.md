@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.8
+
+- Make text color bindable
+
 ## v1.0.7
 
 - Allow binding with starting value is None to select pulldown.

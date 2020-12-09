@@ -36,7 +36,7 @@ class Text(BaseWidget):
         self,
         text="",
         font_size: float = 1,
-        color: Optional[int] = None,
+        color: Union[int, Binding, None] = None,
         enabled: Union[bool, Binding] = True,
         binding: Optional[Binding] = None,
         bold=False,
@@ -65,7 +65,7 @@ class Text(BaseWidget):
         self._wrap = wrap
 
         self._font = _get_font_info(self.ui_item.GetFont(), font_size, bold=bold)
-
+        self._color_binding = None
         self._previous_size = None
 
     def _set_ui_value(self, value):
@@ -99,8 +99,8 @@ class Text(BaseWidget):
             if client_size:
                 self.ui_item.Wrap(client_size[0])
 
-        if color:
-            self.ui_item.SetForegroundColour(color)
+        # if color:
+        #     self.ui_item.SetForegroundColour(color)
 
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
 
@@ -118,3 +118,16 @@ class Text(BaseWidget):
         """Set or change the text."""
         self._text = str(text)
         self._set_text(color)
+
+    def _set_color(self, color):
+        """Set text color when color binding changes."""
+        _LOGGER.debug("Setting color to : %s", color)
+
+        self.ui_item.SetForegroundColour(color)
+        self._parent.Refresh()
+
+    def _make_bindings(self):
+        if self._color is not None and isinstance(self._color, Binding):
+            self._color_binding = OneWayBindable(self._color, self._set_color)
+            self._color_binding.make_binding()
+        super()._make_bindings()

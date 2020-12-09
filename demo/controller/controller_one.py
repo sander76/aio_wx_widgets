@@ -17,6 +17,7 @@ class ControllerOne(BaseController):
         self.int_val: int = 987
         self.a_string_value = None
         self.a_checkbox_value: bool = True
+        self.color_red = None
         super().__init__(model)
 
         self.add_to_log = Events()
