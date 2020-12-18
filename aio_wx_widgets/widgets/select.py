@@ -31,9 +31,12 @@ class Select(BaseWidget):
         Init.
 
         Args:
-            choices: Used to populate the dropdown.
+            choices: A sequence of Choice objects.
+                A choice object must have a label property which is displayed in the
+                pull down and a value property which is returned when the selection
+                is made.
             on_select_callback: called when selection is made.
-            binding:
+            binding: A property bound to a selected Choice object.
             min_width: when alignment is set, this is the advised minimal width the
                 the widget should take.
         """

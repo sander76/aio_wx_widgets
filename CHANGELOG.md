@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.0
+
+- Add text horizontal orientation in text widget.
+
 ## v1.0.8
 
 - Make text color bindable

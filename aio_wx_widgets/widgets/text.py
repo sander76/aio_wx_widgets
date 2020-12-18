@@ -32,6 +32,10 @@ def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> w
 class Text(BaseWidget):
     """Static text."""
 
+    HOR_CENTER = wx.ALIGN_CENTRE_HORIZONTAL
+    HOR_RIGHT = wx.ALIGN_RIGHT
+    HOR_LEFT = wx.ALIGN_LEFT
+
     def __init__(
         self,
         text="",
@@ -42,6 +46,7 @@ class Text(BaseWidget):
         bold=False,
         wrap=False,
         min_width=-1,
+        hor_align: Optional[int] = None,
     ):
         """Init.
 
@@ -67,13 +72,20 @@ class Text(BaseWidget):
         self._font = _get_font_info(self.ui_item.GetFont(), font_size, bold=bold)
         self._color_binding = None
         self._previous_size = None
+        self._hor_align = hor_align
 
     def _set_ui_value(self, value):
         self.set_text(value)
 
+    def _get_style(self) -> int:
+        if self._hor_align:
+            return self._hor_align
+        return 0
+
     def __call__(self, parent):
         self._parent = parent
-        self.ui_item.Create(parent)
+
+        self.ui_item.Create(parent, style=self._get_style())
 
         if self._font:
             self.ui_item.SetFont(self._font)

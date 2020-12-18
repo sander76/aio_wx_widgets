@@ -119,7 +119,7 @@ class ViewOne(SimplePanel["ControllerOne"]):
         with self.add(Group("Nesting of grids")) as grp:
             with grp.add(Grid()) as grd:
                 grd.add(
-                    Text(text="Right aligned text"),
+                    Text(text="Widget, right & center alignment"),
                     weight=3,
                     hor_align=HorAlign.right,
                     ver_align=VerAlign.center,
@@ -130,11 +130,21 @@ class ViewOne(SimplePanel["ControllerOne"]):
                         hor_align=HorAlign.left,
                         margin=4,
                     )
-                    vert_grid.add(AioButton("Set number entries.", self._set_value))
                     vert_grid.add(
-                        Text(text="Center aligned text with a large margin."),
+                        AioButton(
+                            "No Aligned widget (button in this case)", self._set_value
+                        )
+                    )
+                    vert_grid.add(
+                        Text(text="Center aligned widget with a large margin."),
                         margin=(10, 10, 30, 5),
                         hor_align=HorAlign.center,
+                    )
+                    vert_grid.add(
+                        Text(
+                            text="Text widget with centered text",
+                            hor_align=Text.HOR_CENTER,
+                        )
                     )
                     vert_grid.add(
                         AioButton(
