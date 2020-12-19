@@ -12,6 +12,8 @@ from aio_wx_widgets import widgets
 logging.basicConfig(level=logging.DEBUG)
 _LOGGER = logging.getLogger(__name__)
 
+IMAGE_PATH = Path(__file__).parent
+
 
 def load_module(module_file: Path):
     """Load and import a module based on the location of the *.py file."""
@@ -64,11 +66,9 @@ def get_all_widget_classes(package):
             elif name == "LabelledItem":
                 kwargs["label_text"] = "labeltext"
                 kwargs["item"] = Mock()
+            elif name == "Image":
+                kwargs["image"] = Path(IMAGE_PATH / "phoenix_main.png")
             yield name, cls, kwargs
-
-
-# # todo: make this a module based fixture.
-# app = WxAsyncApp()
 
 
 @pytest.mark.parametrize(

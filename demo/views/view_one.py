@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from aio_wx_widgets.colors import BLACK, RED
@@ -12,6 +13,7 @@ from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
+from aio_wx_widgets.widgets.image import Image
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
@@ -20,6 +22,8 @@ if TYPE_CHECKING:
     from demo.controller.controller_one import ControllerOne
 
 _LOGGER = logging.getLogger(__name__)
+
+IMAGE_FOLDER = (Path(__file__).parent) / "image"
 
 
 def _bool_to_color(value) -> int:
@@ -34,7 +38,7 @@ def _bool_to_color(value) -> int:
 
 class ViewOne(SimplePanel["ControllerOne"]):
     def __init__(self, parent, controller: "ControllerOne"):
-        super().__init__(parent, controller, scrollable=False)
+        super().__init__(parent, controller, scrollable=True)
 
     def populate(self):
         """Populate this view."""
@@ -42,6 +46,10 @@ class ViewOne(SimplePanel["ControllerOne"]):
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
+        with self.add(Grid()) as grd:
+            grd.add_space(proportion=1)
+            grd.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
+
         self.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
         with self.add(Grid()) as grd:
             grd.add(Text("This is long text", min_width=50))
