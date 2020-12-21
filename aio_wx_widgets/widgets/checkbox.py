@@ -65,10 +65,13 @@ class CheckBox(BaseWidget):
         if self._change_callback:
             self._change_callback(self._get_ui_value(True))
 
-    def __call__(self, parent):
+    def init(self, parent):
         self.ui_item.Create(parent, label=str(self._label))
         self.ui_item.Bind(wx.EVT_CHECKBOX, self._on_ui_change)
-
         self._init()
+
+    def __call__(self, parent):
+        _LOGGER.warning("__call__ will be removed in the future. Use `init` instead")
+        self.init(parent)
 
         return self

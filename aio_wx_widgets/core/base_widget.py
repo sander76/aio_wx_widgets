@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 class CallableItem:
     """An item that is callable. (Able to be added to a container)."""
 
-    def __call__(self, parent):
+    def init(self, parent):
         raise NotImplementedError()
 
 
@@ -57,6 +57,9 @@ class BaseWidget(CallableItem):
             actual_x_value = self.ui_item.GetSize()[0]
             if actual_x_value < self._min_width:
                 self.ui_item.SetMinSize((self._min_width, -1))
+
+    def init(self, parent):
+        raise NotImplementedError()
 
     def __call__(self, parent):
         raise NotImplementedError()

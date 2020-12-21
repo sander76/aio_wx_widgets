@@ -48,14 +48,16 @@ class AioButton(BaseWidget):
         self._label = str(value)
         self.ui_item.SetLabelText(str(self._label))
 
-    def __call__(self, parent):
+    def init(self, parent):
         self.ui_item.Create(parent, label=str(self._label))
         if iscoroutinefunction(self._call_back):
 
             AsyncBind(wx.EVT_BUTTON, self._call_back, self.ui_item)
         else:
             self.ui_item.Bind(wx.EVT_BUTTON, self._call_back)
-
-        # self._make_bindings()
         self._init()
+
+    def __call__(self, parent):
+        self.init(parent)
+        # self._make_bindings()
         return self

@@ -33,9 +33,12 @@ class Image(BaseWidget):
         self._delay = REFRESH_DELAY
         self._block_size_event = False  # If true it will skip the EVT_SIZE event.
 
-    def __call__(self, parent):
+    def init(self, parent):
         self.ui_item.Create(parent)
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
+
+    def __call__(self, parent):
+        self.init(parent)
         return self
 
     async def _delayed_set_size(self):
@@ -57,7 +60,7 @@ class Image(BaseWidget):
         if self._block_size_event:
             return
         size = self.ui_item.ContainingSizer.Size
-        _LOGGER.debug("container size %s", size)
+        # _LOGGER.debug("container size %s", size)
 
         if size[0] <= 0 or size[1] <= 0:
             return
@@ -95,7 +98,7 @@ class Image(BaseWidget):
             redraw: Redraw and re-layout the entire window.
         """
         if dummy:
-            _LOGGER.debug("Setting dummy image")
+            # _LOGGER.debug("Setting dummy image")
             bitmap = wx.Bitmap.FromRGBA(
                 1,
                 height,

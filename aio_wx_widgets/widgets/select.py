@@ -91,8 +91,10 @@ class Select(BaseWidget):
     def _get_ui_value(self, force):  # noqa
         return self._selected_item
 
-    def __call__(self, parent):
+    def init(self, parent):
         self.ui_item.Create(parent, choices=[choice.label for choice in self.choices])
         self._init()
 
+    def __call__(self, parent):
+        self.init(parent)
         return self

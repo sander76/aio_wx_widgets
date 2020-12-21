@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from aio_wx_widgets.colors import BLACK, RED
 from aio_wx_widgets.containers.grid import VERTICAL, Grid
-from aio_wx_widgets.containers.group import Group, Section
+from aio_wx_widgets.containers.group import Section
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 from aio_wx_widgets.core.validators import float_validator, int_validator
@@ -98,11 +98,12 @@ class ViewOne(SimplePanel["ControllerOne"]):
                 )
                 grd.add(Text(binding=self.bind("int_val")), weight=1, margin=0)
 
-        with self.add(Section("Colors")) as sec:
+        with self.add(Section("Bindings")) as sec:
             with sec.add(Grid()) as grd:
                 grd.add(
                     Text(
-                        "A Text widget with text color bound to the checkbox value.",
+                        "Use a converter with a binding to bind different types "
+                        "of properties. Bind a color to a boolean using a converter.",
                         wrap=True,
                     ),
                     weight=1,
@@ -115,7 +116,21 @@ class ViewOne(SimplePanel["ControllerOne"]):
                             color=self.bind("color_red", converter=_bool_to_color),
                         )
                     )
-
+            with sec.add(Grid()) as grd:
+                grd.add(
+                    Text("Bind to the enabled property of a widget."),
+                    weight=1,
+                    ver_align=VerAlign.center,
+                )
+                with grd.add(Grid(), weight=1) as items:
+                    btn = items.add(AioButton("toggle", self._toggle))
+                    print(btn.ui_item.Parent)
+                    items.add(
+                        AioButton("toggle", self._toggle, enabled=self.bind("ready"))
+                    )
+                    items.add(
+                        Entry(self.bind("a_string_value"), enabled=self.bind("ready"))
+                    )
         with self.add(Grid()) as grd:
             grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
             grd.add(Entry(binding=Binding(self._controller, "a_string_value")))
@@ -124,7 +139,7 @@ class ViewOne(SimplePanel["ControllerOne"]):
             grd.add(AioButton("button one", self._set_value), weight=6)
             grd.add(AioButton("button two,self", self._set_value), weight=6)
 
-        with self.add(Group("Nesting of grids")) as grp:
+        with self.add(Section("Layout")) as grp:
             with grp.add(Grid()) as grd:
                 grd.add(
                     Text(text="Widget, right & center alignment"),
@@ -171,6 +186,9 @@ class ViewOne(SimplePanel["ControllerOne"]):
         self.add(AioButton("open other window", self._on_open_second_window))
         self.add(AioButton("open third window", self._on_open_third_window))
 
+    def _toggle(self, evt):
+        self.controller.ready = not self.controller.ready
+
     async def _on_open_second_window(self, evt):
         await self._controller.open_other_window()
 
@@ -180,5 +198,5 @@ class ViewOne(SimplePanel["ControllerOne"]):
     async def _on_open(self, evt):
         await self._controller.open_other_window()
 
-    async def _set_value(self: ViewOne):
+    async def _set_value(self, evt):
         await self._controller.set_value()

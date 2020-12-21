@@ -31,8 +31,8 @@ class LabelledItem(Grid):
         self.align_right = align_right
         self._item_alignment = item_alignment
 
-    def __call__(self, parent, *args, **kwargs):
-        super().__call__(parent)
+    def init(self, parent):
+        super().init(parent)
         if self.align_right:
             hor_alignment = HorAlign.right
         else:
@@ -45,6 +45,8 @@ class LabelledItem(Grid):
         )
         self.add(self._item, weight=self._item_weight, hor_align=self._item_alignment)
 
+    def __call__(self, parent, *args, **kwargs):
+        self.init(parent)
         return self
 
     def __str__(self):

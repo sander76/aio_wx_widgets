@@ -96,8 +96,7 @@ def _add(
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
-
-        item = item(parent)
+        item.init(parent)
         ui_item = item.ui_item
     else:
         # this is assumed to be a "normal" wx-widgets item.
@@ -187,7 +186,7 @@ class SizerMixin:
         raise NotImplementedError()
 
     @property
-    def _sizer(self):
+    def _sizer(self) -> wx.Sizer:
         raise NotImplementedError()
 
     def add_space(self, proportion=1):

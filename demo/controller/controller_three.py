@@ -16,6 +16,10 @@ class ControllerThree(BaseController[DemoModel]):
         self.a_string_value = "A certain string"
         super().__init__(model)
 
+        # bindable properties.
+        self.ready = False
+        self.bound_text = None
+
     async def set_value(self):
         val = randint(1, 100)
         _LOGGER.debug("Setting bound property to %s", val)

@@ -93,7 +93,7 @@ class Entry(BaseWidget):
         if self._on_change:
             self._on_change(self, self._get_ui_value(True))
 
-    def __call__(self, parent):
+    def init(self, parent):
         args = dict({"parent": parent})
         if self._label:
             args["value"] = str(self._label)
@@ -103,7 +103,10 @@ class Entry(BaseWidget):
         self._txt.Bind(wx.EVT_TEXT, self._on_ui_change)
 
         # self._make_bindings()
-        super()._init()
+        self._init()
+
+    def __call__(self, parent):
+        self.init(parent)
         return self
 
     def display_error(self, exception: ValidationError):

@@ -51,7 +51,7 @@ class Group(SizerMixin, CallableItem):
         """Return UI item."""
         return self._ui_item
 
-    def __call__(self, parent):
+    def init(self, parent):
         """Call this class as a function.
 
         Args:
@@ -65,6 +65,8 @@ class Group(SizerMixin, CallableItem):
         self._sizer.AddSpacer(top + 5)
         self.ui_item.SetSizer(self._sizer)
 
+    def __call__(self, parent):
+        self.init(parent)
         return self
 
     def __enter__(self):
@@ -106,8 +108,11 @@ class Section(SizerMixin, CallableItem):
     def _sizer(self):
         return self._sizer_
 
-    def __call__(self, parent):
+    def init(self, parent):
         self._parent = parent
+
+    def __call__(self, parent):
+        self.init(parent)
         return self
 
     def __enter__(self):

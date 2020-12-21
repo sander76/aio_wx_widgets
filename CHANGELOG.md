@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.0
+
+- Add image widget
+- Demo changes. (still work in progress)
+
 ## v1.1.0
 
 - Add text horizontal orientation in text widget.

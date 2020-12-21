@@ -16,7 +16,10 @@ C = TypeVar("C")  # noqa
 
 
 class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
-    """A simple panel."""
+    """A simple panel.
+
+    Consider this the main canvas to which widgets can be attached.
+    """
 
     @property
     def ui_item(self):

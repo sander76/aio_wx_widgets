@@ -82,7 +82,7 @@ class Text(BaseWidget):
             return self._hor_align
         return 0
 
-    def __call__(self, parent):
+    def init(self, parent):
         self._parent = parent
 
         self.ui_item.Create(parent, style=self._get_style())
@@ -99,6 +99,8 @@ class Text(BaseWidget):
         self._init()
         self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
 
+    def __call__(self, parent):
+        self.init(parent)
         return self
 
     def _set_text(self, color=None, client_size=None):

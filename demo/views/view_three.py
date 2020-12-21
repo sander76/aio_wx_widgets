@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 
+from demo.controller.controller_three import ControllerThree
+
 from aio_wx_widgets.containers.grid import Grid
 from aio_wx_widgets.containers.group import Group
 from aio_wx_widgets.core.binding import Binding
@@ -15,7 +17,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
-    def __init__(self, parent, controller, scrollable=False, window_one_width=250):
+    def __init__(
+        self,
+        parent,
+        controller: ControllerThree,
+        scrollable=False,
+        window_one_width=250,
+    ):
         super().__init__(
             parent, splitter_one_scrollable=False, splitter_two_scrollable=False
         )
@@ -74,24 +82,22 @@ class ViewThree(SplitterWindow):
                 margin=0,
             )
 
-        self._btn = AioButton("toggle", self._toggle)
         with self.add(Grid()) as grd:
             grd.add(AioButton("toggle", self._toggle))
-            grd.add(self._btn)
+            self._btn = grd.add(
+                AioButton("toggle", self._toggle, enabled=self.bind("ready"))
+            )
+            grd.add(Entry(self.bind("bound_text"), enabled=self.bind("ready")))
 
-        # self.add_space(2)
-
-        # self.add(
-        #     self.split_button, hor_align=HorAlign.right,
-        # )
         self._set_split_button_text()
 
     def _toggle(self, evt):
-        self._toggle_state = not self._toggle_state
-        if self._toggle_state:
-            self._btn.disable()
-        else:
-            self._btn.enable()
+        self.controller.ready = not self.controller.ready
+        # self._toggle_state = not self._toggle_state
+        # if self._toggle_state:
+        #     self._btn.disable()
+        # else:
+        #     self._btn.enable()
 
     def _set_split_button_text(self):
         if self.is_split:
