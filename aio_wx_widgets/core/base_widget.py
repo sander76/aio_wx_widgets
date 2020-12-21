@@ -15,6 +15,12 @@ class CallableItem:
     """An item that is callable. (Able to be added to a container)."""
 
     def init(self, parent):
+        """Initialize this aio-item"""
+        raise NotImplementedError()
+
+    @property
+    def ui_item(self):
+        """A wxPython element."""
         raise NotImplementedError()
 
 
@@ -29,7 +35,7 @@ class BaseWidget(CallableItem):
         enabled: Union[bool, Binding] = True,
     ):
         self._enabled = enabled
-        self.ui_item = ui_item
+        self._ui_item = ui_item
         self._value_binding = value_binding
         self._min_width = min_width
 
@@ -38,6 +44,10 @@ class BaseWidget(CallableItem):
             self._enabled_binding = OneWayBindable(
                 self._enabled, self._set_enabled_value
             )
+
+    @property
+    def ui_item(self):
+        return self._ui_item
 
     def _set_enabled_value(self, enabled):
         if enabled:

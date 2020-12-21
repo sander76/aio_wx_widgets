@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import collections
 import logging
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, TypeVar, Union
 
 import wx
 
 from aio_wx_widgets import type_annotations as T  # noqa
+from aio_wx_widgets.core.base_widget import CallableItem
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
 
@@ -40,6 +41,9 @@ def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
 
     item = _make_window(item, values)
     return _margin_wrapper(item, margins)
+
+
+ItemType = TypeVar("ItemType")
 
 
 def _align_item(
@@ -83,7 +87,7 @@ def _align_item(
 
 
 def _add(
-    item: T.Widget,
+    item: ItemType,
     parent,
     sizer,
     weight,
@@ -92,10 +96,11 @@ def _add(
     create,
     hor_align: Optional[HorAlign],
     ver_align: Optional[VerAlign],
-) -> T.Widget:
+) -> ItemType:
     if create:
         # this is an item which is part of the aio_wx_widgets family.
         # It is assumed it has the ui_item property.
+        assert isinstance(item, CallableItem)
         item.init(parent)
         ui_item = item.ui_item
     else:
@@ -142,13 +147,13 @@ class SizerMixin:
 
     def add(
         self,
-        item: T.Widget,
+        item: ItemType,
         weight=0,
         margin=(5, 5, 1, 1),  # left,right,top,bottom
         create=True,
         hor_align: Optional[HorAlign] = None,
         ver_align: Optional[VerAlign] = None,
-    ) -> T.Widget:
+    ) -> ItemType:
         """Add an item to this panel
 
         Args:

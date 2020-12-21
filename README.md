@@ -12,7 +12,10 @@ See the demo folder for usage.
 Features:
 
 - Add widgets using context managers.
-- Two way Property binding from controller properties to the view.
+- Two-way or one-way Property binding from controller properties to the view.
+- Proper Margins and alignment of items
+
+The example below is a bit outdated, but gives a rough idea. Please see the demo for more.
 
     ```python
     # Use a context manager for container types like a group or grid.
@@ -30,7 +33,6 @@ Features:
             grd.add(IntEntry(binding=self.bind("value_1")), weight=4, margin=3)
     ```
 
-- Proper Margins and alignment of items
 
     ```python 
     vert_grid.add(

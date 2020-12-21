@@ -4,6 +4,7 @@
 
 - Add image widget
 - Demo changes. (still work in progress)
+- Internal changes.
 
 ## v1.1.0
 
