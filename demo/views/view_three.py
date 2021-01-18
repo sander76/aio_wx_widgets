@@ -15,6 +15,8 @@ from aio_wx_widgets.widgets.text_entry import Entry
 
 _LOGGER = logging.getLogger(__name__)
 
+_LONG_TEXT = "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text."
+
 
 class SplitterWindow(TwoSplitterWindow, PanelMixin, SizerMixin):
     def __init__(
@@ -72,15 +74,17 @@ class ViewThree(SplitterWindow):
         with self.add(Grid()) as grd:
             grd.add(AioButton("button one", self._set_value), weight=6)
             grd.add(AioButton("button two,self", self._set_value), weight=6)
-        with self.add(Grid(), margin=20) as grd:
-            grd.add(
-                Text(
-                    "This is a long text that actually should wrap properly and right from the start. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. This is the last text.",
-                    wrap=True,
-                ),
-                weight=1,
-                margin=0,
-            )
+
+        self.add(Text(_LONG_TEXT, wrap=True))
+        # with self.add(Grid(), margin=20) as grd:
+        #     grd.add(
+        #         Text(
+        #             _LONG_TEXT,
+        #             wrap=True,
+        #         ),
+        #         weight=1,
+        #         margin=0,
+        #     )
 
         with self.add(Grid()) as grd:
             grd.add(AioButton("toggle", self._toggle))
@@ -90,6 +94,7 @@ class ViewThree(SplitterWindow):
             grd.add(Entry(self.bind("bound_text"), enabled=self.bind("ready")))
 
         self._set_split_button_text()
+        self.ui_item.PostSizeEvent()
 
     def _toggle(self, evt):
         self.controller.ready = not self.controller.ready

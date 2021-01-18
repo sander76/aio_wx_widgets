@@ -78,55 +78,48 @@ class Text(BaseWidget):
         self.set_text(value)
 
     def _get_style(self) -> int:
+        style = 0
+
         if self._hor_align:
-            return self._hor_align
-        return 0
+            style = style | self._hor_align
+
+        return style
 
     def init(self, parent):
+
         self._parent = parent
+        self._parent.Bind(wx.EVT_SIZE, self._on_parent_size)
 
         self.ui_item.Create(parent, style=self._get_style())
 
         if self._font:
             self.ui_item.SetFont(self._font)
 
-        if self._text:
-            self.set_text(self._text, self._color)
-        if self._value_binding:
-            self.set_text(self._value_binding.get_property_value(), self._color)
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
         self._init()
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
 
     def __call__(self, parent):
         self.init(parent)
         return self
 
+    def _on_parent_size(self, evt):
+        container = self.ui_item.ContainingSizer
+
+        if container.Size[0] == 0:
+            _LOGGER.debug("Not setting text.")
+        else:
+            smaller_size = (self.ui_item.Size[0] - 5, self.ui_item.Size[1])
+            self._set_text(client_size=smaller_size)
+
+        evt.Skip()
+
     def _set_text(self, color=None, client_size=None):
-        # _LOGGER.debug("Setting text to: %s", self._text)
-        self.ui_item.Unbind(wx.EVT_SIZE)
 
         self.ui_item.SetLabel(str(self._text))
-
         if self._wrap:
             if client_size:
                 self.ui_item.Wrap(client_size[0])
-
-        # if color:
-        #     self.ui_item.SetForegroundColour(color)
-
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
-
-    def _on_size(self, evt):
-        size = evt.Size
-        if self._previous_size is not None and self._previous_size[0] == size[0]:
-            return
-
-        self._previous_size = size
-        self._set_text(client_size=size)
-
-        # evt.Skip()
 
     def set_text(self, text, color=None):
         """Set or change the text."""

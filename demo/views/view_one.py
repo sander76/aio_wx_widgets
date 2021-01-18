@@ -46,9 +46,6 @@ class ViewOne(SimplePanel["ControllerOne"]):
         # Use a context manager for container types like a group or grid.
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
-        with self.add(Grid()) as grd:
-            grd.add_space(proportion=1)
-            grd.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
 
         self.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
         with self.add(Grid()) as grd:
@@ -185,6 +182,13 @@ class ViewOne(SimplePanel["ControllerOne"]):
         )
         self.add(AioButton("open other window", self._on_open_second_window))
         self.add(AioButton("open third window", self._on_open_third_window))
+        self.add(
+            AioButton("open text wrapping window", self._on_open_text_wrapping_window)
+        )
+
+        with self.add(Grid()) as grd:
+            grd.add_space(proportion=1)
+            grd.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
 
     def _toggle(self, evt):
         self.controller.ready = not self.controller.ready
@@ -197,6 +201,9 @@ class ViewOne(SimplePanel["ControllerOne"]):
 
     async def _on_open(self, evt):
         await self._controller.open_other_window()
+
+    async def _on_open_text_wrapping_window(self, evt):
+        await self._controller.open_text_wrapping_window()
 
     async def _set_value(self, evt):
         await self._controller.set_value()

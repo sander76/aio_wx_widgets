@@ -107,7 +107,7 @@ class TwoSplitterWindow(SizerMixin):
         self._sizer_ = self.splitter_window_one.sizer
         self._parent = self.splitter_window_one.ui_item
 
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
+        # self.ui_item.Bind(wx.EVT_SIZE, self._on_resize)
 
     @property
     def _sizer(self):

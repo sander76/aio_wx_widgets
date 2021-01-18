@@ -77,6 +77,8 @@ class Image(BaseWidget):
         size = self._get_size(size)
         self._set_image(*size, dummy=True)
 
+        evt.Skip()
+
     def _get_size(self, size):
         # _LOGGER.debug("Sizing image: %s", (parent_x, parent_y))
 

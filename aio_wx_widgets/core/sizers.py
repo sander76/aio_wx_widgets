@@ -132,7 +132,8 @@ def _add(
         )
 
     sizer.Add(ui_item, weight, layout, margin)
-
+    sizer.SetSizeHints(parent)
+    # sizer.Layout()
     return item
 
 
@@ -235,3 +236,4 @@ class PanelMixin:
 
     def populate(self):
         """Add and configure widgets here."""
+        self.ui_item.PostSizeEvent()

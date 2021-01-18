@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.0
+
+- Add better text wrapping.
+
 ## v1.2.0
 
 - Add image widget
