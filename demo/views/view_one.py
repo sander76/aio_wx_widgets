@@ -13,7 +13,6 @@ from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
-from aio_wx_widgets.widgets.image import Image
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
@@ -185,10 +184,7 @@ class ViewOne(SimplePanel["ControllerOne"]):
         self.add(
             AioButton("open text wrapping window", self._on_open_text_wrapping_window)
         )
-
-        with self.add(Grid()) as grd:
-            grd.add_space(proportion=1)
-            grd.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
+        self.add(AioButton("Open image view", self._on_open_image_view))
 
     def _toggle(self, evt):
         self.controller.ready = not self.controller.ready
@@ -204,6 +200,9 @@ class ViewOne(SimplePanel["ControllerOne"]):
 
     async def _on_open_text_wrapping_window(self, evt):
         await self._controller.open_text_wrapping_window()
+
+    async def _on_open_image_view(self, evt):
+        await self._controller.open_image_window()
 
     async def _set_value(self, evt):
         await self._controller.set_value()

@@ -1,11 +1,12 @@
 """Image widget"""
 
-import asyncio
 import logging
 from pathlib import Path
 
 import wx
 
+from aio_wx_widgets.colors import RED
+from aio_wx_widgets.const import is_debugging
 from aio_wx_widgets.core.base_widget import BaseWidget
 
 _LOGGER = logging.getLogger(__name__)
@@ -17,66 +18,52 @@ def _get_ratio(image: wx.Image):
     return width_height
 
 
-X_SIZE_CORRECTION = 2
-REFRESH_DELAY = 0.1
-WAKEUP_CHECK = 0.02  # this value should always be smaller than the REFRESH_DELAY
+class SizeableImage(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self._image_ratio = kwargs.pop("ratio")
+        self._min_width = 100
+
+        super().__init__(*args, **kwargs)
+        if is_debugging():
+            self.SetBackgroundColour(RED)
+
+    def DoGetBestClientSize(self):
+        container_size = self.ContainingSizer.Size
+        _LOGGER.debug("containersize: %s", container_size)
+        if container_size[0] < 20:
+            min_x = self._min_width
+        else:
+            min_x = container_size[0] - 20
+
+        optimal_size = (min_x, min_x / self._image_ratio)
+        _LOGGER.debug("called DoGetBestClientSize, returning %s", optimal_size)
+
+        return optimal_size
 
 
 class Image(BaseWidget):
     """Autoscaling image widget."""
 
     def __init__(self, image: Path):
-        super().__init__(wx.StaticBitmap(), min_width=-1, value_binding=None)
         self._image = wx.Image(str(image), wx.BITMAP_TYPE_PNG)
         self._image_ratio = _get_ratio(self._image)
-        self._delayed_call_task = None
-        self._delay = REFRESH_DELAY
-        self._block_size_event = False  # If true it will skip the EVT_SIZE event.
+        super().__init__(
+            SizeableImage(ratio=self._image_ratio), min_width=10, value_binding=None
+        )
 
     def init(self, parent):
         self.ui_item.Create(parent)
-        self.ui_item.Bind(wx.EVT_SIZE, self._on_size)
+
+        # self._set_image(10,10,dummy=False)
+        parent.Bind(wx.EVT_SIZE, self._on_size)
+        self.ui_item.Layout()
 
     def __call__(self, parent):
         self.init(parent)
         return self
 
-    async def _delayed_set_size(self):
-        while self._delay > 0:
-
-            await asyncio.sleep(WAKEUP_CHECK)
-            self._delay -= WAKEUP_CHECK
-
-        size = self.ui_item.ContainingSizer.Size
-        self._block_size_event = True
-        _LOGGER.debug("Setting final size to: %s", size)
-        img_size = self._get_size(size)
-
-        self._set_image(*img_size, dummy=False, redraw=True)
-        self._delayed_call_task = None
-        self._block_size_event = False
-
     def _on_size(self, evt):  # noqa
-        if self._block_size_event:
-            return
-        size = self.ui_item.ContainingSizer.Size
-        # _LOGGER.debug("container size %s", size)
-
-        if size[0] <= 0 or size[1] <= 0:
-            return
-        if not self._delayed_call_task:
-            try:
-                _loop = asyncio.get_event_loop()
-                self._delayed_call_task = _loop.create_task(self._delayed_set_size())
-            except RuntimeError:
-                _LOGGER.error("loop not started yet.")
-
-        # reset the delayed refresh timer.
-        self._delay = REFRESH_DELAY
-
-        size = self._get_size(size)
-        self._set_image(*size, dummy=True)
-
+        self.ui_item.InvalidateBestSize()
         evt.Skip()
 
     def _get_size(self, size):

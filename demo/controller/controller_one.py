@@ -2,6 +2,7 @@ import logging
 from random import randint
 
 from demo.windows import second_window, text_wrapping_window, third_window
+from demo.windows.image_view_window import ImageViewWindow
 from events import Events
 
 from aio_wx_widgets.controller import BaseController
@@ -37,6 +38,9 @@ class ControllerOne(BaseController):
 
     async def open_text_wrapping_window(self):
         text_wrapping_window.TextWrappingWindow().Show()
+
+    async def open_image_window(self):
+        ImageViewWindow().Show()
 
     async def set_value(self):
         val = randint(1, 100)
