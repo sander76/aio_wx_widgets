@@ -56,7 +56,11 @@ class Image(BaseWidget):
 
         # self._set_image(10,10,dummy=False)
         parent.Bind(wx.EVT_SIZE, self._on_size)
+        parent.Bind(wx.EVT_DISPLAY_CHANGED, self._on_max)
         self.ui_item.Layout()
+
+    def _on_max(self, evt):
+        _LOGGER.debug("Max event")
 
     def __call__(self, parent):
         self.init(parent)
