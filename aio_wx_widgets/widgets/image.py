@@ -35,7 +35,7 @@ class SizeableImage(wx.Panel):
         else:
             min_x = container_size[0] - 20
 
-        optimal_size = (min_x, min_x / self._image_ratio)
+        optimal_size = (-1, min_x / self._image_ratio)
         _LOGGER.debug("called DoGetBestClientSize, returning %s", optimal_size)
 
         return optimal_size
