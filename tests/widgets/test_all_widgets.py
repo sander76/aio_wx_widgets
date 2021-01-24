@@ -50,6 +50,9 @@ def get_all_widget_classes(package):
     for module in get_all_modules(package):
         for _cls in get_all_classes_defined_in_module(module):
             name, cls = _cls
+            if name.startswith("_"):
+                continue
+
             kwargs = {}
             if name == "AioButton":
                 kwargs["label"] = "a label"

@@ -12,7 +12,6 @@ _LOGGER = logging.getLogger(__name__)
 class MainWindow(DefaultFrame):
     def __init__(self):
         super().__init__("Main window")
-
         model = DemoModel()
         controller = ControllerOne(model)
         view = ViewOne(self, controller)

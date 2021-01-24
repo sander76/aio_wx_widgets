@@ -1,5 +1,5 @@
 """All type annotations go here."""
-
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Union
 
@@ -11,7 +11,9 @@ if TYPE_CHECKING:
     from aio_wx_widgets.controller import BaseController
     from aio_wx_widgets.core.base_widget import BaseWidget, CallableItem
     from aio_wx_widgets.core.binding import Binding
+    from aio_wx_widgets.core.sizers import PanelMixin
 
+    assert PanelMixin
     try:
         import Protocol  # type: ignore
     except ImportError:

@@ -19,7 +19,7 @@ class ImageView(SimplePanel[ImageViewController]):
     def populate(self):
         # self.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
         with self.add(Grid()) as grd:
-            grd.add_space(1)
+            grd.add_space()
             grd.add(Text("this is text"), weight=1)
             grd.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
 
@@ -29,3 +29,6 @@ class ImageView(SimplePanel[ImageViewController]):
 
             with grd.add(Grid(orientation=Grid.VER), weight=1) as column2:
                 column2.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
+
+        # emitting a size event to get proper image sizing at startup.
+        self.ui_item.PostSizeEvent()

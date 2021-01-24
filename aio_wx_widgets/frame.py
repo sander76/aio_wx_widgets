@@ -1,4 +1,5 @@
 """WX ui frames. A windows that holds a panel."""
+from __future__ import annotations
 
 import logging
 from pathlib import Path
@@ -51,9 +52,16 @@ class DefaultFrame(wx.Frame):
         if icon_img:
             self.SetIcon(_get_app_icon_32(icon_img))
 
+        self.view = None
         self.Bind(wx.EVT_CLOSE, self._on_close)
+        self.Bind(wx.EVT_MAXIMIZE, self._on_maximize)
 
     # pylint: disable=no-self-use
     def _on_close(self, evt):  # noqa
         _LOGGER.debug("Frame is closed.")
+        evt.Skip()
+
+    def _on_maximize(self, evt):
+        if self.view:
+            self.view.ui_item.PostSizeEvent()
         evt.Skip()
