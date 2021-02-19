@@ -70,7 +70,14 @@ class Image(BaseWidget):
     The image will resize once it is put inside a boxsizer (or aio-wx-widget grid).
     """
 
-    def __init__(self, image: Path, min_width=10):
+    def __init__(self, image: Path, min_width=10, max_width=None):
+        """Init.
+
+        Args:
+            image: The image to be displayed.
+            min_width: The minimal allowed image size.
+            max_width: Max allowed image width.
+        """
         self._image = wx.Image(str(image), wx.BITMAP_TYPE_PNG)
         self._image_ratio = _get_ratio(self._image)
         super().__init__(

@@ -21,6 +21,11 @@ def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> w
     if font_size != 1:
         current_font_size = current_font.GetPointSize()
         new_font_size = int(font_size * current_font_size)
+        _LOGGER.debug(
+            "Debug ratio of %s results in absolute font size of %s",
+            font_size,
+            new_font_size,
+        )
         font.SetPointSize(new_font_size)
 
     if bold:
@@ -52,7 +57,7 @@ class Text(BaseWidget):
 
         Args:
             text:
-            font_size:
+            font_size: Font size ratio.
         """
         value_binding = (
             OneWayBindable(binding, self._set_ui_value) if binding is not None else None

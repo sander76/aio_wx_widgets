@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from aio_wx_widgets.colors import BLACK, RED
+from aio_wx_widgets.containers import Group
 from aio_wx_widgets.containers.grid import VERTICAL, Grid
 from aio_wx_widgets.containers.group import Section
 from aio_wx_widgets.core.binding import Binding
@@ -46,10 +47,23 @@ class ViewOne(SimplePanel["ControllerOne"]):
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
 
-        self.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
-        with self.add(Grid()) as grd:
-            grd.add(Text("This is long text", min_width=50))
-            grd.add(Text("short", min_width=50))
+        grp = Group("just a group")
+        self.add(grp)
+        grp.add(Text("grp text"))
+        grd = Grid()
+        grp.add(grd)
+        grd.add(Text("grid tedt"))
+
+        with self.add(Group("label")) as group:
+            group.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)
+            # with group.add(Group("other group")) as grp:
+            #     grp.add(Text(text="more text"))
+            # with group.add(Section("section inside group")) as sec:
+            #     sec.add(Text(text="section inside group"))
+            # with group.add(Grid(orientation=Grid.VER),weight=1) as grd:
+            #     grd.add(Text("This is long text", min_width=50))
+            #     grd.add(Text("short", min_width=50))
+
         self.add(
             LabelledItem(
                 "Label text",
