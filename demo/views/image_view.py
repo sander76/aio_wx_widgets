@@ -31,4 +31,4 @@ class ImageView(SimplePanel[ImageViewController]):
                 column2.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
 
         # emitting a size event to get proper image sizing at startup.
-        self.ui_item.PostSizeEvent()
+        # self.ui_item.PostSizeEvent()

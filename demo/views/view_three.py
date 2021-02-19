@@ -94,7 +94,7 @@ class ViewThree(SplitterWindow):
             grd.add(Entry(self.bind("bound_text"), enabled=self.bind("ready")))
 
         self._set_split_button_text()
-        self.ui_item.PostSizeEvent()
+        # self.ui_item.PostSizeEvent()
 
     def _toggle(self, evt):
         self.controller.ready = not self.controller.ready

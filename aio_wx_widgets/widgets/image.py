@@ -91,6 +91,8 @@ class Image(BaseWidget):
 
         parent.Bind(wx.EVT_SIZE, self._on_size)
 
+        parent.PostSizeEvent()
+
     def __call__(self, parent):
         self.init(parent)
         return self

@@ -22,4 +22,4 @@ class TextWrappingView(SimplePanel[TextWrappingController]):
                 column_two.add_space()
 
         # add a PostSizeEvent makes the textwrapping go well right at the start.
-        self.ui_item.PostSizeEvent()
+        # self.ui_item.PostSizeEvent()

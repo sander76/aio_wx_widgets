@@ -103,6 +103,7 @@ class Text(BaseWidget):
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
         self._init()
+        self._parent.PostSizeEvent()
 
     def __call__(self, parent):
         self.init(parent)
