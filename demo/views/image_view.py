@@ -29,6 +29,3 @@ class ImageView(SimplePanel[ImageViewController]):
 
             with grd.add(Grid(orientation=Grid.VER), weight=1) as column2:
                 column2.add(Image(IMAGE_FOLDER / "phoenix_main.png"), weight=1)
-
-        # emitting a size event to get proper image sizing at startup.
-        # self.ui_item.PostSizeEvent()

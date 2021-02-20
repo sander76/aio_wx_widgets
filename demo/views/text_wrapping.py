@@ -20,6 +20,3 @@ class TextWrappingView(SimplePanel[TextWrappingController]):
                 column_one.add(Text(text=LONG_TEXT, wrap=True), weight=1)
             with grd.add(Grid(orientation=Grid.VER), weight=1) as column_two:
                 column_two.add_space()
-
-        # add a PostSizeEvent makes the textwrapping go well right at the start.
-        # self.ui_item.PostSizeEvent()

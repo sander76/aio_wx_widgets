@@ -236,4 +236,4 @@ class PanelMixin:
 
     def populate(self):
         """Add and configure widgets here."""
-        self.ui_item.PostSizeEvent()
+        # self.ui_item.PostSizeEvent()

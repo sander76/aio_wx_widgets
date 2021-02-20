@@ -60,7 +60,7 @@ class _SizeableImage(wx.StaticBitmap):
             self._set_image(*image_size)
 
         self._prev_image_size = image_size
-
+        # _LOGGER.debug("Optimal size %s, ratio %s",optimal_size,optimal_size[0]/optimal_size[1])
         return optimal_size
 
 
@@ -90,7 +90,6 @@ class Image(BaseWidget):
         self.ui_item.Create(parent)
 
         parent.Bind(wx.EVT_SIZE, self._on_size)
-
         parent.PostSizeEvent()
 
     def __call__(self, parent):
@@ -98,6 +97,7 @@ class Image(BaseWidget):
         return self
 
     def _on_size(self, evt):  # noqa
+        _LOGGER.debug("resizing image.")
         evt.Skip()
 
         if self.ui_item.ContainingSizer and self.ui_item.ContainingSizer.Size:

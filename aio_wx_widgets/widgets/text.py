@@ -76,7 +76,7 @@ class Text(BaseWidget):
 
         self._font = _get_font_info(self.ui_item.GetFont(), font_size, bold=bold)
         self._color_binding = None
-        self._previous_size = None
+        self._previous_size = (0, 0)
         self._hor_align = hor_align
 
     def _set_ui_value(self, value):
@@ -111,12 +111,17 @@ class Text(BaseWidget):
 
     def _on_parent_size(self, evt):
         container = self.ui_item.ContainingSizer
+        _LOGGER.debug(container.Size)
 
         if container.Size[0] == 0:
             _LOGGER.debug("Not setting text.")
+        elif self._previous_size[0] == container.Size[0]:
+            _LOGGER.debug("Previous size is the same skipping.")
         else:
-            smaller_size = (self.ui_item.Size[0] - 5, self.ui_item.Size[1])
+            self._previous_size = container.Size
+            smaller_size = (self.ui_item.Size[0], -1)
             self._set_text(client_size=smaller_size)
+            self.ui_item.Parent.Refresh()
 
         evt.Skip()
 

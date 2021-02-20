@@ -76,15 +76,6 @@ class ViewThree(SplitterWindow):
             grd.add(AioButton("button two,self", self._set_value), weight=6)
 
         self.add(Text(_LONG_TEXT, wrap=True))
-        # with self.add(Grid(), margin=20) as grd:
-        #     grd.add(
-        #         Text(
-        #             _LONG_TEXT,
-        #             wrap=True,
-        #         ),
-        #         weight=1,
-        #         margin=0,
-        #     )
 
         with self.add(Grid()) as grd:
             grd.add(AioButton("toggle", self._toggle))
@@ -98,11 +89,6 @@ class ViewThree(SplitterWindow):
 
     def _toggle(self, evt):
         self.controller.ready = not self.controller.ready
-        # self._toggle_state = not self._toggle_state
-        # if self._toggle_state:
-        #     self._btn.disable()
-        # else:
-        #     self._btn.enable()
 
     def _set_split_button_text(self):
         if self.is_split:
