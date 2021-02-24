@@ -10,7 +10,14 @@ import wx
 _LOGGER = logging.getLogger(__name__)
 
 
-def _get_app_icon_32(img_path: Path) -> wx.Icon:
+def get_app_icon_32(img_path: Path) -> wx.Icon:
+    """Return an app icon that can be used as the top-left app icon.
+
+    Use it from inside a wx.Frame: self.SetIcon(get_app_icon_32(icon_img))
+
+    Returns:
+        wx.Icon
+    """
     app_icon_32 = wx.Icon()
     app_icon_32.CopyFromBitmap(wx.Bitmap(str(img_path), wx.BITMAP_TYPE_PNG))
     return app_icon_32
@@ -50,7 +57,7 @@ class DefaultFrame(wx.Frame):
 
         wx.Frame.__init__(self, parent, **kwargs)
         if icon_img:
-            self.SetIcon(_get_app_icon_32(icon_img))
+            self.SetIcon(get_app_icon_32(icon_img))
 
         self.view = None
         self.Bind(wx.EVT_CLOSE, self._on_close)
