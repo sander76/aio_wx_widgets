@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from aio_wx_widgets.colors import BLACK, RED
 from aio_wx_widgets.containers import Group
-from aio_wx_widgets.containers.grid import VERTICAL, FixedGrid, Grid
+from aio_wx_widgets.containers.grid import VERTICAL, Grid
 from aio_wx_widgets.containers.group import Section
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
@@ -14,6 +14,7 @@ from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
+from aio_wx_widgets.widgets.experimental.fixed_grid import FixedGrid
 from aio_wx_widgets.widgets.image import Image
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text

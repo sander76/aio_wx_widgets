@@ -37,11 +37,18 @@ class _SizeableImage(wx.StaticBitmap):
         if is_debugging():
             self.SetBackgroundColour(RED)
 
-    def _set_image(self, width, height):
+    def _set_image(self, size):
         """Set the image."""
+        if size[0] <= 0 or size[1] <= 0:
+            _LOGGER.debug("Image size has 0 value. Skipping")
+            return
+        if self._prev_image_size == size:
+            _LOGGER.debug("Skipping image resize")
+            return
 
-        _LOGGER.debug("Setting image size to : %s", (width, height))
-        image = self._image.Scale(width, height, quality=wx.IMAGE_QUALITY_BICUBIC)
+        self._prev_image_size = size
+        _LOGGER.debug("Setting image size to : %s", size)
+        image = self._image.Scale(size[0], size[1], quality=wx.IMAGE_QUALITY_BICUBIC)
         bitmap = wx.Bitmap(image)
 
         self.SetBitmap(bitmap)
@@ -49,21 +56,16 @@ class _SizeableImage(wx.StaticBitmap):
     # pylint: disable=invalid-name
     def DoGetBestClientSize(self):
         """Return best image size when parent sizer is re-arranging children."""
-        min_x = self.GetSize()[0]
-        # _LOGGER.debug("Image size %s",self.GetSize())
-        # if self.ContainingSizer and self.ContainingSizer.Size[0] > 0:
-        #     _LOGGER.debug("containingsizer %s",self.ContainingSizer.Size)
-        #     min_x = self.ContainingSizer.Size[0]
-        # else:
-        #     min_x = self._min_width
+        item_size = self.GetSize()
+        _LOGGER.debug("Image size %s", item_size)
+
+        min_x = item_size[0]
 
         optimal_size = (-1, int(min_x / self._image_ratio))
         image_size = (min_x, optimal_size[1])
-        if not image_size == self._prev_image_size:
-            self._set_image(*image_size)
+        # if not image_size == self._prev_image_size:
+        self._set_image(image_size)
 
-        self._prev_image_size = image_size
-        # _LOGGER.debug("Optimal size %s, ratio %s",optimal_size,optimal_size[0]/optimal_size[1])
         return optimal_size
 
 
@@ -100,12 +102,6 @@ class Image(BaseWidget):
         return self
 
     def _on_size(self, evt):  # noqa
-        _LOGGER.debug("resizing image.")
         evt.Skip()
-
-        if self.ui_item.ContainingSizer and self.ui_item.ContainingSizer.Size:
-            if self.ui_item.ContainingSizer.Size[0] == 0:
-                _LOGGER.debug("skipping size event")
-                return
-
         self.ui_item.InvalidateBestSize()
+        self.ui_item.Layout()

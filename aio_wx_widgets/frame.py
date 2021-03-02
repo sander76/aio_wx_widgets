@@ -54,14 +54,14 @@ class DefaultFrame(wx.Frame):
 
         kwargs["size"] = size
         kwargs["title"] = title
-
         wx.Frame.__init__(self, parent, **kwargs)
         if icon_img:
             self.SetIcon(get_app_icon_32(icon_img))
-
+        self._maximized = False
         self.view = None
         self.Bind(wx.EVT_CLOSE, self._on_close)
         self.Bind(wx.EVT_MAXIMIZE, self._on_maximize)
+        self.Bind(wx.EVT_SIZE, self._on_restore)
 
     # pylint: disable=no-self-use
     def _on_close(self, evt):  # noqa
@@ -70,5 +70,11 @@ class DefaultFrame(wx.Frame):
 
     def _on_maximize(self, evt):
         if self.view:
+            self._maximized = True
             self.view.ui_item.PostSizeEvent()
         evt.Skip()
+
+    def _on_restore(self, evt):
+        evt.Skip()
+        if self.view:
+            self.view.ui_item.PostSizeEvent()
