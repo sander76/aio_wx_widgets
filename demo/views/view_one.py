@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from aio_wx_widgets.colors import BLACK, RED
 from aio_wx_widgets.containers import Group
-from aio_wx_widgets.containers.grid import VERTICAL, Grid
+from aio_wx_widgets.containers.grid import VERTICAL, FixedGrid, Grid
 from aio_wx_widgets.containers.group import Section
 from aio_wx_widgets.core.binding import Binding
 from aio_wx_widgets.core.data_types import HorAlign, VerAlign
@@ -14,6 +14,7 @@ from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
+from aio_wx_widgets.widgets.image import Image
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
 from aio_wx_widgets.widgets.text import Text
 from aio_wx_widgets.widgets.text_entry import Entry
@@ -47,12 +48,10 @@ class ViewOne(SimplePanel["ControllerOne"]):
         # A group is a container with a label and a sizer inside. Inside
         # this sizer widgets, or other containers can be placed.
 
-        grp = Group("just a group")
-        self.add(grp)
-        grp.add(Text("grp text"))
-        grd = Grid()
-        grp.add(grd)
-        grd.add(Text("grid tedt"))
+        with self.add(FixedGrid(), weight=1, margin=0) as fixed:
+            fixed.add(Text("Col1"))
+            fixed.add(Text("col2"))
+            fixed.add(Image(IMAGE_FOLDER / "phoenix_main.png"))
 
         with self.add(Group("label")) as group:
             group.add(Text(binding=self.bind("int_val"), wrap=True), margin=20)

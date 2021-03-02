@@ -40,7 +40,7 @@ class _SizeableImage(wx.StaticBitmap):
     def _set_image(self, width, height):
         """Set the image."""
 
-        # _LOGGER.debug("Setting image size to : %s", (width, height))
+        _LOGGER.debug("Setting image size to : %s", (width, height))
         image = self._image.Scale(width, height, quality=wx.IMAGE_QUALITY_BICUBIC)
         bitmap = wx.Bitmap(image)
 
@@ -49,10 +49,13 @@ class _SizeableImage(wx.StaticBitmap):
     # pylint: disable=invalid-name
     def DoGetBestClientSize(self):
         """Return best image size when parent sizer is re-arranging children."""
-        if self.ContainingSizer and self.ContainingSizer.Size[0] > 0:
-            min_x = self.ContainingSizer.Size[0]
-        else:
-            min_x = self._min_width
+        min_x = self.GetSize()[0]
+        # _LOGGER.debug("Image size %s",self.GetSize())
+        # if self.ContainingSizer and self.ContainingSizer.Size[0] > 0:
+        #     _LOGGER.debug("containingsizer %s",self.ContainingSizer.Size)
+        #     min_x = self.ContainingSizer.Size[0]
+        # else:
+        #     min_x = self._min_width
 
         optimal_size = (-1, int(min_x / self._image_ratio))
         image_size = (min_x, optimal_size[1])
