@@ -104,4 +104,4 @@ class Image(BaseWidget):
     def _on_size(self, evt):  # noqa
         evt.Skip()
         self.ui_item.InvalidateBestSize()
-        self.ui_item.Layout()
+        # self.ui_item.Layout()

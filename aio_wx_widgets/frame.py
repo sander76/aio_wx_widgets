@@ -61,7 +61,7 @@ class DefaultFrame(wx.Frame):
         self.view = None
         self.Bind(wx.EVT_CLOSE, self._on_close)
         self.Bind(wx.EVT_MAXIMIZE, self._on_maximize)
-        self.Bind(wx.EVT_SIZE, self._on_restore)
+        # self.Bind(wx.EVT_SIZE, self._on_restore)
 
     # pylint: disable=no-self-use
     def _on_close(self, evt):  # noqa
