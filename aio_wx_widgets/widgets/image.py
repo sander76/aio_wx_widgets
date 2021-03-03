@@ -94,14 +94,14 @@ class Image(BaseWidget):
     def init(self, parent):
         self.ui_item.Create(parent)
 
-        parent.Bind(wx.EVT_SIZE, self._on_size)
-        parent.PostSizeEvent()
+        # parent.Bind(wx.EVT_SIZE, self._on_size)
+        # parent.PostSizeEvent()
 
     def __call__(self, parent):
         self.init(parent)
         return self
 
-    def _on_size(self, evt):  # noqa
-        evt.Skip()
-        self.ui_item.InvalidateBestSize()
-        # self.ui_item.Layout()
+    # def _on_size(self, evt):  # noqa
+    #     evt.Skip()
+    #     self.ui_item.InvalidateBestSize()
+    #     self.ui_item.Layout()

@@ -42,8 +42,13 @@ class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
 
         self._sizer_ = wx.BoxSizer(wx.VERTICAL)
         self.ui_item.SetSizer(self._sizer)
+        self._ui_item.Parent.Bind(wx.EVT_SIZE, self._on_size)
 
     @property
     def controller(self) -> C:
         """Return the controller."""
         return self._controller
+
+    def _on_size(self, evt):
+        evt.Skip()
+        self._ui_item.PostSizeEvent()
