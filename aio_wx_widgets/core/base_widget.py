@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import logging
-from typing import Union
+from typing import Generic, TypeVar, Union
 
 from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import Binding, OneWayBindable, TwoWayBindable
 
 _LOGGER = logging.getLogger(__name__)
+
+T_VAR = TypeVar("T_VAR")
 
 
 class CallableItem:
@@ -24,12 +26,12 @@ class CallableItem:
         raise NotImplementedError()
 
 
-class BaseWidget(CallableItem):
+class BaseWidget(CallableItem, Generic[T_VAR]):
     """All widgets should inherit from this."""
 
     def __init__(
         self,
-        ui_item: T.wx,
+        ui_item: T_VAR,
         min_width: int,
         value_binding: Union[OneWayBindable, TwoWayBindable, None],
         enabled: Union[bool, Binding] = True,
@@ -46,7 +48,7 @@ class BaseWidget(CallableItem):
             )
 
     @property
-    def ui_item(self):
+    def ui_item(self) -> T_VAR:
         return self._ui_item
 
     def _set_enabled_value(self, enabled):
