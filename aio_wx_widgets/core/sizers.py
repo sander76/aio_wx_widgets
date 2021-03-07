@@ -132,8 +132,6 @@ def _add(
         )
 
     sizer.Add(ui_item, weight, layout, margin)
-    # sizer.SetSizeHints(parent)
-    # sizer.Layout()
     return item
 
 

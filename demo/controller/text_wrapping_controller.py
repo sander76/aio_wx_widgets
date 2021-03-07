@@ -7,4 +7,5 @@ _LOGGER = logging.getLogger(__name__)
 
 class TextWrappingController(BaseController):
     def __init__(self, model):
+        self.color_red = None
         super().__init__(model)

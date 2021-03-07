@@ -42,6 +42,8 @@ class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
 
         self._sizer_ = wx.BoxSizer(wx.VERTICAL)
         self.ui_item.SetSizer(self._sizer)
+
+        # useful for image updating layout
         self._ui_item.Parent.Bind(wx.EVT_SIZE, self._on_size)
 
     @property
@@ -51,4 +53,9 @@ class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
 
     def _on_size(self, evt):
         evt.Skip()
+        self._refresh(evt)
+
+    def _refresh(self, evt):
+
+        _LOGGER.debug("posting size event")
         self._ui_item.PostSizeEvent()

@@ -4,6 +4,7 @@ import logging
 from typing import Optional, Union
 
 import wx
+from wx.lib.wordwrap import wordwrap
 
 from aio_wx_widgets.colors import GREEN
 from aio_wx_widgets.const import is_debugging
@@ -34,7 +35,7 @@ def _get_font_info(current_font: wx.Font, font_size: float = 1, bold=False) -> w
     return font
 
 
-class Text(BaseWidget):
+class Text(BaseWidget["wx.StaticText"]):
     """Static text."""
 
     HOR_CENTER = wx.ALIGN_CENTRE_HORIZONTAL
@@ -109,28 +110,39 @@ class Text(BaseWidget):
         self.init(parent)
         return self
 
+    def _get_wrapped_text(self, text: str, width):
+        client_item = wx.ClientDC(self._parent)
+        client_item.Clear()
+        client_item.SetFont(self._font)
+
+        txt = wordwrap(str(text), width, client_item)
+        return txt
+
     def _on_parent_size(self, evt):
-        container = self.ui_item.ContainingSizer
-        _LOGGER.debug(container.Size)
-
-        if container.Size[0] == 0:
-            _LOGGER.debug("Not setting text.")
-        elif self._previous_size[0] == container.Size[0]:
-            _LOGGER.debug("Previous size is the same skipping.")
-        else:
-            self._previous_size = container.Size
-            smaller_size = (self.ui_item.Size[0], -1)
-            self._set_text(client_size=smaller_size)
-            self.ui_item.Parent.Refresh()
-
         evt.Skip()
 
-    def _set_text(self, color=None, client_size=None):
+        size = self.ui_item.Size
+        _LOGGER.debug("Text size changed %s", size)
 
-        self.ui_item.SetLabel(str(self._text))
-        if self._wrap:
-            if client_size:
-                self.ui_item.Wrap(client_size[0])
+        if size[0] == 0:
+            _LOGGER.debug("Not setting text.")
+            return
+        if self._previous_size[0] == size[0]:
+            return
+            # _LOGGER.debug("Previous size is the same skipping.")
+
+        self._previous_size = size
+        smaller_size = (size[0], -1)
+        self._set_text(client_size=smaller_size)
+        self._parent.Layout()
+
+    def _set_text(self, color=None, client_size=None):
+        if client_size and self._wrap:
+            txt = self._get_wrapped_text(self._text, client_size[0])
+        else:
+            txt = str(self._text)
+        self.ui_item.SetLabel(txt)
+        self._parent.Refresh()
 
     def set_text(self, text, color=None):
         """Set or change the text."""
