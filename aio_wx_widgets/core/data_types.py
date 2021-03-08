@@ -8,6 +8,8 @@ import wx
 
 _LOGGER = logging.getLogger(__name__)
 
+# pylint: disable=invalid-name
+
 
 class Choices(NamedTuple):
     """Choice item."""

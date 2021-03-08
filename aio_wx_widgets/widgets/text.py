@@ -59,6 +59,19 @@ class Text(BaseWidget["wx.StaticText"]):
         Args:
             text:
             font_size: Font size ratio.
+            wrap: apply text wrapping.
+
+        "normal" text wrappig is not working properly. AFter calling ui_item.Wrap(),
+        the text gets extra line breaks where need. If the item is then sized bigger
+        the line breaks persist, making the text area too narrow. To overcome this
+        you need to `ui_item.SetLabel` again to set the text and after that call
+        `ui_item.Wrap()` again. This makes the parent container resize twice: Once
+        with the full width text after `SetLabel` and once more after `Wrap` this makes
+        the screen very "nervous" and sometimes doesn't scale well at all.
+
+        The workaround for this is to use an intermediate ClientDC instance which mimics
+        the statictext box and returns a wrapped string. This string is then used once
+        in the `SetLabel` method.
         """
         value_binding = (
             OneWayBindable(binding, self._set_ui_value) if binding is not None else None
