@@ -14,6 +14,7 @@ from aio_wx_widgets.core.validators import float_validator, int_validator
 from aio_wx_widgets.panels.panel import SimplePanel
 from aio_wx_widgets.widgets.button import AioButton
 from aio_wx_widgets.widgets.checkbox import CheckBox
+from aio_wx_widgets.widgets.experimental.bullet_text import BulletText
 from aio_wx_widgets.widgets.experimental.fixed_grid import FixedGrid
 from aio_wx_widgets.widgets.image import Image
 from aio_wx_widgets.widgets.labelled_item import LabelledItem
@@ -45,13 +46,11 @@ class ViewOne(SimplePanel["ControllerOne"]):
     def populate(self):
         """Populate this view."""
 
-        # Use a context manager for container types like a group or grid.
-        # A group is a container with a label and a sizer inside. Inside
-        # this sizer widgets, or other containers can be placed.
-        # with self.add(DynamicGrid(), weight=1, margin=0) as fixed:
-        #     fixed.add(Text("Col1"),col=0)
-        #     fixed.add(Text("col2"),col=1)
-        #     # fixed.add(Image(IMAGE_FOLDER / "phoenix_main.png"))
+        self.add(BulletText("this is stupid text."))
+        with self.add(FixedGrid()) as grd:
+            grd.add(Text("This is text"))
+            grd.add(Text("this is other text"))
+            grd.add(Text("This is text"))
 
         with self.add(FixedGrid(), weight=1, margin=0) as fixed:
             fixed.add(Text("Col1"))

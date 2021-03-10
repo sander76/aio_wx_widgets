@@ -87,6 +87,17 @@ class DynamicGrid(CallableItem):
 
     def init(self, parent):
         self._parent = parent
+        # self._parent.Bind(wx.EVT_SIZE,self._on_size)
+
+    def _on_size(self, evt):
+        evt.Skip()
+
+        _LOGGER.debug(
+            "Laying out dynamic grid. %s, sizer width %s, parent sizxe",
+            evt.Size,
+            self._parent.Size,
+        )
+        # wx.CallAfter(self.ui_item.PostSizeEvent())
 
     def __call__(self, parent):
         self.init(parent)

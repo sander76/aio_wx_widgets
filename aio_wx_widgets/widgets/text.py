@@ -107,8 +107,6 @@ class Text(BaseWidget["wx.StaticText"]):
     def init(self, parent):
 
         self._parent = parent
-        self._parent.Bind(wx.EVT_SIZE, self._on_parent_size)
-
         self.ui_item.Create(parent, style=self._get_style())
 
         if self._font:
@@ -117,6 +115,12 @@ class Text(BaseWidget["wx.StaticText"]):
         if is_debugging():
             self.ui_item.SetBackgroundColour(GREEN)
         self._init()
+
+        if self._wrap:
+            self._parent.Bind(wx.EVT_SIZE, self._on_parent_size)
+            self._parent.Bind(wx.EVT_MAXIMIZE, self._on_parent_size)
+        else:
+            self.set_text(self._text)
         self._parent.PostSizeEvent()
 
     def __call__(self, parent):
@@ -135,19 +139,18 @@ class Text(BaseWidget["wx.StaticText"]):
         evt.Skip()
 
         size = self.ui_item.Size
-        _LOGGER.debug("Text size changed %s", size)
 
         if size[0] == 0:
-            _LOGGER.debug("Not setting text.")
-            return
-        if self._previous_size[0] == size[0]:
-            return
-            # _LOGGER.debug("Previous size is the same skipping.")
+            _LOGGER.debug("Size is zero. Not setting text.")
 
-        self._previous_size = size
-        smaller_size = (size[0], -1)
-        self._set_text(client_size=smaller_size)
-        self._parent.Layout()
+        elif self._previous_size[0] == size[0]:
+            _LOGGER.debug("New size identical to previous size. skipping")
+
+            # _LOGGER.debug("Previous size is the same skipping.")
+        else:
+            self._previous_size = size
+            smaller_size = (size[0], -1)
+            self._set_text(client_size=smaller_size)
 
     def _set_text(self, color=None, client_size=None):
         if client_size and self._wrap:
