@@ -34,9 +34,6 @@ class BaseController(Generic[M]):
         return self._model
 
     def __setattr__(self, item, value):
-        # print(f"Setting item {item} to value {value}")
-        # self.__dict__[item] = value
-        # setattr(self,item,value)
         super().__setattr__(item, value)
         if WATCHERS not in self.__dict__:
             return

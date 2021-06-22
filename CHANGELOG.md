@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.9
+
+- Responsive fine tuning.
+
 ## v1.3.2
 
 - Improve text wrapping.

@@ -34,7 +34,7 @@ The example below is a bit outdated, but gives a rough idea. Please see the demo
     ```
 
 
-    ```python 
+    ```python
     vert_grid.add(
         Text(text="Center aligned text with a large margin."),
         margin=(10, 10, 30, 5),  # (left,right,top,below)

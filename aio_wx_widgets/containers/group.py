@@ -39,9 +39,7 @@ class Group(SizerMixin, CallableItem):
         self._extra_bottom_border = 10
         self._sizer_ = wx.BoxSizer(wx.VERTICAL)
         self._ui_item = wx.StaticBox()
-        # kwargs["sizer"] = self._sizer
         self._bottom_border = 1
-        # self._ui_item.SetSizer(self._sizer_)
 
     @property
     def _sizer(self):
@@ -57,7 +55,6 @@ class Group(SizerMixin, CallableItem):
 
         Args:
             parent: The parent of this ui item.
-
         """
         self.ui_item.Create(parent, label=self._label)
 

@@ -100,7 +100,11 @@ class TwoWayBindable(OneWayBindable):
     """
 
     def __init__(
-        self, binding: Binding, get_ui_value, set_ui_value, display_error=None,
+        self,
+        binding: Binding,
+        get_ui_value,
+        set_ui_value,
+        display_error=None,
     ):
 
         super().__init__(binding, set_ui_value)

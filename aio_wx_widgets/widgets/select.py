@@ -47,7 +47,10 @@ class Select(BaseWidget):
         )
 
         super().__init__(
-            wx.Choice(), min_width, value_binding=value_binding, enabled=enabled,
+            wx.Choice(),
+            min_width,
+            value_binding=value_binding,
+            enabled=enabled,
         )
         self.choices = choices
         self._on_select_callback = on_select_callback

@@ -65,9 +65,13 @@ class BaseWidget(CallableItem, Generic[WxItem]):
     def _init(self):
         self._make_bindings()
         if self._min_width > -1:
-            actual_x_value = self.ui_item.GetSize()[0]
-            if actual_x_value < self._min_width:
-                self.ui_item.SetMinSize((self._min_width, -1))
+            self.ui_item.SetMinSize((self._min_width, -1))
+            # self.ui_item.SetMaxSize((-1,-1))
+        # if self._min_width > -1:
+        #
+        #     actual_x_value = self.ui_item.GetSize()[0]
+        #     if actual_x_value < self._min_width:
+        #         self.ui_item.SetMinSize((self._min_width, -1))
 
     def init(self, parent):
         raise NotImplementedError()

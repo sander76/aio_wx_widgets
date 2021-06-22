@@ -52,10 +52,14 @@ class SimplePanel(PanelMixin, SizerMixin, Generic[C]):
     def _on_size(self, evt):
         evt.Skip()
 
-        # ugly as hell. Makes wrapping text better though.
-        # wx.CallLater(100,self._refresh)
-        # wx.CallLater(200, self._refresh)
-        # wx.CallLater(300, self._refresh)
+        # Ugly as hell. Makes wrapping text better though.
+        # to check, open the "text wrapping window" in the demo. Maximize the screen
+        # and normalize it again. Observer the difference between textbox sizes when
+        # enabling or disabling this code below.
+        wx.CallLater(1, self._refresh)
+        wx.CallLater(2, self._refresh)
+        wx.CallLater(3, self._refresh)
+
         self._refresh()
 
     def _refresh(self):

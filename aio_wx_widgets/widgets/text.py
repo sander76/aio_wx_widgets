@@ -139,14 +139,13 @@ class Text(BaseWidget["wx.StaticText"]):
         evt.Skip()
 
         size = self.ui_item.Size
-
+        _LOGGER.debug("TExt size %s", size)
         if size[0] == 0:
             _LOGGER.debug("Size is zero. Not setting text.")
 
         elif self._previous_size[0] == size[0]:
             _LOGGER.debug("New size identical to previous size. skipping")
 
-            # _LOGGER.debug("Previous size is the same skipping.")
         else:
             self._previous_size = size
             smaller_size = (size[0], -1)
@@ -158,7 +157,7 @@ class Text(BaseWidget["wx.StaticText"]):
         else:
             txt = str(self._text)
         self.ui_item.SetLabel(txt)
-        self._parent.Refresh()
+        self.ui_item.GetParent().Layout()
 
     def set_text(self, text, color=None):
         """Set or change the text."""

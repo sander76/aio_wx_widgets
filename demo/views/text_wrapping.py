@@ -18,12 +18,16 @@ class TextWrappingView(SimplePanel[TextWrappingController]):
     def populate(self):
         with self.add(DynamicGrid()) as grd:
             grd.add(Text(text=LONG_TEXT, wrap=True), col=1)
-            grd.add_spacer(col=2)
+            grd.add(Text(text=LONG_TEXT, wrap=True), col=2)
         with self.add(FixedGrid()) as grd:
             grd.add_spacer()
             grd.add(Text(text=LONG_TEXT, wrap=True))
             grd.add_spacer()
-        self.add(LabelledItem(label_text=" - ", item=Text("Just text")))
+        self.add(
+            LabelledItem(
+                label_text="This is the label", item=Text("Just text"), item_weight=3
+            )
+        )
         with self.add(FixedGrid()) as grd:
             grd.add_spacer()
             grd.add(BulletText(text=LONG_TEXT, wrap=True))
