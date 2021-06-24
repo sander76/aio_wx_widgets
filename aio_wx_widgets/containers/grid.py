@@ -30,7 +30,7 @@ class Grid(SizerMixin, CallableItem):
     HOR = HORIZONTAL
     VER = VERTICAL
 
-    def __init__(self, orientation=HORIZONTAL):
+    def __init__(self, orientation: int = HORIZONTAL):
         """Init."""
         super().__init__()
         self._sizer_ = wx.BoxSizer(orient=orientation)
@@ -45,10 +45,10 @@ class Grid(SizerMixin, CallableItem):
     def _sizer(self):
         return self._sizer_
 
-    def init(self, parent):
+    def init(self, parent: wx.Window):
         self._parent = parent
 
-    def __call__(self, parent):
+    def __call__(self, parent: wx.Window):
         # setting a specific parent.
         self.init(parent)
         return self
@@ -57,5 +57,5 @@ class Grid(SizerMixin, CallableItem):
         """Enter context manager."""
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
         """Exit context manager."""

@@ -54,9 +54,9 @@ class BaseWidget(CallableItem, Generic[WxItem]):
 
     def _set_enabled_value(self, enabled: bool):
         if enabled:
-            self.ui_item.Enable()
+            self.ui_item.Enable()  # type: ignore
         else:
-            self.ui_item.Disable()
+            self.ui_item.Disable()  # type: ignore
 
     def _make_bindings(self):
         if self._value_binding:
@@ -68,12 +68,6 @@ class BaseWidget(CallableItem, Generic[WxItem]):
         self._make_bindings()
         if self._min_width > -1:
             self.ui_item.SetMinSize((self._min_width, -1))
-            # self.ui_item.SetMaxSize((-1,-1))
-        # if self._min_width > -1:
-        #
-        #     actual_x_value = self.ui_item.GetSize()[0]
-        #     if actual_x_value < self._min_width:
-        #         self.ui_item.SetMinSize((self._min_width, -1))
 
     def init(self, parent: wx.Window):
         raise NotImplementedError()

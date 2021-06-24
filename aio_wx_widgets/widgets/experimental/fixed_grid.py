@@ -60,7 +60,7 @@ class FixedGrid(CallableItem):
             assert isinstance(item, CallableItem)
             item.init(self._parent)
 
-        self._sizer_.Add(item.ui_item, 1, wx.EXPAND)
+        self._sizer_.Add(item.ui_item, 1, wx.EXPAND)  # type:ignore
         return item
 
     def add_spacer(self):
@@ -119,7 +119,7 @@ class DynamicGrid(CallableItem):
             assert isinstance(item, CallableItem)
             item.init(self._parent)
 
-        self._sizer_.Add(item.ui_item, (0, col), (1, span), flag=wx.EXPAND)
+        self._sizer_.Add(item.ui_item, (0, col), (1, span), flag=wx.EXPAND)  # type: ignore
         self._set_col_sizes_equal()
         return item
 

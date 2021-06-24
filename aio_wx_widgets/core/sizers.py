@@ -88,9 +88,9 @@ def _align_item(
 
 def _add(
     item: ItemType,
-    parent,
+    parent: wx.Window,
     sizer,
-    weight,
+    weight: int,
     margin,
     default_margin,
     create,
