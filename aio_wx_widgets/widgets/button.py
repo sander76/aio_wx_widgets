@@ -52,6 +52,7 @@ class AioButton(BaseWidget[wx.Button]):
         self.ui_item.SetLabelText(str(self._label))
 
     def init(self, parent: wx.Window):
+        """Initialize this item."""
         self.ui_item.Create(parent, label=str(self._label))
         if iscoroutinefunction(self._call_back):
 
