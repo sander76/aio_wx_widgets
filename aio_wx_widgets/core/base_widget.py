@@ -5,6 +5,8 @@ from __future__ import annotations
 import logging
 from typing import Generic, TypeVar, Union
 
+import wx
+
 from aio_wx_widgets.core.binding import Binding, OneWayBindable, TwoWayBindable
 
 _LOGGER = logging.getLogger(__name__)
@@ -15,7 +17,7 @@ WxItem = TypeVar("WxItem")
 class CallableItem:
     """An item that is callable. (Able to be added to a container)."""
 
-    def init(self, parent):
+    def init(self, parent: wx.Window) -> None:
         """Initialize this aio-item"""
         raise NotImplementedError()
 
@@ -50,7 +52,7 @@ class BaseWidget(CallableItem, Generic[WxItem]):
     def ui_item(self) -> WxItem:
         return self._ui_item
 
-    def _set_enabled_value(self, enabled):
+    def _set_enabled_value(self, enabled: bool):
         if enabled:
             self.ui_item.Enable()
         else:
@@ -73,8 +75,8 @@ class BaseWidget(CallableItem, Generic[WxItem]):
         #     if actual_x_value < self._min_width:
         #         self.ui_item.SetMinSize((self._min_width, -1))
 
-    def init(self, parent):
+    def init(self, parent: wx.Window):
         raise NotImplementedError()
 
-    def __call__(self, parent):
+    def __call__(self, parent: wx.Window):
         raise NotImplementedError()

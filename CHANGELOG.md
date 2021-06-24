@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.10
+
+- More type checking.
+
 ## v1.3.9
 
 - Responsive fine tuning.

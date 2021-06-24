@@ -6,7 +6,6 @@ from typing import Sequence
 
 from events import Events
 
-from aio_wx_widgets import type_annotations as T
 from aio_wx_widgets.controller import BaseController
 from aio_wx_widgets.core.data_types import Choices
 
@@ -21,7 +20,7 @@ class ControllerTwo(BaseController):
         # self.create_task(self.value_setter())
         # self.add_to_log = Channel("Log messages")
         self.add_to_log = Events()
-        self.choices: Sequence[T.Choice] = [
+        self.choices: Sequence[Choices] = [
             Choices(label="choice 1", value={"value": 1}),
             Choices(label="choice 2", value={"value": 2}),
         ]

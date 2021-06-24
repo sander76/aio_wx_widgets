@@ -4,7 +4,8 @@ from __future__ import annotations
 import asyncio
 import logging
 from asyncio import Task
-from typing import Awaitable, Generic, List, TypeVar
+from asyncio.futures import Future
+from typing import Any, Awaitable, Callable, Generic, List, Optional, TypeVar
 
 from aio_wx_widgets import type_annotations as T  # noqa
 from aio_wx_widgets.core.binding import WATCHERS
@@ -26,14 +27,14 @@ class BaseController(Generic[M]):
         """
 
         self._model = model
-        self._tasks: List[Task] = []
+        self._tasks: List[Task[Any]] = []
 
     @property
     def model(self) -> M:
         """Return the model of this controller."""
         return self._model
 
-    def __setattr__(self, item, value):
+    def __setattr__(self, item: str, value: object):
         super().__setattr__(item, value)
         if WATCHERS not in self.__dict__:
             return
@@ -48,7 +49,11 @@ class BaseController(Generic[M]):
     def _loop(self) -> T.AbstractEventLoop:
         return asyncio.get_running_loop()
 
-    def create_task(self, coro: Awaitable, callback=None) -> Task:
+    def create_task(
+        self,
+        coro: Awaitable[object],
+        callback: Optional[Callable[[Future[Any]], None]] = None,
+    ) -> Task:
         """Create a task.
 
         When this step is deactivated, the task

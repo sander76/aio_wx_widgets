@@ -3,6 +3,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Union
 
+try:
+    import Protocol  # type: ignore
+except ImportError:
+    from typing_extensions import Protocol
+
+
+class Choice(Protocol):
+    """Typing protocol to be used for static type checking."""
+
+    label: str
+    value: Any
+
+
 if TYPE_CHECKING:
     from asyncio import AbstractEventLoop
 
@@ -14,22 +27,12 @@ if TYPE_CHECKING:
     from aio_wx_widgets.core.sizers import PanelMixin
 
     assert PanelMixin
-    try:
-        import Protocol  # type: ignore
-    except ImportError:
-        from typing_extensions import Protocol
 
     assert BaseController
     assert AbstractEventLoop
     assert Binding
     assert wx
     assert BaseWidget
-
-    class Choice(Protocol):
-        """Typing protocol to be used for static type checking."""
-
-        label: str
-        value: Any
 
     Widget = Union[BaseWidget, wx.Window, wx.BoxSizer, CallableItem]
     ConverterType = Callable[[Any], Union[float, int, str, bool]]

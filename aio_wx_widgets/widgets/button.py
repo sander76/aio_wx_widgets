@@ -15,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 __all__ = ["AioButton"]
 
 
-class AioButton(BaseWidget):
+class AioButton(BaseWidget[wx.Button]):
     """Button widget.
 
     Args:
@@ -23,23 +23,26 @@ class AioButton(BaseWidget):
         callback: a coroutine function or normal function. Called when pressed.
     """
 
+    _label: str
+
     def __init__(
         self,
-        label: str,
+        label: object,
         callback: Union[
-            Callable[[object, wx.Event], Awaitable], Callable[[object, wx.Event], None]
+            Callable[[wx.Event], Awaitable[None]],
+            Callable[[wx.Event], None],
         ],
         enabled: Union[bool, Binding] = True,
-        min_width=-1,
+        min_width: int = -1,
     ):
         super().__init__(
             wx.Button(), min_width=min_width, value_binding=None, enabled=enabled
         )
-        self._label = label
+        self._label = str(label)
         self._call_back = callback
 
     @property
-    def label(self):
+    def label(self) -> str:
         """Return the button label."""
         return self._label
 
@@ -48,7 +51,7 @@ class AioButton(BaseWidget):
         self._label = str(value)
         self.ui_item.SetLabelText(str(self._label))
 
-    def init(self, parent):
+    def init(self, parent: wx.Window):
         self.ui_item.Create(parent, label=str(self._label))
         if iscoroutinefunction(self._call_back):
 
@@ -57,7 +60,7 @@ class AioButton(BaseWidget):
             self.ui_item.Bind(wx.EVT_BUTTON, self._call_back)
         self._init()
 
-    def __call__(self, parent):
+    def __call__(self, parent: wx.Window):
         self.init(parent)
         # self._make_bindings()
         return self

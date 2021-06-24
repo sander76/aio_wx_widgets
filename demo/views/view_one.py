@@ -212,23 +212,23 @@ class ViewOne(SimplePanel["ControllerOne"]):
         )
         self.add(AioButton("Open image view", self._on_open_image_view))
 
-    def _toggle(self, evt):
+    def _toggle(self, evt: wx.Event):
         self.controller.ready = not self.controller.ready
 
-    async def _on_open_second_window(self, evt):
+    async def _on_open_second_window(self, evt: wx.Event):
         await self._controller.open_other_window()
 
-    async def _on_open_third_window(self, evt):
+    async def _on_open_third_window(self, evt: wx.Event):
         await self._controller.open_third_window()
 
-    async def _on_open(self, evt):
+    async def _on_open(self, evt: wx.Event):
         await self._controller.open_other_window()
 
-    async def _on_open_text_wrapping_window(self, evt):
+    async def _on_open_text_wrapping_window(self, evt: wx.Event):
         await self._controller.open_text_wrapping_window()
 
-    async def _on_open_image_view(self, evt):
+    async def _on_open_image_view(self, evt: wx.Event):
         await self._controller.open_image_window()
 
-    async def _set_value(self, evt):
+    async def _set_value(self, evt: wx.Event):
         await self._controller.set_value()

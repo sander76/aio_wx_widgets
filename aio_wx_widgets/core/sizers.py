@@ -28,7 +28,7 @@ def _make_window(item: wx.Window, margins: List[Tuple[int, int]]):
     return new_sizer
 
 
-def _margin_wrapper(item, margins: List[Tuple[int, int]]) -> wx.Window:
+def _margin_wrapper(item: wx.Window, margins: List[Tuple[int, int]]) -> wx.Window:
     if len(margins) == 0:
         return item
 
@@ -48,7 +48,7 @@ ItemType = TypeVar("ItemType")
 
 def _align_item(
     item: Union[wx.Window, wx.BoxSizer],
-    current_sizer_orientation,
+    current_sizer_orientation: int,
     hor_align: Optional["HorAlign"],
     ver_align: Optional[VerAlign],
     current_layout: int,
@@ -109,7 +109,7 @@ def _add(
     if margin is None:
         margin = default_margin
     elif isinstance(margin, collections.Sequence):
-        margins = [
+        margins: List[Tuple[int, int]] = [
             (margin[0], wx.LEFT),
             (margin[1], wx.RIGHT),
             (margin[2], wx.TOP),
@@ -147,9 +147,9 @@ class SizerMixin:
     def add(
         self,
         item: ItemType,
-        weight=0,
-        margin=(5, 5, 1, 1),  # left,right,top,bottom
-        create=True,
+        weight: int = 0,
+        margin: Tuple[int, int, int, int] = (5, 5, 1, 1),  # left,right,top,bottom
+        create: bool = True,
         hor_align: Optional[HorAlign] = None,
         ver_align: Optional[VerAlign] = None,
     ) -> ItemType:
